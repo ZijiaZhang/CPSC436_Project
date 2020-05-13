@@ -1,0 +1,25 @@
+{
+  "name": "cpsc436-group-project",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "nyc --reporter html --reporter json --reporter text npm run tests && nyc report --reporter=text-lcov > coverage.lcov",
+    "tests": "mocha ./test/**/*.ts --require ts-node/register --timeout 10000",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@types/chai": "^4.2.9",
+    "@types/mocha": "^7.0.1",
+    "chai": "^4.2.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "mocha": "^7.1.0",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "nyc": "^15.0.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
+  }
+}

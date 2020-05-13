@@ -1,0 +1,12 @@
+**/.idea
+node_modules/
+coverage/
+.nyc_output/
+src/*.js
+src/*.map
+src/**/*.js
+src/**/*.map
+test/*.js
+test/*.map
+.DS_Store
+.env
