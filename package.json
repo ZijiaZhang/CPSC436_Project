@@ -1,25 +1,49 @@
 {
   "name": "cpsc436-group-project",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "test": "nyc --reporter html --reporter json --reporter text npm run tests && nyc report --reporter=text-lcov > coverage.lcov",
     "tests": "mocha ./test/**/*.ts --require ts-node/register --timeout 10000",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "react-scripts start",
+    "build-webpack": "npx webpack"
   },
   "dependencies": {
     "@types/chai": "^4.2.9",
     "@types/mocha": "^7.0.1",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-redux": "^7.1.9",
     "chai": "^4.2.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "mocha": "^7.1.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-scripts": "3.4.1",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "nyc": "^15.0.0",
+    "ts-loader": "^7.0.4",
     "ts-node": "^8.6.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.3",
+    "webpack-cli": "^3.3.11"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

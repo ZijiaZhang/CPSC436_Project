@@ -3,6 +3,19 @@
 [![Build Status](https://travis-ci.com/ZijiaZhang/CPSC436_Project.svg?branch=master)](https://travis-ci.com/ZijiaZhang/CPSC436_Project)
 [![codecov](https://codecov.io/gh/ZijiaZhang/CPSC436_Project/branch/master/graph/badge.svg)](https://codecov.io/gh/ZijiaZhang/CPSC436_Project)
 
+# Script Usage
+
+## Preview Frontend React
+```shell script 
+npm run start
+```
+
+## Preview Frontend React
+```shell script 
+npm run build-webpack
+```
+
+
 ## Project Description: 
 Our project aims to provide a friendly and focused environment for UBC students who are looking for friends, activities, or simply want to stay updated with what’s going on. Users can do things such as finding people who are in the same lecture or lab section as them, forming a study group for midterms or finals, looking for carpooling, etc.
 
