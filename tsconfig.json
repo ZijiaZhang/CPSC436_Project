@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "target": "ES6",
     "noImplicitAny": true,
     "removeComments": true,
@@ -13,7 +13,18 @@
     ],
     "typeRoots": [
       "./node_modules/@types"
-    ]
+    ],
+    "jsx": "react",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
   "filesGlob": [
     "/src/**/*.ts",
@@ -21,5 +32,8 @@
   ],
   "exclude": [
     "node_modules"
+  ],
+  "include": [
+    "src"
   ]
 }
