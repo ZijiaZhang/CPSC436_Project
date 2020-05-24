@@ -6,7 +6,8 @@
     "test": "nyc --reporter html --reporter json --reporter text npm run tests && nyc report --reporter=text-lcov > coverage.lcov",
     "tests": "mocha ./test/**/*.ts --require ts-node/register --timeout 10000",
     "build": "tsc",
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "build-webpack": "npx webpack"
   },
   "dependencies": {
     "@types/chai": "^4.2.9",
