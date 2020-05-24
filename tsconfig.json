@@ -1,20 +1,16 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "target": "ES6",
-    "noImplicitAny": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
+    "outDir": "./dist/",
     "sourceMap": true,
-    "lib": [
-      "es7",
-      "es2017.object",
-      "dom"
-    ],
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
+    "noImplicitAny": true,
+    "module": "esnext",
+    "target": "es6",
     "jsx": "react",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -23,17 +19,9 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true
+    "isolatedModules": true
   },
-  "filesGlob": [
-    "/src/**/*.ts",
-    "/test/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
   "include": [
-    "src"
+    "./src/**/*"
   ]
 }
