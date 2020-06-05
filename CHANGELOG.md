@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.2.0 [2020-06-05]
+### Added
+- UI for settings page
+
 ## 0.1.0 [2020-06-02]
 ### Added
 - UI for chat room

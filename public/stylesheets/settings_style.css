@@ -1,0 +1,64 @@
+body{
+    height: 100%;
+}
+
+h1 {
+    text-align: center;
+}
+
+.settings-form {
+    border-style: outset;
+    border-radius: 6px;
+    padding: 1%;
+    margin: 1%;
+    height: 100%;
+}
+
+.settings-item {
+    margin: 1%;
+}
+
+.settings-item-label {
+    padding: 1%;
+    margin: 1%;
+    width: 6%;
+    display: inline-block;
+}
+
+.settings.item-input {
+    padding: 1%;
+    margin: 1%;
+    width: 50%;
+    display: inline-block;
+}
+
+.tag-container {
+    border-style: solid;
+    border-radius: 1px;
+    height: 200px;
+    width: 30%;
+    margin-right: 6px;
+    display: inline-block;
+}
+
+.tag {
+    border-style: solid;
+    border-radius: 1px;
+    border-color: grey;
+    padding: 5px;
+    margin: 4px;
+    display: inline-block;
+}
+
+.settings-save-button {
+    padding: 1%;
+    margin: 1%;
+}
+
+.height-md {
+    height: 40%
+}
+
+.height-lg {
+    height: 100%;
+}
