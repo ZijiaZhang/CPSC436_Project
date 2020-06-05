@@ -1,7 +1,9 @@
 module.exports = {
     mode: "development",
     devtool: "source-map",
-    entry: ['./src/index.tsx'],
+    entry: {main: './src/index.tsx',
+            chat_room: './src/frontend/chat_room/index.tsx'
+    },
     resolve: {
         extensions: [".ts", ".tsx", ".js"]
     },
