@@ -1,0 +1,96 @@
+.sidebar {
+  height: 100%;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  background-color: #0e2473;
+  overflow-x: hidden;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 0 30px 60px 30px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #e9e1e1;
+  display: block;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .openbtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 25px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 90px;}
+  .sidebar a {font-size: 18px;}
+}
+
+.myFriend {
+  height: 100%;
+  position: fixed;
+  top: 108px;
+  right: 0;
+  background-color: #2b3b54;
+  overflow-x: hidden;
+  padding-top: 40px;
+  color: #e9e1e1;
+  display: block;
+  padding-left: 30px;
+}
+
+.myFriend p {
+  text-align: center;
+  font-size: 30px;
+}
+.myFriend li {
+  padding: 10px 40px 30px 20px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #e9e1e1;
+  display: block;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
+
+.myFriend li span {
+  padding-left: 10px;
+}
+
+.right-close-button {
+  position: absolute;
+  top: 105px;
+  right: 5px;
+  font-size: 30px;
+  z-index: 2;
+}
+
+.right-open-button {
+  z-index: 0;
+  position: absolute;
+  top: 44px;
+  right: 20px;
+  font-size: 30px;
+  color:#0625a1;
+}

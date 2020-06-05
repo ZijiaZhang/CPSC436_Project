@@ -1,5 +1,14 @@
+
+header {
+  text-align: center;
+  background-color: #094d96;
+  color: #e9e1e1;
+  padding: 20px;
+  font: sans-serif;
+  z-index: 1;
+}
+
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
