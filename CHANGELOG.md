@@ -2,6 +2,12 @@
 
 All changes will be logged here
 
+## 0.3.0 [2020-06-06]
+### Added Posts Page including:
+- Page Layout
+- Plain Text Editor
+- Posts Layout
+
 ## 0.2.0 [2020-06-05]
 ### Added
 - UI for settings page

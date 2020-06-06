@@ -1,6 +1,6 @@
 {
   "name": "cpsc436-group-project",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "test": "nyc --reporter html --reporter json --reporter text npm run tests && nyc report --reporter=text-lcov > coverage.lcov",
@@ -15,16 +15,19 @@
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.9",
+    "@types/react-select": "^3.0.13",
     "chai": "^4.2.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "file-loader": "^6.0.0",
     "mocha": "^7.1.0",
     "morgan": "~1.9.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
     "react-scripts": "3.4.1",
+    "react-select": "^3.1.0",
     "redux": "^4.0.5"
   },
   "devDependencies": {

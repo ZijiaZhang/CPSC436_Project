@@ -4,7 +4,8 @@ module.exports = {
     entry: {
         main: './src/index.tsx',
         chat_room: './src/frontend/chat_room/index.tsx',
-        settings: './src/frontend/settings/index.tsx'
+        settings: './src/frontend/settings/index.tsx',
+        posts_page: './src/frontend/posts_page/index.tsx'
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"]

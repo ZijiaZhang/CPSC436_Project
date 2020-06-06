@@ -1,0 +1,126 @@
+#post-blog-page{
+    background: white;
+    margin: auto;
+    width: 60%;
+    font-family: Arial, sans-serif;
+}
+#all-posts{
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    position: relative;
+    height: 85vh;
+}
+.post-detail-block{
+    padding-left: 10px;
+    display: inline-block;
+    width: calc(100% - 70px);
+}
+.profile-photo-block{
+    vertical-align: top;
+    position: relative;
+    top: 0;
+    display: inline-block;
+}
+.post-block{
+    border: 10px;
+    margin-top: 20px;
+}
+.post-user-name{
+    font-size: 16pt;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+.post-time{
+    font-size: 10pt;
+    margin: 0;
+    display: inline-block;
+    padding-left: 10px;
+    color: dimgray;
+}
+.post-detail{
+    font-size: 12pt;
+    word-wrap: break-word;
+    margin-top: 10px;
+    line-height: 24px;
+}
+.post-profile-photo{
+    height: 50px;
+    border-radius: 5px;
+}
+.interaction-buttons{
+    margin-top: 10px;
+}
+.like-button{
+
+}
+.comment-button{
+
+}
+
+#new-post-editor{
+    position: relative;
+    top: 20px;
+    width: 100%;
+    border: 1px solid black;
+    background: white;
+    display: flex;
+}
+#text-area{
+    width: 100%;
+    height: 50px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+    white-space: pre;
+}
+#message-area {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+    white-space: pre-wrap;
+}
+#text-editor{
+    width: 100%;
+}
+#visibility-selection{
+    margin: 10px;
+}
+.selector-title{
+    display: inline-block;
+    padding-right: 20px;
+}
+.selector-buttons{
+    display: inline-block;
+}
+.selector-button {
+    margin: 10px;
+}
+.inserted-image{
+    height: 200px;
+}
+#text-editor-selection{
+    margin: 10px;
+}
+#tag-list{
+    display: inline-block;
+    width: 50%;
+    margin-left: 50px;
+    overflow: hidden;
+}
+#select-tags{
+    margin: 10px;
+}
