@@ -1,9 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './frontend/share/components/App';
+import AppRouter from './AppRouter';
 ReactDOM.render(
-        <App />,
+        <AppRouter />,
 document.getElementById('root')
 );
-
-

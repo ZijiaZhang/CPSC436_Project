@@ -2,7 +2,7 @@ import Textarea from "./Textarea";
 import PostsLayout from './PostsLayout';
 import React from "react";
 
-const App = () => {   //this is how you make a functional component
+const PostPage = () => {   //this is how you make a functional component
     const posts =  [
         {
             time: "2019/1/12 12:00",
@@ -65,4 +65,4 @@ const App = () => {   //this is how you make a functional component
   );
 };
 
-export default App;
+export default PostPage;
