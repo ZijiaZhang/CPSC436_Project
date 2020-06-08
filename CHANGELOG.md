@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.4.1 [2020-06-08]
+### Added 
+- React router
+
 ## 0.4.0 [2020-06-06]
 ### Added 
 - header footer and sidebar
