@@ -7,7 +7,8 @@
     "tests": "mocha ./test/**/*.ts --require ts-node/register --timeout 10000",
     "build": "tsc",
     "start": "node src/App.js",
-    "build-webpack": "npx webpack"
+    "build-webpack": "npx webpack",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/App.ts"
   },
   "dependencies": {
     "@types/chai": "^4.2.9",
@@ -33,7 +34,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "ts-node-dev": "^1.0.0-pre.44"
   },
   "devDependencies": {
     "@types/node": "^14.0.13",
