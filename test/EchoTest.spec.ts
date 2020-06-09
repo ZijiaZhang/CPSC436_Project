@@ -1,4 +1,4 @@
-import {echo} from "../src/Echo";
+import {echo} from "../src/backend/Echo";
 import {expect} from "chai";
 
 describe("Scheduler Test", function () {
