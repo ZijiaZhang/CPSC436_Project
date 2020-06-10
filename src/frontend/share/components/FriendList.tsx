@@ -8,26 +8,19 @@ interface FriendListProps {
 
 class FriendList extends React.Component<FriendListProps, {}> {
     public right_panel = React.createRef<HTMLDivElement>();
-    collapseRight = () => {
-        const node = this.right_panel.current;
-        if (node) {
-        node.style.display = 'None';
-        }
-    };
 
-    openRight = () => {
+    toggleFriendList = () => {
         const node = this.right_panel.current;
         if (node) {
-            node.style.display = 'Block';
+            node.style.display = node.style.display =='none' ? 'block' :'none';
         }
     };
 
     render() {
         return (
             <div>
-                <a className="glyphicon glyphicon-user right-open-button" onClick={() => this.openRight()}/>
+                <a className="glyphicon glyphicon-user right-open-button" onClick={() => this.toggleFriendList()}/>
                 <div ref={this.right_panel}>
-                    <a className="closebtn right-close-button" onClick={() => this.collapseRight()}>&times;</a>
                 <ul className="myFriend">
                     <p> Friends</p>
                     {this.props.friends.map((friend) => <FriendBanner key={friend.name} image_path={friend.image_path} name={friend.name}/>)}

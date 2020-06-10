@@ -13,12 +13,12 @@ import FriendList from "./frontend/share/components/FriendList";
 class AppRouter extends Component {
     render() {
         return (
-                <div>
+                <div className={'row'}>
                     <Sidebar  user_info={ {image_path: './images/test2.png', name:'Dennis'}}/>
                     <div className="central-panel">
                         <Switch>
-                            <Route exact path="/" component={Settings} />
-                            <Route path="/postsPage" component={PostPage} />
+                            <Route exact path="/" component={PostPage} />
+                            <Route path="/settings" component={Settings} />
                             <Route path="/chatRoom" component={ChatRoom} />
                         </Switch>
                     </div>
