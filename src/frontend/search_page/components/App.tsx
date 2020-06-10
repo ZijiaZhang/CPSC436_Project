@@ -14,7 +14,7 @@ const SearchPage = () => {
     return (
         <div>
             {currentUsers.map(user => {
-                return <UserResultBlock image_path={user.image_path} name={user.name}/>;
+                return <UserResultBlock key={user.name} image_path={user.image_path} name={user.name}/>;
             })}
             <SearchBar/>
         </div>

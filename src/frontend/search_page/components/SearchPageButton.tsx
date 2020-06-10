@@ -1,7 +1,13 @@
 import * as React from "react";
 
 export interface ButtonProps {
-    text: string,
+    text: ButtonText,
+}
+
+export enum ButtonText {
+    Add = 'Add',
+    Chat = 'Chat',
+    Search = 'Search'
 }
 
 export class SearchPageButton extends React.Component<ButtonProps, {}> {
