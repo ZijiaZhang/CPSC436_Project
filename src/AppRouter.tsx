@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {
-    BrowserRouter as Router,
     Route,
     Switch
 } from "react-router-dom";
@@ -14,12 +13,11 @@ import FriendList from "./frontend/share/components/FriendList";
 class AppRouter extends Component {
     render() {
         return (
-            <Router>
                 <div>
                     <Sidebar  user_info={ {image_path: './images/test2.png', name:'Dennis'}}/>
                     <div className="central-panel">
                         <Switch>
-                            <Route path="/" component={Settings} />
+                            <Route exact path="/" component={Settings} />
                             <Route path="/postsPage" component={PostPage} />
                             <Route path="/chatRoom" component={ChatRoom} />
                         </Switch>
@@ -31,7 +29,6 @@ class AppRouter extends Component {
                         {image_path: './images/1.ico', name:'Rommel'}
                     ]}/>
                 </div>
-            </Router>
         );
     }
 }

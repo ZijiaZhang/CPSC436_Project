@@ -11,3 +11,4 @@ test/*.map
 .DS_Store
 .env
 dist/
+/public/javascripts/

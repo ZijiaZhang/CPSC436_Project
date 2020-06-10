@@ -1,3 +1,5 @@
+path = require('path');
+
 module.exports = {
     mode: "development",
     devtool: "source-map",
@@ -21,8 +23,8 @@ module.exports = {
             }
         ]
     },
-    externals: {
-        react: "React",
-        "react-dom": "ReactDOM"
-    }
+    output: {
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'public/javascripts'),
+    },
 };
