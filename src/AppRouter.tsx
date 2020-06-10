@@ -15,9 +15,9 @@ class AppRouter extends Component {
         return (
             <Router>
                 <div>
+                    <App />
                     <Switch>
-                        <Route exact path="/" component={App}/>
-                        <Route exact path="/settings" component={Settings} />
+                        <Route exact path="/" component={Settings} />
                         <Route exact path="/postsPage" component={PostPage} />
                         <Route exact path="/chatRoom" component={ChatRoom} />
                     </Switch>

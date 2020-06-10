@@ -2,7 +2,7 @@
 
 All changes will be logged here
 
-## 0.4.1 [2020-06-08]
+## 0.5.0 [2020-06-08]
 ### Added 
 - React router
 
