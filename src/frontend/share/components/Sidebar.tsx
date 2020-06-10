@@ -8,11 +8,13 @@ interface SidebarProps {
 
 class Sidebar extends React.Component<SidebarProps, {}> {
     sideBar = React.createRef<HTMLDivElement>();
+    width: number = 0;
 
     toggleButton = () => {
         let element = this.sideBar.current;
         if (element) {
-            element.style.display = element.style.display==="none" ? "block": "none";
+            this.width = this.width || element.clientWidth;
+            element.style.width = element.style.width==="0px" ? this.width.toString(): "0px";
         }
     };
 

@@ -5,6 +5,8 @@
   left: 0;
   overflow-x: hidden;
   padding-top: 60px;
+  padding-left: 20px;
+  transition: 0.3s ease-in-out;
 }
 
 .sidebar-container{
@@ -48,11 +50,6 @@
   color: aqua;
 }
 
-@media screen and (max-height: 450px) {
-  .sidebar {padding-top: 90px;}
-  .sidebar a {font-size: 18px;}
-}
-
 .myFriend {
   height: 100%;
   top: 108px;
@@ -60,9 +57,11 @@
   background-color: #0e2473;
   overflow-x: hidden;
   padding-top: 40px;
+  padding-right: 15px;
   color: #e9e1e1;
   display: block;
-  padding-left: 30px;
+  padding-left: 15px;
+  transition: 0.4s;
 }
 
 .myFriend p {
@@ -96,4 +95,8 @@
 .right-open-button:hover {
   color: aqua;
   text-decoration: none;
+}
+
+.right_collapse {
+  transition: 0.3s ease-in-out;
 }

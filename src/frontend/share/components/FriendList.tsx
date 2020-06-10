@@ -7,12 +7,14 @@ interface FriendListProps {
 }
 
 class FriendList extends React.Component<FriendListProps, {}> {
-    public right_panel = React.createRef<HTMLDivElement>();
+    public right_collapse = React.createRef<HTMLDivElement>();
+    width: number = 0;
 
     toggleFriendList = () => {
-        const node = this.right_panel.current;
+        const node = this.right_collapse.current;
         if (node) {
-            node.style.display = node.style.display =='none' ? 'block' :'none';
+            this.width = this.width || node.clientWidth;
+            node.style.width = node.style.width =='0px' ? this.width.toString() :'0px';
         }
     };
 
@@ -20,7 +22,7 @@ class FriendList extends React.Component<FriendListProps, {}> {
         return (
             <div>
                 <a className="glyphicon glyphicon-user right-open-button" onClick={() => this.toggleFriendList()}/>
-                <div ref={this.right_panel}>
+                <div ref={this.right_collapse} className="right_collapse">
                 <ul className="myFriend">
                     <p> Friends</p>
                     {this.props.friends.map((friend) => <FriendBanner key={friend.name} image_path={friend.image_path} name={friend.name}/>)}
