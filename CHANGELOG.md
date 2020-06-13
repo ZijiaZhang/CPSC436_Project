@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.7.0 [2020-06-12]
+### Added 
+- UI for search page
+
 ## 0.6.0 [2020-06-08]
 ### Added 
 - Express Server

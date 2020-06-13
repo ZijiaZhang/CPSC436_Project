@@ -2,7 +2,7 @@ import * as React from 'react';
 import FriendBanner, {FriendBannerProps} from "./FriendBanner";
 
 
-interface FriendListProps {
+export interface FriendListProps {
     friends: FriendBannerProps[]
 }
 
