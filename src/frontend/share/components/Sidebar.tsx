@@ -7,31 +7,23 @@ interface SidebarProps {
 }
 
 class Sidebar extends React.Component<SidebarProps, {}> {
+    sideBar = React.createRef<HTMLDivElement>();
+    width: number = 0;
 
-    buttonCollapse = () => {
-        let element = document.getElementById("mySidebar");
+    toggleButton = () => {
+        let element = this.sideBar.current;
         if (element) {
-            element.style.display = "None";
-        }
-    };
-
-    buttonOpen = () => {
-        let element = document.getElementById("mySidebar");
-        if (element) {
-            element.style.display = "Block";
+            this.width = this.width || element.clientWidth;
+            element.style.width = element.style.width==="0px" ? this.width.toString(): "0px";
         }
     };
 
     render() {
         return (
-            <div>
-                <div id="mySidebar" className="sidebar">
-
-                <button className="openbtn" onClick={() => this.buttonCollapse()}>&#9776;</button> 
+            <div className={'sidebar-container'}>
+                <button className="openbtn" onClick={() => this.toggleButton()}>&#9776;</button>
+                <div ref={this.sideBar} className="sidebar">
                 <MenuItem   image_path={this.props.user_info.image_path} name={this.props.user_info.name}/>
-                </div>     
-                <div id="main">
-                <button className="openbtn" onClick={() => this.buttonOpen()}>&#9776;</button> 
                 </div>
             </div>
         );
