@@ -63,15 +63,15 @@ class RegisterPage extends React.Component <{}, RegisterPageState>{
             <h2>Register</h2>
             <form name="form" onSubmit={this.handleSubmit} style={register_style}>
                 <div className={'form-group' + (submitted && !user.firstname ? ' has-error' : '')}>
-                    <label htmlFor="firstName">First Name</label>
-                    <input type="text" className="form-control" name="firstName" value={user.firstname} onChange={this.handleChange} />
+                    <label htmlFor="firstname">First Name</label>
+                    <input type="text" className="form-control" name="firstname" value={user.firstname} onChange={this.handleChange} />
                     {submitted && !user.firstname &&
                         <div className="help-block">Please enter the first name</div>
                     }
                 </div>
                 <div className={'form-group' + (submitted && !user.lastname ? ' has-error' : '')}>
-                    <label htmlFor="lastName">Last Name</label>
-                    <input type="text" className="form-control" name="lastName" value={user.lastname} onChange={this.handleChange} />
+                    <label htmlFor="lastname">Last Name</label>
+                    <input type="text" className="form-control" name="lastname" value={user.lastname} onChange={this.handleChange} />
                     {submitted && !user.lastname &&
                         <div className="help-block">Please enter the last name</div>
                     }
