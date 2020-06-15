@@ -21,6 +21,9 @@ class AppRouter extends Component {
                 <Route exact path="/" component={LoginPage}/>
                 <Route path="/registerPage" component={RegisterPage}/>
                 <Route path="/home" component={Home}/>
+                <Route path="/settings" component={Home}/>
+                <Route path="/chatRoom" component={Home}/>
+                <Route path="/searchPage" component={Home}/>
             </Switch>
         );
     }
@@ -31,12 +34,10 @@ const Home = () => {
         <div className={'row'}>
         <Sidebar  user_info={ {image_path: './images/test2.png', name:'Denise'}}/>
         <div className="central-panel">
-            <Switch>
-                <Route exact path="/" component={PostPage} />
+                <Route path="/home" component={PostPage} />
                 <Route path="/settings" component={Settings} />
                 <Route path="/chatRoom" component={ChatRoom} />
                 <Route path="/searchPage" component={SearchPage} />
-            </Switch>
         </div>
         <FriendList  friends={[
             {image_path: './images/dora.png', name:'Will'},

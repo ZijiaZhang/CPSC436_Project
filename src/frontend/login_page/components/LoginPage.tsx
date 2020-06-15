@@ -70,7 +70,7 @@ class LoginPage extends React.Component <LoginPageProp, LoginPageState>{
                         {/* {loggingIn &&
                             <img src="" />
                         } */}
-                        <Link to="" className="btn btn-link">Register</Link>
+                        <Link to="/registerPage" className="btn btn-link">Register</Link>
                     </div>
                 </form>
             </div>

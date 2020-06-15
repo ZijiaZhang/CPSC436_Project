@@ -21,7 +21,7 @@ class FriendList extends React.Component<FriendListProps, {}> {
     render() {
         return (
             <div>
-                <a className="glyphicon glyphicon-user right-open-button" onClick={() => this.toggleFriendList()}/>
+                <a className="glyphicon glyphicon-search right-open-button" onClick={() => this.toggleFriendList()}/>
                 <div ref={this.right_collapse} className="right_collapse">
                 <ul className="myFriend">
                     <p> Friends</p>
