@@ -1,5 +1,7 @@
 import * as React from "react";
 import {ChatRoomBubbles, ISingleMessage} from "./ChatRoomBubbles";
+import {ChatRoomState} from "../reducer";
+import {connect} from "react-redux";
 
 interface IChatRoomChatAreaProps {
     messages: ISingleMessage[];
@@ -13,3 +15,9 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
         </div>;
     }
 }
+
+const mapStateToProps = (state: ChatRoomState) => {
+    return {messages: state.messages}
+};
+
+export const ChatRoomChatAreaConnected = connect(mapStateToProps, {})(ChatRoomChatArea);
