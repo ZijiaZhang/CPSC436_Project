@@ -2,7 +2,7 @@ import * as React from "react";
 import {TagContainer} from "./TagContainer";
 import {Tag} from "./Tag";
 
-export interface SettingsFormProps {
+export interface ISettingsFormProps {
     name: string,
     gender: GenderEnum,
     major: string,
@@ -27,7 +27,7 @@ export enum AcademicYearEnum {
     PhD = 'PhD'
 }
 
-export class SettingsForm extends React.Component<SettingsFormProps, {}> {
+export class SettingsForm extends React.Component<ISettingsFormProps, {}> {
     render() {
         return <form className={'settings-form'}>
             <div className={'settings-item'}>

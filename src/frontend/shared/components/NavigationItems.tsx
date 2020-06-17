@@ -1,13 +1,12 @@
 import * as React from 'react';
-import {FriendBannerProps} from "./FriendBanner";
 import {Link} from "react-router-dom";
+import {IUserProps} from "../interfaces/IUserProps";
 
-
-class MenuItem extends React.Component<FriendBannerProps,{}> {
+class NavigationItems extends React.Component<IUserProps,{}> {
     render() {
         return ( 
         <div>
-            <a><img src={this.props.image_path} alt="img not found" width="100" height="100"/><p>{this.props.name}</p></a>
+            <a><img src={this.props.avatarPath} alt="img not found" width="100" height="100"/><p>{this.props.name}</p></a>
             <Link to="/" className="glyphicon glyphicon-home">Home</Link>
             <Link to="/chatRoom" className="glyphicon glyphicon-user">Chats</Link>
             <Link to="/settings" className="glyphicon glyphicon-cog">Setting</Link>
@@ -16,4 +15,4 @@ class MenuItem extends React.Component<FriendBannerProps,{}> {
     }
 }
 
-export default MenuItem;
+export default NavigationItems;

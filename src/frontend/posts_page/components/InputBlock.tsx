@@ -1,18 +1,15 @@
 import React from "react";
-import SetPublic from './SetPublic';
+import VisibilitySetting from './VisibilitySetting';
 import Select from 'react-select';
-import SetTextEditor from './SetTextEditor';
+import TextEditorSetting from './TextEditorSetting';
 
-interface TextareaProps {
-}
-
-interface TextareaState {
+interface IInputBlockState {
     editing: boolean,
     message: string,
 }
 
-class Textarea extends React.Component<TextareaProps, TextareaState> {
-    constructor(props: TextareaProps) {
+class InputBlock extends React.Component<{}, IInputBlockState> {
+    constructor(props: {}) {
         super(props);
         this.state = {
             editing: false,
@@ -72,12 +69,12 @@ class Textarea extends React.Component<TextareaProps, TextareaState> {
         return(<div id="new-post-editor">
             <textarea id="text-area" placeholder="Type your message here" onClick={this.startEditor} style={{display: this.state.editing ? 'none' : 'block'}}/>
             <div id="text-editor" style={{display: this.state.editing ? 'block' : 'none'}}>
-                <SetPublic />
+                <VisibilitySetting />
                 <div id="select-tags">
                     <span id="selector-title">Tags:</span>
                     <Select id="tag-list" options={options} isMulti={true} placeholder="Select Tags"/>
                 </div>
-                <SetTextEditor />
+                <TextEditorSetting />
                 <div id="text-input-block">
                     <textarea id="message-area" placeholder="Type your message here" value={this.state.message} onChange={this.inputOnChange} />
                     <div id="Post-buttons">
@@ -91,4 +88,4 @@ class Textarea extends React.Component<TextareaProps, TextareaState> {
     }
 }
 
-export default Textarea;
+export default InputBlock;

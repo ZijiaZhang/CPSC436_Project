@@ -1,14 +1,13 @@
 import React from 'react';
 
-interface PublicProps {
-}
-interface PublicState {
+interface IVisibilitySettingState {
   public: boolean,
   friendsOnly: boolean,
   private: boolean
 }
-class SetPublic extends React.Component<PublicProps, PublicState> {
-  constructor(props: PublicProps) {
+
+class VisibilitySetting extends React.Component<{}, IVisibilitySettingState> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       public: true,
@@ -53,4 +52,4 @@ class SetPublic extends React.Component<PublicProps, PublicState> {
 
 }
 
-export default SetPublic;
+export default VisibilitySetting;

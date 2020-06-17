@@ -1,12 +1,8 @@
 import * as React from 'react';
-import MenuItem from "./MenuItem";
-import {FriendBannerProps} from "./FriendBanner";
+import NavigationItems from "./NavigationItems";
+import {IUserProps} from "../interfaces/IUserProps";
 
-interface SidebarProps {
-    user_info: FriendBannerProps;
-}
-
-class Sidebar extends React.Component<SidebarProps, {}> {
+class NavigationBar extends React.Component<IUserProps, {}> {
     sideBar = React.createRef<HTMLDivElement>();
     width: number = 0;
 
@@ -23,11 +19,11 @@ class Sidebar extends React.Component<SidebarProps, {}> {
             <div className={'sidebar-container'}>
                 <button className="openbtn" onClick={() => this.toggleButton()}>&#9776;</button>
                 <div ref={this.sideBar} className="sidebar">
-                <MenuItem   image_path={this.props.user_info.image_path} name={this.props.user_info.name}/>
+                <NavigationItems avatarPath={this.props.avatarPath} name={this.props.name}/>
                 </div>
             </div>
         );
     }
 }
 
-export default Sidebar;
+export default NavigationBar;

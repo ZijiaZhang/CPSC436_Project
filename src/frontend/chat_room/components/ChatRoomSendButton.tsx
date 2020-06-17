@@ -1,23 +1,15 @@
 import * as React from "react";
+import {ButtonStateEnum} from "../../shared/enums/ButtonStateEnum";
+import {IButtonState} from "../../shared/interfaces/IButtonState";
 
-export enum ChatRoomSendButtonStateEnum{
-    ENABLED,
-    DISABLED
-}
-
-interface ChatRoomSendButtonState {
-    enabled:ChatRoomSendButtonStateEnum;
-}
-
-
-export class ChatRoomSendButton extends React.Component<{}, ChatRoomSendButtonState> {
+export class ChatRoomSendButton extends React.Component<{}, IButtonState> {
     constructor(props: {}) {
         super(props);
-        this.state = {enabled:ChatRoomSendButtonStateEnum.ENABLED};
+        this.state = {buttonState: ButtonStateEnum.ENABLED};
     }
 
     render() {
-        return <button className={['button-enabled', 'button-disabled'][this.state.enabled]}>
+        return <button className={['button-enabled', 'button-disabled'][this.state.buttonState]}>
             SEND
         </button>;
     }
