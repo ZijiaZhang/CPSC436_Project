@@ -102,6 +102,10 @@
     vertical-align: top;
     display: inline-block;
 }
+#input-bar-user-avatar{
+    vertical-align: top;
+    display: inline-block;
+}
 .main-text-input-editor{
     position: absolute;
     top: 40px;
