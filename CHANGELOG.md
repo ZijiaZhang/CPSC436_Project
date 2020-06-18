@@ -2,6 +2,21 @@
 
 All changes will be logged here
 
+##0.8.0 [2020-06-18]
+### Added A number of redux functionality to post page including:
+- add post to post list
+- add comment to the comment list of a certain post
+- save draft for later modification
+- do and undo like
+### Added new components to post page including:
+- comment block with explicit text input bar
+- Modified main text editor
+- blog/article page (not implemented yet)
+### Modified old components for post page including:
+- css style
+- component structure
+- Note: Further modifications needed
+
 ## 0.7.0 [2020-06-12]
 ### Added 
 - UI for search page
