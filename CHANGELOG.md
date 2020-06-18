@@ -2,7 +2,7 @@
 
 All changes will be logged here
 
-##0.8.0 [2020-06-18]
+## 0.8.0 [2020-06-18]
 ### Added A number of redux functionality to post page including:
 - add post to post list
 - add comment to the comment list of a certain post

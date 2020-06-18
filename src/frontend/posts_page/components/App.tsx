@@ -6,15 +6,13 @@ import {createStore} from "redux";
 import {Provider} from "react-redux";
 const PostPage = () => {   //this is how you make a functional component
     return (
-    <div id="post-blog-page">
-        <Provider store={createStore(reducers)}>
-            <Textarea />
-            <PostsLayout />
-        </Provider>
-    </div>
-  );
+        <div id="post-blog-page">
+            <Provider store={createStore(reducers)}>
+                <Textarea />
+                <PostsLayout />
+            </Provider>
+        </div>
+    );
 };
-
-
 
 export default PostPage;
