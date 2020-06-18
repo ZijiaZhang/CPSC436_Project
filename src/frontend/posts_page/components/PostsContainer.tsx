@@ -1,15 +1,19 @@
 import React from "react";
 import PostBlock, {IPost} from './PostBlock';
-
+import {connect} from "react-redux";
 
 interface IPostsContainerProps {
-  posts: IPost[];
+  postList: IPost[];
 }
 
-class PostsContainer extends React.Component<IPostsContainerProps, {}> {
+class PostsLayout extends React.Component<IPostsContainerProps, {}> {
+  constructor(props: IPostsContainerProps) {
+    super(props);
+  }
 
   render() {
-    const listPosts = this.props.posts.map((post) =>
+    const postList: IPost[] = this.props.postList.slice().reverse();
+    const listPosts = postList.map((post) =>
       <PostBlock post={post} />
     );
     return (
@@ -18,7 +22,11 @@ class PostsContainer extends React.Component<IPostsContainerProps, {}> {
       </div>
     );
   }
-
 }
 
-export default PostsContainer;
+const mapStateToProps = (state: { postList: IPost[]; }) => { //name is by convention
+  return { postList: state.postList }; //now it will appear as props
+};
+
+export default connect(mapStateToProps)(PostsLayout);
+
