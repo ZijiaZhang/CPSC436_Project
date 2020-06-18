@@ -1,7 +1,7 @@
 
 header {
   text-align: center;
-  background-color: #094d96;
+  background-color: #0e2473;
   color: #e9e1e1;
   padding: 20px;
   font: sans-serif;
@@ -14,4 +14,14 @@ body {
 
 a {
   color: #00B7FF;
+}
+
+.row{
+  display: flex;
+  height: 100%;
+  background: #f1f1f1;
+}
+
+.central-panel{
+  flex: 1;
 }

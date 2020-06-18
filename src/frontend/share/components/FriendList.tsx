@@ -2,32 +2,27 @@ import * as React from 'react';
 import FriendBanner, {FriendBannerProps} from "./FriendBanner";
 
 
-interface FriendListProps {
+export interface FriendListProps {
     friends: FriendBannerProps[]
 }
 
 class FriendList extends React.Component<FriendListProps, {}> {
-    public right_panel = React.createRef<HTMLDivElement>();
-    collapseRight = () => {
-        const node = this.right_panel.current;
-        if (node) {
-        node.style.display = 'None';
-        }
-    };
+    public right_collapse = React.createRef<HTMLDivElement>();
+    width: number = 0;
 
-    openRight = () => {
-        const node = this.right_panel.current;
+    toggleFriendList = () => {
+        const node = this.right_collapse.current;
         if (node) {
-            node.style.display = 'Block';
+            this.width = this.width || node.clientWidth;
+            node.style.width = node.style.width =='0px' ? this.width.toString() :'0px';
         }
     };
 
     render() {
         return (
             <div>
-                <a className="glyphicon glyphicon-user right-open-button" onClick={() => this.openRight()}/>
-                <div ref={this.right_panel}>
-                    <a className="closebtn right-close-button" onClick={() => this.collapseRight()}>&times;</a>
+                <a className="glyphicon glyphicon-user right-open-button" onClick={() => this.toggleFriendList()}/>
+                <div ref={this.right_collapse} className="right_collapse">
                 <ul className="myFriend">
                     <p> Friends</p>
                     {this.props.friends.map((friend) => <FriendBanner key={friend.name} image_path={friend.image_path} name={friend.name}/>)}
