@@ -12,8 +12,8 @@ interface LoginPageProp {
 
 }
 
-class LoginPage extends React.Component <LoginPageProp, LoginPageState>{
-    constructor(props: any) {
+class LoginPage extends React.Component <{}, LoginPageState>{
+    constructor(props: {}) {
         super(props);
 
         this.state = {
