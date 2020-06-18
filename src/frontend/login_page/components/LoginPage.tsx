@@ -51,7 +51,7 @@ class LoginPage extends React.Component <{}, LoginPageState>{
             <div className="col-md-6 col-md-offset-3" style={login_style}>
                 <h2>Login</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
+                    <div className={'form-group' + (submitted && !username? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
                         <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
                         {submitted && !username &&
