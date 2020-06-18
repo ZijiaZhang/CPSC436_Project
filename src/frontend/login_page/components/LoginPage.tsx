@@ -2,18 +2,14 @@ import * as React from "react";
 import { Link } from 'react-router-dom';
 import CSS from 'csstype';
 
-export interface LoginPageState {
+interface LoginPageState {
     username: string,
     password: string,
     submitted: boolean
 }
 
-interface LoginPageProp {
-
-}
-
-class LoginPage extends React.Component <LoginPageProp, LoginPageState>{
-    constructor(props: any) {
+class LoginPage extends React.Component <{}, LoginPageState>{
+    constructor(props: {}) {
         super(props);
 
         this.state = {
@@ -21,14 +17,11 @@ class LoginPage extends React.Component <LoginPageProp, LoginPageState>{
             password: '',
             submitted: false
         };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange = (e: any) => {
         const { name, value } = e.target;
-        this.setState({ [name]: value } as Pick<LoginPageState, keyof LoginPageState>);
+        this.setState({ [name]: value } as LoginPageState);
     }
 
     handleSubmit = (e: any) => {
@@ -37,12 +30,11 @@ class LoginPage extends React.Component <LoginPageProp, LoginPageState>{
         this.setState({ submitted: true });
         const { username, password } = this.state;
         if (username && password) {
-            // this.props.login(username, password);
+            // TODO
         }
     }
 
     render() {
-        // const { loggingIn } = this.props;
         const { username, password, submitted } = this.state;
         const login_style: CSS.Properties = {
            paddingTop: "50px"
@@ -51,7 +43,7 @@ class LoginPage extends React.Component <LoginPageProp, LoginPageState>{
             <div className="col-md-6 col-md-offset-3" style={login_style}>
                 <h2>Login</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
+                    <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
                         <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
                         {submitted && !username &&
@@ -66,10 +58,7 @@ class LoginPage extends React.Component <LoginPageProp, LoginPageState>{
                         }
                     </div>
                     <div className="form-group">
-                        <button className="btn btn-primary">Login</button>
-                        {/* {loggingIn &&
-                            <img src="" />
-                        } */}
+                        <button className="btn btn-primary" onSubmit={this.handleSubmit}>Login</button>
                         <Link to="/registerPage" className="btn btn-link">Register</Link>
                     </div>
                 </form>
