@@ -14,6 +14,7 @@ const postList: Post[] =  [
         type: 'post',
         visibility: 'public',
         tags: [],
+        liked: false,
     },
     {
         id: '1',
@@ -49,6 +50,7 @@ const postList: Post[] =  [
         type: 'post',
         visibility: 'public',
         tags: [],
+        liked: false,
     },
     {
         id: '2',
@@ -63,6 +65,7 @@ const postList: Post[] =  [
         type: 'post',
         visibility: 'public',
         tags: [],
+        liked: false,
     },
     {
         id: '3',
@@ -76,6 +79,7 @@ const postList: Post[] =  [
         type: 'post',
         visibility: 'public',
         tags: [],
+        liked: false,
     },
     {
         id: '4',
@@ -90,6 +94,7 @@ const postList: Post[] =  [
         type: 'post',
         visibility: 'public',
         tags: [],
+        liked: false,
     },
     {
         id: '5',
@@ -104,6 +109,7 @@ const postList: Post[] =  [
         type: 'post',
         visibility: 'public',
         tags: [],
+        liked: false,
     }];
 
 const inputDraftReducer = (draft = "", action: { type: string; saveInputDraft: string; }) => {
@@ -118,9 +124,11 @@ const postListReducer = (posts = postList, action: { type: string; modification:
             return posts.slice(0, posts.length).concat(action.modification);
         case 'ADD_LIKE':
             posts[action.modification].numLikes += 1;
+            posts[action.modification].liked = true;
             return posts.slice(0, posts.length);
         case 'UNDO_LIKE':
             posts[action.modification].numLikes -= 1;
+            posts[action.modification].liked = false;
             return posts.slice(0, posts.length);
         case 'ADD_COMMENT':
             const comment = action.modification;

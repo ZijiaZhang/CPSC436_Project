@@ -41,7 +41,7 @@ class TextInputEditor extends React.Component<TextareaProps, TextareaState> {
             let date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
             let newPost: Post = {id: this.props.postList.length.toString(), time: date + ' ' + time, name:'N/A', detail: this.state.message,
                 avatar: './images/nobu!.png', image: '', numLikes: 0, comments: [], type: 'post',
-                visibility: 'public', tags: []};
+                visibility: 'public', tags: [], liked: false};
             console.log(newPost);
             this.props.addPost(newPost);
             this.setState({message: ''});
@@ -55,18 +55,6 @@ class TextInputEditor extends React.Component<TextareaProps, TextareaState> {
 
     cancelEdit = () => {
         this.setState({editing: !this.state.editing})
-    };
-
-    setTextEditor() {
-
-    };
-
-    addPicture() {
-
-    };
-
-    addLink() {
-
     };
 
     render() {
