@@ -4,21 +4,21 @@ import {Tag} from "./Tag";
 
 export interface ISettingsFormProps {
     name: string,
-    gender: GenderEnum,
+    gender: GenderOption,
     major: string,
-    year: AcademicYearEnum,
+    year: AcademicYear,
     chosenTags: string[],
     tags: string[]
 }
 
-export enum GenderEnum {
+export enum GenderOption {
     Female = 'Female',
     Male = 'Male',
     Other = 'Other',
     RatherNotSay = 'Rather Not Say'
 }
 
-export enum AcademicYearEnum {
+export enum AcademicYear {
     One = 'One',
     Two = 'Two',
     Three = 'Three',
@@ -37,10 +37,10 @@ export class SettingsForm extends React.Component<ISettingsFormProps, {}> {
             <div className={'settings-item'}>
                 <label className={'settings-item-label'}>Gender</label>
                 <select className={'settings-item-input'} name="gender" value={this.props.gender}>
-                    <option value={GenderEnum.Female}>{GenderEnum.Female}</option>
-                    <option value={GenderEnum.Male}>{GenderEnum.Male}</option>
-                    <option value={GenderEnum.Other}>{GenderEnum.Other}</option>
-                    <option value={GenderEnum.RatherNotSay}>{GenderEnum.RatherNotSay}</option>
+                    <option value={GenderOption.Female}>{GenderOption.Female}</option>
+                    <option value={GenderOption.Male}>{GenderOption.Male}</option>
+                    <option value={GenderOption.Other}>{GenderOption.Other}</option>
+                    <option value={GenderOption.RatherNotSay}>{GenderOption.RatherNotSay}</option>
                 </select>
             </div>
             <div className={'settings-item'}>
@@ -50,12 +50,12 @@ export class SettingsForm extends React.Component<ISettingsFormProps, {}> {
             <div className={'settings-item'}>
                 <label className={'settings-item-label'}>Academic Year</label>
                 <select className={'settings-item-input'} name="year" value={this.props.year}>
-                    <option value={AcademicYearEnum.One}>{AcademicYearEnum.One}</option>
-                    <option value={AcademicYearEnum.Two}>{AcademicYearEnum.Two}</option>
-                    <option value={AcademicYearEnum.Three}>{AcademicYearEnum.Three}</option>
-                    <option value={AcademicYearEnum.Four}>{AcademicYearEnum.Four}</option>
-                    <option value={AcademicYearEnum.Master}>{AcademicYearEnum.Master}</option>
-                    <option value={AcademicYearEnum.PhD}>{AcademicYearEnum.PhD}</option>
+                    <option value={AcademicYear.One}>{AcademicYear.One}</option>
+                    <option value={AcademicYear.Two}>{AcademicYear.Two}</option>
+                    <option value={AcademicYear.Three}>{AcademicYear.Three}</option>
+                    <option value={AcademicYear.Four}>{AcademicYear.Four}</option>
+                    <option value={AcademicYear.Master}>{AcademicYear.Master}</option>
+                    <option value={AcademicYear.PhD}>{AcademicYear.PhD}</option>
                 </select>
             </div>
             <div className={'settings-item height-md'}>

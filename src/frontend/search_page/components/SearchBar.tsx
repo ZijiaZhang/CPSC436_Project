@@ -1,12 +1,12 @@
 import * as React from "react";
-import {ButtonTextEnum, SearchPageButton} from "./SearchPageButton";
+import {ButtonText, SearchPageButton} from "./SearchPageButton";
 
 export class SearchBar extends React.Component<{}, {}> {
     render() {
         return (
             <div>
                 <input type={'text'}/>
-                <SearchPageButton text={ButtonTextEnum.Search}/>
+                <SearchPageButton text={ButtonText.Search}/>
             </div>
         );
     }

@@ -1,10 +1,10 @@
 import * as React from "react";
 
 export interface IButtonProps {
-    text: ButtonTextEnum,
+    text: ButtonText,
 }
 
-export enum ButtonTextEnum {
+export enum ButtonText {
     Add = 'Add',
     Chat = 'Chat',
     Search = 'Search'

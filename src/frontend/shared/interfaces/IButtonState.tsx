@@ -1,5 +1,5 @@
-import {ButtonStateEnum} from "../enums/ButtonStateEnum";
+import {ButtonState} from "../enums/ButtonState";
 
 export interface IButtonState {
-    buttonState: ButtonStateEnum
+    buttonState: ButtonState
 }

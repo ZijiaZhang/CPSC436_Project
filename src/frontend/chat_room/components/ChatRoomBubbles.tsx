@@ -1,5 +1,5 @@
 import * as React from "react";
-export enum MessageStatusEnum{
+export enum MessageStatus{
     RECEIVED,
     SENT,
     NOT_SENT
@@ -7,7 +7,7 @@ export enum MessageStatusEnum{
 
 export interface ISingleMessage {
     message: string;
-    status: MessageStatusEnum;
+    status: MessageStatus;
 }
 
 export class ChatRoomBubbles extends React.Component<ISingleMessage, {}> {
