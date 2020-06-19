@@ -49,7 +49,7 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             }
             let newPost: Post = {id: this.props.postList.length.toString(), time: date + ' ' + time, name:'N/A', detail: this.state.message,
                 avatar: './images/nobu!.png', image: '', numLikes: 0, comments: [], type: 'post',
-                visibility: this.state.visibility, tags: tags, liked: false};
+                visibility: this.state.visibility, tags: tags, liked: false, hidden: false};
             this.props.addPost(newPost);
             this.setState({message: ''});
             this.setState({editing: !this.state.editing})

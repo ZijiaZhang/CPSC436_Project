@@ -1,14 +1,15 @@
 import React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import {connect} from "react-redux";
-import {addLike, undoLike} from "../actions";
+import {addLike, hidePost, undoLike} from "../actions";
 import CommentsContainer from "./CommentsContainer";
 import CommentInputBar from "./CommentInputBar";
 
 interface IPostBlockProps {
   post: Post,
   addLike: any,
-  undoLike: any
+  undoLike: any,
+  hidePost: any
 }
 
 export interface Post {
@@ -23,7 +24,8 @@ export interface Post {
   type: string,
   visibility: string,
   tags: string[],
-  liked: boolean
+  liked: boolean,
+  hidden: boolean
 }
 
 export interface Comment {
@@ -58,8 +60,9 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
     }
   };
 
-  hidePost = () => {
+  hidePost = (post: Post) => {
       this.setState({postHidden: !this.state.postHidden});
+      this.props.hidePost(post.id)
   };
 
   displayComment = () => {
@@ -73,43 +76,46 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
       borderColor: 'white'
     };
     return(<div className="post-block" key={this.props.post.id}>
-        <div className="hidden-post">
-            <button className="undo-hide-post">Undo</button>
+        <div className="hidden-post" style={this.props.post.hidden ? {display: 'block'} : {display: 'none'}}>
+            <span className="hidden-post-title">Post hidden</span>
+            <button className="undo-hide-post" onClick={() => this.hidePost(this.props.post)}>Undo</button>
         </div>
-      <div className="profile-photo-block">
-        <img src={this.props.post.avatar} alt="ProfilePhoto" className="post-profile-photo"/>
-      </div>
-      <div className="post-detail-block">
-        <p className="post-user-name">{this.props.post.name}</p>
-        <p className="post-time">{this.props.post.time}</p>
-        <div className="post-drop-down-block">
-          <Dropdown>
-            <Dropdown.Toggle className="post-drop-down-menu" style={dropDownStyle} variant="success" id="dropdown-basic">
-              v
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item className="post-drop-down-button">Save Post</Dropdown.Item>
-              <Dropdown.Item className="post-drop-down-button">Hide Post</Dropdown.Item>
-              <Dropdown.Item className="post-drop-down-button">Report Post</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+        <div style={this.props.post.hidden ? {display: 'none'} : {display: 'block'}}>
+            <div className="profile-photo-block">
+                <img src={this.props.post.avatar} alt="ProfilePhoto" className="post-profile-photo"/>
+            </div>
+            <div className="post-detail-block">
+                <p className="post-user-name">{this.props.post.name}</p>
+                <p className="post-time">{this.props.post.time}</p>
+                <div className="post-drop-down-block">
+                    <Dropdown>
+                        <Dropdown.Toggle className="post-drop-down-menu" style={dropDownStyle} variant="success" id="dropdown-basic">
+                            v
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item className="post-drop-down-button">Save Post</Dropdown.Item>
+                            <Dropdown.Item className="post-drop-down-button" onClick={() => this.hidePost(this.props.post)}>Hide Post</Dropdown.Item>
+                            <Dropdown.Item className="post-drop-down-button">Report Post</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
+                <div className="post-detail">
+                    {this.props.post.detail}
+                </div>
+                <div className="images">
+                    {this.props.post.image ? <img className="inserted-image" src={this.props.post.image} alt={''}/>: ''}
+                </div>
+                <div className="interaction-buttons">
+                    <button className="like-button" onClick={() => this.markLike(this.props.post)}>Like {this.props.post.numLikes}</button>
+                    <button className="comment-button" onClick={this.displayComment}>Comment {this.props.post.comments.length}</button>
+                    <button className="share-button">Share</button>
+                </div>
+                <div style={this.state.showComments ? {display: 'block'} : {display: 'none'}}>
+                    <CommentsContainer comments={this.props.post.comments}/>
+                </div>
+                <CommentInputBar post={this.props.post} />
+            </div>
         </div>
-        <div className="post-detail">
-          {this.props.post.detail}
-        </div>
-        <div className="images">
-          {this.props.post.image ? <img className="inserted-image" src={this.props.post.image} alt={''}/>: ''}
-        </div>
-        <div className="interaction-buttons">
-          <button className="like-button" onClick={() => this.markLike(this.props.post)}>Like {this.props.post.numLikes}</button>
-          <button className="comment-button" onClick={this.displayComment}>Comment {this.props.post.comments.length}</button>
-          <button className="share-button">Share</button>
-        </div>
-        <div style={this.state.showComments ? {display: 'block'} : {display: 'none'}}>
-          <CommentsContainer comments={this.props.post.comments}/>
-        </div>
-        <CommentInputBar post={this.props.post} />
-      </div>
     </div>)
   }
 }
@@ -118,4 +124,4 @@ const mapStateToProps = (state: { postList: any}) => {
     return {postList: state.postList};
 };
 
-export default connect(mapStateToProps, {addLike, undoLike})(PostBlock);
+export default connect(mapStateToProps, {addLike, undoLike, hidePost})(PostBlock);
