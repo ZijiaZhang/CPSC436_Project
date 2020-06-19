@@ -24,6 +24,7 @@ export interface IPost extends IUserProps{
   type: string,
   visibility: string,
   tags: string[],
+  liked: boolean
 }
 
 export interface Comment {
@@ -36,7 +37,6 @@ export interface Comment {
 }
 
 interface IPostBlockState {
-  liked: boolean,
   showComments: boolean
 }
 
@@ -44,19 +44,16 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
   constructor(props: IPostBlockProps) {
     super(props);
     this.state = {
-      liked: false,
       showComments: false
     };
   }
 
-  markLike = (key: string) => {
-      console.log(this.state.liked);
-    if(this.state.liked) {
-      this.props.undoLike(key);
+  markLike = (post: IPost) => {
+    if(post.liked) {
+      this.props.undoLike(post.id);
     } else {
-      this.props.addLike(key);
+      this.props.addLike(post.id);
     }
-    this.setState({liked: !this.state.liked});
   };
 
   displayComment = () => {
@@ -95,7 +92,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
           {this.props.post.image ? <img className="inserted-image" src={this.props.post.image} alt={''}/>: ''}
         </div>
         <div className="interaction-buttons">
-          <button className="like-button" onClick={() => this.markLike(this.props.post.id)}>Like {this.props.post.numLikes}</button>
+          <button className="like-button" onClick={() => this.markLike(this.props.post)}>Like {this.props.post.numLikes}</button>
           <button className="comment-button" onClick={this.displayComment}>Comment {this.props.post.comments.length}</button>
           <button className="share-button">Share</button>
         </div>
