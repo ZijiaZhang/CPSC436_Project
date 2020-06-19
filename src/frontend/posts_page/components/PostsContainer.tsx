@@ -1,12 +1,12 @@
 import React from "react";
-import PostBlock, {Post} from './PostBlock';
+import PostBlock, {IPost} from './PostBlock';
 
 
-interface PostsLayoutProps {
-  posts: Post[];
+interface IPostsContainerProps {
+  posts: IPost[];
 }
 
-class PostsLayout extends React.Component<PostsLayoutProps, {}> {
+class PostsContainer extends React.Component<IPostsContainerProps, {}> {
 
   render() {
     const listPosts = this.props.posts.map((post) =>
@@ -21,4 +21,4 @@ class PostsLayout extends React.Component<PostsLayoutProps, {}> {
 
 }
 
-export default PostsLayout;
+export default PostsContainer;

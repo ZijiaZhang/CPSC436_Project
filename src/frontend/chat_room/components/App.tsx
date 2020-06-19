@@ -6,7 +6,7 @@ import {ChatRoomSendButton} from "./ChatRoomSendButton";
 import {ChatRoomTitle} from "./ChatRoomTitle";
 
 
-const ChatRoom = () => {   //this is how you make a functional component
+const ChatRoom = () => {
   return (
       <div>
           <ChatRoomTitle name={'Gary'}/>

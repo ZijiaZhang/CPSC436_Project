@@ -1,25 +1,23 @@
 import React from "react";
+import {IUserProps} from "../../shared/interfaces/IUserProps";
 
-export interface PostBlockProps {
-  post: Post
+export interface IPostBlockProps {
+  post: IPost
 }
 
-export interface Post {
-  avatar: string,
-  name: string,
+export interface IPost extends IUserProps {
   time: string,
   detail: string,
   image: string
 }
 
-interface PostBlockState {
+interface IPostBlockState {
   like: number,
   liked: boolean
 }
 
-
-class PostBlock extends React.Component<PostBlockProps, PostBlockState> {
-  constructor(props: PostBlockProps) {
+class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
+  constructor(props: IPostBlockProps) {
     super(props);
     this.state = {
       like: 0,
@@ -40,7 +38,7 @@ class PostBlock extends React.Component<PostBlockProps, PostBlockState> {
   render() {
     return(<div className="post-block">
       <div className="profile-photo-block">
-        <img src={this.props.post.avatar} alt="ProfilePhoto" className="post-profile-photo"/>
+        <img src={this.props.post.avatarPath} alt="ProfilePhoto" className="post-profile-photo"/>
       </div>
       <div className="post-detail-block">
         <p className="post-user-name">{this.props.post.name}</p>

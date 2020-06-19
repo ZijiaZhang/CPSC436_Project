@@ -1,11 +1,11 @@
 import * as React from "react";
-import {ChatRoomBubbles, SingleMessage} from "./ChatRoomBubbles";
+import {ChatRoomBubbles, ISingleMessage} from "./ChatRoomBubbles";
 
-interface ChatRoomChatAreaProps {
-    messages: SingleMessage[];
+interface IChatRoomChatAreaProps {
+    messages: ISingleMessage[];
 }
 
-export class ChatRoomChatArea extends React.Component<ChatRoomChatAreaProps, {}> {
+export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}> {
     render() {
         return <div>
             {this.props.messages.map((message, index) =>
