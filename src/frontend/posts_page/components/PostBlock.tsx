@@ -74,7 +74,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
     };
     return(<div className="post-block" key={this.props.post.id}>
         <div className="hidden-post">
-
+            <button className="undo-hide-post">Undo</button>
         </div>
       <div className="profile-photo-block">
         <img src={this.props.post.avatarPath} alt="ProfilePhoto" className="post-profile-photo"/>
