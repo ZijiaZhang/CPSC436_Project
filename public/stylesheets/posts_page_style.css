@@ -174,7 +174,7 @@
 #text-editor-selection{
     margin: 10px;
 }
-.tag-list{
+#tag-list{
     display: inline-block;
     width: 50%;
     margin-left: 50px;

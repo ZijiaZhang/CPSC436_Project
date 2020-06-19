@@ -1,13 +1,14 @@
 import React from 'react';
 
-interface IVisibilitySettingState {
-  public: boolean,
-  friendsOnly: boolean,
-  private: boolean
+interface IVisibilitySettingProps {
+  setPublic: any,
+  setFriendsOnly: any,
+  setPrivate: any,
+  visibility: string
 }
 
-class VisibilitySetting extends React.Component<{}, IVisibilitySettingState> {
-  constructor(props: {}) {
+class VisibilitySetting extends React.Component<IVisibilitySettingProps, {}> {
+  constructor(props: IVisibilitySettingProps) {
     super(props);
   }
 

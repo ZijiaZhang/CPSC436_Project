@@ -3,7 +3,7 @@ import {IPost} from "./PostBlock";
 import {connect} from "react-redux";
 import {addPost, saveInputDraft} from "../actions";
 import VisibilitySetting from "./VisibilitySetting";
-import Select from "react-select";
+import CreatableSelect from 'react-select/creatable';
 import TextEditorSetting from "./TextEditorSetting";
 import Modal from "react-modal";
 
@@ -18,7 +18,6 @@ interface ITextareaProps {
 interface ITextareaState {
     editing: boolean,
     message: string,
-    tags: string[],
     visibility: string,
     selectedTags: any[]
 }
@@ -30,7 +29,6 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
         this.state = {
             editing: false,
             message: this.props.inputDraft,
-            tags: [],
             visibility: 'public',
             selectedTags: []
         };
@@ -45,10 +43,13 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             let d = new Date();
             let time = d.getHours() + ':' + d.getMinutes();
             let date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+            let tags = [];
+            for (let index in this.state.selectedTags) {
+                tags.push(this.state.selectedTags[index].value);
+            }
             let newPost: IPost = {id: this.props.postList.length.toString(), time: date + ' ' + time, name:'N/A', detail: this.state.message,
                 avatarPath: './images/nobu!.png', image: '', numLikes: 0, comments: [], type: 'post',
-                visibility: 'public', tags: [], liked: false};
-            console.log(newPost);
+                visibility: this.state.visibility, tags: tags, liked: false};
             this.props.addPost(newPost);
             this.setState({message: ''});
             this.setState({editing: !this.state.editing})
@@ -75,14 +76,14 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
         this.setState({editing: !this.state.editing})
     };
 
-    tagSelectionHandleChange = () => {
-
+    tagSelectionHandleChange = (newValue: any) => {
+        this.setState({selectedTags: newValue});
     };
 
     render() {
         const options = [
-            { value: 'CourseStaff', label: 'CourseStaff' },
-            { value: 'CampusEvent', label: 'CampusEvent' },
+            { value: 'Course Staff', label: 'Course Staff' },
+            { value: 'Campus Event', label: 'Campus Event' },
             { value: 'Entertainment', label: 'Entertainment' },
         ];
         return (
@@ -90,10 +91,12 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                 <button id="text-editor-close-on-x" onClick={this.cancelEdit}>
                     X
                 </button>
-                <VisibilitySetting />
+                <VisibilitySetting visibility={this.state.visibility} setPublic={this.setPublic}
+                                   setPrivate={this.setPrivate} setFriendsOnly={this.setFriendsOnly}/>
                 <div id="select-tags">
                     <span id="tag-selection-title" className="selector-title">Tags:</span>
-                    <Select className="tag-list" options={options} isMulti={true}/>
+                    <CreatableSelect id="tag-list" options={options} isMulti={true}
+                            onChange={this.tagSelectionHandleChange}/>
                 </div>
                 <TextEditorSetting />
                 <div id="text-input-block">
