@@ -102,6 +102,24 @@
     vertical-align: top;
     display: inline-block;
 }
+.main-text-input-editor{
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    border: 1px solid #ccc;
+    background: #fff;
+    overflow: auto;
+    WebkitOverflowScrolling: touch;
+    borderRadius: 4px;
+    outline: none;
+    padding: 20px;
+    width: 800px;
+    height: 400px;
+    margin: auto;
+}
+
 #text-area{
     text-align: left;
     margin-left: 10px;
@@ -137,7 +155,12 @@
 }
 .selector-title{
     display: inline-block;
+    font-weight: bold;
     padding-right: 20px;
+    color: dimgray;
+}
+#tag-selection-title {
+    vertical-align: 12px;
 }
 .selector-buttons{
     display: inline-block;
@@ -151,11 +174,10 @@
 #text-editor-selection{
     margin: 10px;
 }
-#tag-list{
+.tag-list{
     display: inline-block;
     width: 50%;
     margin-left: 50px;
-    overflow: hidden;
 }
 #select-tags{
     margin: 10px;

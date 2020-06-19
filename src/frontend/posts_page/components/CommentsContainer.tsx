@@ -2,17 +2,17 @@ import React from "react";
 import CommentBlock from "./CommentBlock";
 import {Comment} from "./PostBlock";
 
-export interface CommentsContainerProps {
+interface ICommentsContainerProps {
     comments: Comment[]
 }
 
-export interface CommentsContainerState {
+interface ICommentsContainerState {
 
 }
 
-class CommentsContainer extends React.Component<CommentsContainerProps, CommentsContainerState>{
+class CommentsContainer extends React.Component<ICommentsContainerProps, ICommentsContainerState>{
 
-    constructor(props: CommentsContainerProps) {
+    constructor(props: ICommentsContainerProps) {
         super(props);
         this.state = {
         };

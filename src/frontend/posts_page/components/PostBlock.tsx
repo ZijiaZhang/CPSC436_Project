@@ -5,7 +5,7 @@ import {addLike, undoLike} from "../actions";
 import CommentsContainer from "./CommentsContainer";
 import CommentInputBar from "./CommentInputBar";
 
-export interface PostBlockProps {
+interface IPostBlockProps {
   post: Post,
   addLike: any,
   undoLike: any
@@ -35,14 +35,14 @@ export interface Comment {
   visibility: string,
 }
 
-interface PostBlockState {
+interface IPostBlockState {
     showComments: boolean,
     postHidden: boolean
 }
 
 
-class PostBlock extends React.Component<PostBlockProps, PostBlockState> {
-  constructor(props: PostBlockProps) {
+class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
+  constructor(props: IPostBlockProps) {
     super(props);
     this.state = {
         showComments: false,
@@ -74,7 +74,7 @@ class PostBlock extends React.Component<PostBlockProps, PostBlockState> {
     };
     return(<div className="post-block" key={this.props.post.id}>
         <div className="hidden-post">
-
+            <button className="undo-hide-post">Undo</button>
         </div>
       <div className="profile-photo-block">
         <img src={this.props.post.avatar} alt="ProfilePhoto" className="post-profile-photo"/>

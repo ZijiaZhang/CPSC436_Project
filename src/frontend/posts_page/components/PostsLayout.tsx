@@ -1,13 +1,13 @@
 import React from "react";
-import PostBlock, {Post, PostBlockProps} from './PostBlock';
+import PostBlock, {Post} from './PostBlock';
 import {connect} from "react-redux";
 
-interface PostsLayoutProps {
+interface IPostsLayoutProps {
   postList: Post[];
 }
 
-class PostsLayout extends React.Component<PostsLayoutProps, {}> {
-  constructor(props: PostsLayoutProps) {
+class PostsLayout extends React.Component<IPostsLayoutProps, {}> {
+  constructor(props: IPostsLayoutProps) {
     super(props);
   }
 

@@ -1,33 +1,15 @@
 import React from 'react';
 
-interface PublicProps {
+interface IPublicProps {
+  setPublic: any,
+  setFriendsOnly: any,
+  setPrivate: any,
+  visibility: string
 }
-interface PublicState {
-  public: boolean,
-  friendsOnly: boolean,
-  private: boolean
-}
-class SetPublic extends React.Component<PublicProps, PublicState> {
-  constructor(props: PublicProps) {
+class SetPublic extends React.Component<IPublicProps, {}> {
+  constructor(props: IPublicProps) {
     super(props);
-    this.state = {
-      public: true,
-      friendsOnly: false,
-      private: false
-    };
   }
-
-  setPublic = () => {
-    this.setState({public: true, friendsOnly: false, private: false});
-  };
-
-  setFriendsOnly = () => {
-    this.setState({public: false, friendsOnly: true, private: false});
-  };
-
-  setPrivate = () => {
-    this.setState({public: false, friendsOnly: false, private: true});
-  };
 
   render() {
     return (
@@ -35,15 +17,15 @@ class SetPublic extends React.Component<PublicProps, PublicState> {
         <div className="selector-title">Visibility:</div>
         <div className="selector-buttons">
           <label className="selector-button">
-            <input type="radio" checked={this.state.public} onClick={this.setPublic}/>
+            <input type="radio" checked={this.props.visibility === 'public'} onClick={this.props.setPublic}/>
             Public
           </label>
           <label className="selector-button">
-            <input type="radio" checked={this.state.friendsOnly} onClick={this.setFriendsOnly}/>
+            <input type="radio" checked={this.props.visibility === 'friendsOnly'} onClick={this.props.setFriendsOnly}/>
             Friends Only
           </label>
           <label className="selector-button">
-            <input type="radio" checked={this.state.private} onClick={this.setPrivate}/>
+            <input type="radio" checked={this.props.visibility === 'private'} onClick={this.props.setPrivate}/>
             Private
           </label>
         </div>

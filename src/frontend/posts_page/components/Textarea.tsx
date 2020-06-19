@@ -3,19 +3,19 @@ import {connect} from "react-redux";
 import {addPost, saveInputDraft} from "../actions";
 import TextInputEditor from "./TextInputEditor";
 
-interface TextareaProps {
+interface ITextareaProps {
     addPost: any,
     saveInputDraft: any,
     inputDraft: string
 }
 
-interface TextareaState {
+interface ITextareaState {
     editing: boolean,
     message: string,
 }
 
-class Textarea extends React.Component<TextareaProps, TextareaState> {
-    constructor(props: TextareaProps) {
+class Textarea extends React.Component<ITextareaProps, ITextareaState> {
+    constructor(props: ITextareaProps) {
         super(props);
         this.state = {
             editing: false,

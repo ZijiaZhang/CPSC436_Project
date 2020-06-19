@@ -7,7 +7,7 @@ import Select from "react-select";
 import SetTextEditor from "./SetTextEditor";
 import Modal from "react-modal";
 
-interface TextareaProps {
+interface ITextareaProps {
     addPost: any,
     saveInputDraft: any,
     inputDraft: string,
@@ -15,18 +15,24 @@ interface TextareaProps {
     postList: Post[]
 }
 
-interface TextareaState {
+interface ITextareaState {
     editing: boolean,
     message: string,
+    tags: string[],
+    visibility: string,
+    selectedTags: any[]
 }
 
-class TextInputEditor extends React.Component<TextareaProps, TextareaState> {
+class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
 
-    constructor(props: TextareaProps) {
+    constructor(props: ITextareaProps) {
         super(props);
         this.state = {
             editing: false,
-            message: this.props.inputDraft
+            message: this.props.inputDraft,
+            tags: [],
+            visibility: 'public',
+            selectedTags: []
         };
     }
 
@@ -41,12 +47,24 @@ class TextInputEditor extends React.Component<TextareaProps, TextareaState> {
             let date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
             let newPost: Post = {id: this.props.postList.length.toString(), time: date + ' ' + time, name:'N/A', detail: this.state.message,
                 avatar: './images/nobu!.png', image: '', numLikes: 0, comments: [], type: 'post',
-                visibility: 'public', tags: [], liked: false};
+                visibility: this.state.visibility, tags: this.state.tags, liked: false};
             console.log(newPost);
             this.props.addPost(newPost);
             this.setState({message: ''});
             this.setState({editing: !this.state.editing})
         }
+    };
+
+    setPublic = () => {
+        this.setState({visibility: 'public'});
+    };
+
+    setFriendsOnly = () => {
+        this.setState({visibility: 'friendsOnly'});
+    };
+
+    setPrivate = () => {
+        this.setState({visibility: 'private'});
     };
 
     saveDraft = () => {
@@ -57,21 +75,26 @@ class TextInputEditor extends React.Component<TextareaProps, TextareaState> {
         this.setState({editing: !this.state.editing})
     };
 
+    tagSelectionHandleChange = () => {
+
+    };
+
     render() {
         const options = [
-            { value: 'Course Staff', label: 'Course Staff' },
-            { value: 'Campus Event', label: 'Campus Event' },
-            { value: 'Entertainment', label: 'Entertainment' }
+            { value: 'CourseStaff', label: 'CourseStaff' },
+            { value: 'CampusEvent', label: 'CampusEvent' },
+            { value: 'Entertainment', label: 'Entertainment' },
         ];
         return (
-            <Modal isOpen = {this.state.editing != this.props.opened}>
+            <Modal className="main-text-input-editor" isOpen = {this.state.editing != this.props.opened}>
                 <button id="text-editor-close-on-x" onClick={this.cancelEdit}>
                     X
                 </button>
-                <SetPublic />
+                <SetPublic setPublic={this.setPublic} setFriendsOnly={this.setFriendsOnly}
+                           setPrivate={this.setPrivate} visibility={this.state.visibility}/>
                 <div id="select-tags">
-                    <span id="selector-title">Tags:</span>
-                    <Select id="tag-list" options={options} isMulti={true} placeholder="Select Tags"/>
+                    <span id="tag-selection-title" className="selector-title">Tags:</span>
+                    <Select className="tag-list" options={options} isMulti={true}/>
                 </div>
                 <SetTextEditor />
                 <div id="text-input-block">
