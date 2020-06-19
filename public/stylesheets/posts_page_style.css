@@ -266,3 +266,15 @@
     height: 40px;
     border-radius: 50px;
 }
+.hidden-post{
+    height: 28px;
+}
+.hidden-post-title{
+    font-size: 14pt;
+    margin: 10px;
+}
+.undo-hide-post{
+    font-size: 12pt;
+    float: right;
+    margin-right: 10px;
+}

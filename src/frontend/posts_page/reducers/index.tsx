@@ -15,6 +15,7 @@ const postList: IPost[] =  [
         visibility: 'public',
         tags: [],
         liked: false,
+        hidden: false,
     },
     {
         id: '1',
@@ -51,6 +52,7 @@ const postList: IPost[] =  [
         visibility: 'public',
         tags: [],
         liked: false,
+        hidden: false,
     },
     {
         id: '2',
@@ -66,6 +68,7 @@ const postList: IPost[] =  [
         visibility: 'public',
         tags: [],
         liked: false,
+        hidden: false,
     },
     {
         id: '3',
@@ -80,6 +83,7 @@ const postList: IPost[] =  [
         visibility: 'public',
         tags: [],
         liked: false,
+        hidden: false,
     },
     {
         id: '4',
@@ -95,6 +99,7 @@ const postList: IPost[] =  [
         visibility: 'public',
         tags: [],
         liked: false,
+        hidden: false,
     },
     {
         id: '5',
@@ -110,6 +115,7 @@ const postList: IPost[] =  [
         visibility: 'public',
         tags: [],
         liked: false,
+        hidden: false,
     }];
 
 const inputDraftReducer = (draft = "", action: { type: string; saveInputDraft: string; }) => {
@@ -133,6 +139,9 @@ const postListReducer = (posts = postList, action: { type: string; modification:
         case 'ADD_COMMENT':
             const comment = action.modification;
             posts[comment.index].comments.push(comment.detail);
+            return posts.slice(0, posts.length);
+        case 'HIDE_POST':
+            posts[action.modification].hidden = !posts[action.modification].hidden;
             return posts.slice(0, posts.length);
         default:
             return posts;
