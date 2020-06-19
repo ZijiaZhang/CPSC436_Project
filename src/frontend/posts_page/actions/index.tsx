@@ -28,6 +28,12 @@ export const addComment = (comment: any) => {
         modification: comment
     }
 };
+export const hidePost = (index: any) => {
+    return {
+        type: 'HIDE_POST',
+        modification: index
+    }
+};
 export const displayDetail = (detailedMessage: any) => {
     return {
         type: 'DETAILED_MESSAGE',
