@@ -1,8 +1,4 @@
 import React from "react";
-import SetPublic from './SetPublic';
-import Select from 'react-select';
-import SetTextEditor from './SetTextEditor';
-import {Post} from "./PostBlock";
 import {connect} from "react-redux";
 import {addPost, saveInputDraft} from "../actions";
 import TextInputEditor from "./TextInputEditor";
