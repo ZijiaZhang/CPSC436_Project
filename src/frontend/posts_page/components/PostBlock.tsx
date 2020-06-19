@@ -37,14 +37,16 @@ export interface Comment {
 }
 
 interface IPostBlockState {
-  showComments: boolean
+    showComments: boolean,
+    postHidden: boolean
 }
 
 class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
   constructor(props: IPostBlockProps) {
     super(props);
     this.state = {
-      showComments: false
+        showComments: false,
+        postHidden: false
     };
   }
 
@@ -54,6 +56,10 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
     } else {
       this.props.addLike(post.id);
     }
+  };
+
+  hidePost = () => {
+      this.setState({postHidden: !this.state.postHidden});
   };
 
   displayComment = () => {
@@ -67,6 +73,9 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
       borderColor: 'white'
     };
     return(<div className="post-block" key={this.props.post.id}>
+        <div className="hidden-post">
+
+        </div>
       <div className="profile-photo-block">
         <img src={this.props.post.avatarPath} alt="ProfilePhoto" className="post-profile-photo"/>
       </div>
