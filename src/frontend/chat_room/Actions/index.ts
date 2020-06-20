@@ -3,7 +3,7 @@ export enum ChatRoomActions{
     SEND_MESSAGE
 }
 
-export const send_message = (text: string) => {
+export const sendMessage = (text: string) => {
     return {
         type: ChatRoomActions.SEND_MESSAGE,
         message: text,

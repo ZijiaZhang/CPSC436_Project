@@ -1,6 +1,6 @@
 import {MessageStatus, SingleMessage} from "../components/ChatRoomBubbles";
 import {combineReducers} from "redux";
-import update from 'react-addons-update';
+import update from 'immutability-helper';
 import {ChatRoomActions} from "../Actions";
 
 export interface ChatRoomState {
