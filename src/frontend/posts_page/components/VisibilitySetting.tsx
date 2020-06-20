@@ -1,32 +1,16 @@
 import React from 'react';
 
-interface IVisibilitySettingState {
-  public: boolean,
-  friendsOnly: boolean,
-  private: boolean
+interface IVisibilitySettingProps {
+  setPublic: any,
+  setFriendsOnly: any,
+  setPrivate: any,
+  visibility: string
 }
 
-class VisibilitySetting extends React.Component<{}, IVisibilitySettingState> {
-  constructor(props: {}) {
+class VisibilitySetting extends React.Component<IVisibilitySettingProps, {}> {
+  constructor(props: IVisibilitySettingProps) {
     super(props);
-    this.state = {
-      public: true,
-      friendsOnly: false,
-      private: false
-    };
   }
-
-  setPublic = () => {
-    this.setState({public: true, friendsOnly: false, private: false});
-  };
-
-  setFriendsOnly = () => {
-    this.setState({public: false, friendsOnly: true, private: false});
-  };
-
-  setPrivate = () => {
-    this.setState({public: false, friendsOnly: false, private: true});
-  };
 
   render() {
     return (
@@ -34,15 +18,15 @@ class VisibilitySetting extends React.Component<{}, IVisibilitySettingState> {
         <div className="selector-title">Visibility:</div>
         <div className="selector-buttons">
           <label className="selector-button">
-            <input type="radio" checked={this.state.public} onClick={this.setPublic}/>
+            <input type="radio" checked={this.props.visibility === 'public'} onClick={this.props.setPublic}/>
             Public
           </label>
           <label className="selector-button">
-            <input type="radio" checked={this.state.friendsOnly} onClick={this.setFriendsOnly}/>
+            <input type="radio" checked={this.props.visibility === 'friendsOnly'} onClick={this.props.setFriendsOnly}/>
             Friends Only
           </label>
           <label className="selector-button">
-            <input type="radio" checked={this.state.private} onClick={this.setPrivate}/>
+            <input type="radio" checked={this.props.visibility === 'private'} onClick={this.props.setPrivate}/>
             Private
           </label>
         </div>
