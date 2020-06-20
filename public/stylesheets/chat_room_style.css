@@ -79,3 +79,7 @@
 .chat-room-title{
   text-align: center;
 }
+
+.conversation-avatar{
+  height: 2em;
+}
