@@ -1,9 +1,12 @@
 import * as React from "react";
+import {createRef} from "react";
+
 
 export class ChatRoomInputBox extends React.Component<{}, {}> {
+    inputElement = createRef<HTMLInputElement>();
     render() {
         return <div  className={'chat-room-text-input-wrap'}>
-            <input className={'chat-room-text-input'} type="text" placeholder="type your message here"/>
+            <input ref={this.inputElement} className={'chat-room-text-input'} type="text" placeholder="type your message here"/>
         </div>;
     }
 }

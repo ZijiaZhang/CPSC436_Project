@@ -1,23 +1,26 @@
 import * as React from 'react';
-import {ChatRoomChatArea} from "./ChatRoomChatArea";
-import {MessageStatus} from "./ChatRoomBubbles";
+import {ChatRoomChatAreaConnected} from "./ChatRoomChatArea";
 import {ChatRoomInputBox} from "./ChatRoomInputBox";
-import {ChatRoomSendButton} from "./ChatRoomSendButton";
+import {ChatRoomSendButtonConnected} from "./ChatRoomSendButton";
 import {ChatRoomTitle} from "./ChatRoomTitle";
-
+import {Provider} from "react-redux";
+import {createStore} from "redux";
+import reducer from "../reducer"
+import {createRef} from "react";
 
 const ChatRoom = () => {
+   let ref = createRef<ChatRoomInputBox>();
   return (
+      <Provider store={createStore(reducer)}>
       <div>
           <ChatRoomTitle name={'Gary'}/>
-        <ChatRoomChatArea messages={[{message: "Hello", status : MessageStatus.RECEIVED},
-                                      {message: "Hello", status : MessageStatus.SENT},
-          {message: "Hello", status : MessageStatus.NOT_SENT} ]} />
+        <ChatRoomChatAreaConnected />
       <div className={'chat-room-input-area'}>
-        <ChatRoomInputBox/>
-        <ChatRoomSendButton/>
+        <ChatRoomInputBox ref={ref}/>
+        <ChatRoomSendButtonConnected inputBox={ref}/>
       </div>
       </div>
+      </Provider>
   );
 };
 
