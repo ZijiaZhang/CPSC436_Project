@@ -4,7 +4,7 @@ import reducers from '../reducers';
 import {createStore} from "redux";
 import {Provider} from "react-redux";
 import InputBlock from "./InputBlock";
-const PostPage = () => {   //this is how you make a functional component
+const PostPage = () => {
     return (
     <div id="post-blog-page">
         <Provider store={createStore(reducers)}>

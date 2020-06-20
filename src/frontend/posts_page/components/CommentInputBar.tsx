@@ -3,18 +3,19 @@ import {connect} from "react-redux";
 import {addComment, addLike, undoLike} from "../actions";
 import {IPost} from "./PostBlock";
 
-export interface CommentInputBarProps{
+interface ICommentInputBarProps{
     addComment: any,
     post: IPost
 }
-export interface CommentInputBarState{
+interface ICommentInputBarState{
     comment: string,
     checked: boolean,
     editing: boolean
 }
 
-class CommentInputBar extends React.Component<CommentInputBarProps, CommentInputBarState> {
-    constructor(props: CommentInputBarProps) {
+class CommentInputBar extends React.Component<ICommentInputBarProps, ICommentInputBarState> {
+    constructor(props: ICommentInputBarProps) {
+
         super(props);
         this.state = {
             comment: '',

@@ -102,6 +102,28 @@
     vertical-align: top;
     display: inline-block;
 }
+#input-bar-user-avatar{
+    vertical-align: top;
+    display: inline-block;
+}
+.main-text-input-editor{
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    border: 1px solid #ccc;
+    background: #fff;
+    overflow: auto;
+    WebkitOverflowScrolling: touch;
+    borderRadius: 4px;
+    outline: none;
+    padding: 20px;
+    width: 800px;
+    height: 400px;
+    margin: auto;
+}
+
 #text-area{
     text-align: left;
     margin-left: 10px;
@@ -137,7 +159,12 @@
 }
 .selector-title{
     display: inline-block;
+    font-weight: bold;
     padding-right: 20px;
+    color: dimgray;
+}
+#tag-selection-title {
+    vertical-align: 12px;
 }
 .selector-buttons{
     display: inline-block;
@@ -155,7 +182,6 @@
     display: inline-block;
     width: 50%;
     margin-left: 50px;
-    overflow: hidden;
 }
 #select-tags{
     margin: 10px;
@@ -243,4 +269,16 @@
 .comment-profile-photo{
     height: 40px;
     border-radius: 50px;
+}
+.hidden-post{
+    height: 28px;
+}
+.hidden-post-title{
+    font-size: 14pt;
+    margin: 10px;
+}
+.undo-hide-post{
+    font-size: 12pt;
+    float: right;
+    margin-right: 10px;
 }

@@ -3,11 +3,11 @@ import {IPost} from "./PostBlock";
 import {connect} from "react-redux";
 import {addPost, saveInputDraft} from "../actions";
 import VisibilitySetting from "./VisibilitySetting";
-import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 import TextEditorSetting from "./TextEditorSetting";
 import Modal from "react-modal";
 
-interface TextareaProps {
+interface ITextareaProps {
     addPost: any,
     saveInputDraft: any,
     inputDraft: string,
@@ -15,18 +15,22 @@ interface TextareaProps {
     postList: IPost[]
 }
 
-interface TextareaState {
+interface ITextareaState {
     editing: boolean,
     message: string,
+    visibility: string,
+    selectedTags: any[]
 }
 
-class TextInputEditor extends React.Component<TextareaProps, TextareaState> {
+class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
 
-    constructor(props: TextareaProps) {
+    constructor(props: ITextareaProps) {
         super(props);
         this.state = {
             editing: false,
-            message: this.props.inputDraft
+            message: this.props.inputDraft,
+            visibility: 'public',
+            selectedTags: []
         };
     }
 
@@ -39,14 +43,29 @@ class TextInputEditor extends React.Component<TextareaProps, TextareaState> {
             let d = new Date();
             let time = d.getHours() + ':' + d.getMinutes();
             let date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+            let tags = [];
+            for (let index in this.state.selectedTags) {
+                tags.push(this.state.selectedTags[index].value);
+            }
             let newPost: IPost = {id: this.props.postList.length.toString(), time: date + ' ' + time, name:'N/A', detail: this.state.message,
                 avatarPath: './images/nobu!.png', image: '', numLikes: 0, comments: [], type: 'post',
-                visibility: 'public', tags: [], liked: false};
-            console.log(newPost);
+                visibility: this.state.visibility, tags: tags, liked: false, hidden: false};
             this.props.addPost(newPost);
             this.setState({message: ''});
             this.setState({editing: !this.state.editing})
         }
+    };
+
+    setPublic = () => {
+        this.setState({visibility: 'public'});
+    };
+
+    setFriendsOnly = () => {
+        this.setState({visibility: 'friendsOnly'});
+    };
+
+    setPrivate = () => {
+        this.setState({visibility: 'private'});
     };
 
     saveDraft = () => {
@@ -57,21 +76,28 @@ class TextInputEditor extends React.Component<TextareaProps, TextareaState> {
         this.setState({editing: !this.state.editing})
     };
 
+
+    tagSelectionHandleChange = (newValue: any) => {
+        this.setState({selectedTags: newValue});
+    };
+
     render() {
         const options = [
             { value: 'Course Staff', label: 'Course Staff' },
             { value: 'Campus Event', label: 'Campus Event' },
-            { value: 'Entertainment', label: 'Entertainment' }
+            { value: 'Entertainment', label: 'Entertainment' },
         ];
         return (
-            <Modal isOpen = {this.state.editing != this.props.opened}>
+            <Modal className="main-text-input-editor" isOpen = {this.state.editing != this.props.opened}>
                 <button id="text-editor-close-on-x" onClick={this.cancelEdit}>
                     X
                 </button>
-                <VisibilitySetting />
+                <VisibilitySetting setPublic={this.setPublic} setFriendsOnly={this.setFriendsOnly}
+                           setPrivate={this.setPrivate} visibility={this.state.visibility}/>
                 <div id="select-tags">
-                    <span id="selector-title">Tags:</span>
-                    <Select id="tag-list" options={options} isMulti={true} placeholder="Select Tags"/>
+                    <span id="tag-selection-title" className="selector-title">Tags:</span>
+                    <CreatableSelect id="tag-list" options={options} isMulti={true}
+                            onChange={this.tagSelectionHandleChange}/>
                 </div>
                 <TextEditorSetting />
                 <div id="text-input-block">

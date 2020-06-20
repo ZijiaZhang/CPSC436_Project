@@ -1,15 +1,15 @@
 import React from "react";
 import {Comment} from "./PostBlock";
 
-export interface CommentBlockProps {
+interface ICommentBlockProps {
     comment: Comment
 }
-export interface CommentBlockState {
+interface ICommentBlockState {
 
 }
 
-class CommentBlock extends React.Component<CommentBlockProps, CommentBlockState> {
-    constructor(props: CommentBlockProps) {
+class CommentBlock extends React.Component<ICommentBlockProps, ICommentBlockState> {
+    constructor(props: ICommentBlockProps) {
         super(props);
         this.state = {
         };
