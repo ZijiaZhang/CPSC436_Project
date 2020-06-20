@@ -17,7 +17,7 @@ export interface IPost extends IUserProps{
   time: string,
   name: string,
   detail: string,
-  avatar: string,
+  avatarPath: string,
   image: string,
   numLikes: number,
   comments: Comment[],
