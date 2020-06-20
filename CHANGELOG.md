@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.8.0 [2020-06-19]
+### Added 
+- Redux for Chat room
+
 ## 0.7.0 [2020-06-12]
 ### Added 
 - UI for search page
