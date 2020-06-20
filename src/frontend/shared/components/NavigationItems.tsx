@@ -7,7 +7,8 @@ class NavigationItems extends React.Component<IUserProps,{}> {
         return ( 
         <div>
             <a><img src={this.props.avatarPath} alt="img not found" width="100" height="100"/><p>{this.props.name}</p></a>
-            <Link to="/" className="glyphicon glyphicon-home">Home</Link>
+            <Link to="/home" className="glyphicon glyphicon-home">Home</Link>
+            <Link to="/searchPage" className="glyphicon glyphicon-user">Friends</Link>
             <Link to="/chatRoom" className="glyphicon glyphicon-user">Chats</Link>
             <Link to="/settings" className="glyphicon glyphicon-cog">Setting</Link>
         </div>
