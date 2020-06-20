@@ -8,13 +8,13 @@ import {IButtonState} from "../../shared/interfaces/IButtonState";
 import {getCurrentUser} from "../../shared/globleFunctions";
 import {IUserProps} from "../../shared/interfaces/IUserProps";
 
-interface ChatRoomSendButtonProps {
+interface IChatRoomSendButtonProps {
     inputBox: RefObject<ChatRoomInputBox>;
     sendMessage: (text: string, sender: IUserProps) => any;
 }
 
-export class ChatRoomSendButton extends React.Component<ChatRoomSendButtonProps, IButtonState> {
-    constructor(props: ChatRoomSendButtonProps) {
+export class ChatRoomSendButton extends React.Component<IChatRoomSendButtonProps, IButtonState> {
+    constructor(props: IChatRoomSendButtonProps) {
         super(props);
         this.state = {buttonState: ButtonState.ENABLED};
     }
