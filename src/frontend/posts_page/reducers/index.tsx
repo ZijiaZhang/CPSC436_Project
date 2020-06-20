@@ -1,13 +1,13 @@
 import {combineReducers} from 'redux';
-import {Comment, Post} from "../components/PostBlock";
+import {Comment, IPost} from "../components/PostBlock";
 
-const postList: Post[] =  [
+const postList: IPost[] =  [
     {
         id: '0',
         time: "2019/2/28 5:18",
         name: "Bain",
         detail: "Civilians can do a lot of good for you, as long you got em under control! ",
-        avatar: './images/photoP.png',
+        avatarPath: './images/photoP.png',
         image: './images/sampleImage.jpg',
         numLikes: 75,
         comments: [],
@@ -21,7 +21,7 @@ const postList: Post[] =  [
         time: "2019/4/9 12:10",
         name: "Kayn",
         detail: "That of the watcher which will be consuned in the voice of SUMER.",
-        avatar: './images/photoP.png',
+        avatarPath: './images/photoP.png',
         image: '',
         numLikes: 63,
         comments: [
@@ -58,7 +58,7 @@ const postList: Post[] =  [
         name: "Arthas",
         detail: "False modesty is as bad as false pride. Know exactly what you are " +
             "capable of at any moment, and act accordingly. Any other path is folly—and could be deadly in battle.",
-        avatar: './images/photoP.png',
+        avatarPath: './images/photoP.png',
         image: '',
         numLikes: 20,
         comments: [],
@@ -72,7 +72,7 @@ const postList: Post[] =  [
         time: "2019/12/1 4:10",
         name: "Price",
         detail: "They say truth is the first causality of war.",
-        avatar: './images/photoP.png',
+        avatarPath: './images/photoP.png',
         image: '',
         numLikes: 18,
         comments: [],
@@ -87,7 +87,7 @@ const postList: Post[] =  [
         name: "Bradley",
         detail: "Ours is a world of nuclear giants and ethical infants. We know more " +
             "about war than we know about peace, more about killing than we know about living.",
-        avatar: './images/photoP.png',
+        avatarPath: './images/photoP.png',
         image: './images/sampleImage.jpg',
         numLikes: 74,
         comments: [],
@@ -102,7 +102,7 @@ const postList: Post[] =  [
         name: "Ildan",
         detail: "Every country is a battlefield for the struggle between honest and dishonest," +
             "between honourable and honourless people! At the end, the character of that country will be determined by whichever group wins!",
-        avatar: './images/photoP.png',
+        avatarPath: './images/photoP.png',
         image: '',
         numLikes: 210,
         comments: [],

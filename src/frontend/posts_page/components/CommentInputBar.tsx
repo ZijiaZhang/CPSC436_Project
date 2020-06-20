@@ -1,11 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
 import {addComment, addLike, undoLike} from "../actions";
-import {Post} from "./PostBlock";
+import {IPost} from "./PostBlock";
 
 export interface CommentInputBarProps{
     addComment: any,
-    post: Post
+    post: IPost
 }
 export interface CommentInputBarState{
     comment: string,
@@ -40,7 +40,7 @@ class CommentInputBar extends React.Component<CommentInputBarProps, CommentInput
         this.setState({comment: ''});
     };
 
-    postComment = (post: Post) => {
+    postComment = (post: IPost) => {
         if(this.state.comment.trim() !== '') {
             let d = new Date();
             let time = d.getHours() + ':' + d.getMinutes();
