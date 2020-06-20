@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.9.0 [2020-06-20]
+### Added 
+- Add friend to menu item
+
 ## 0.8.0 [2020-06-19]
 ### Added 
 - Redux for Chat room
