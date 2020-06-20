@@ -9,6 +9,7 @@ import reducer from "../reducer"
 import {createRef} from "react";
 
 const ChatRoom = () => {
+   let ref = createRef<ChatRoomInputBox>();
   return (
       <Provider store={createStore(reducer)}>
       <div>
