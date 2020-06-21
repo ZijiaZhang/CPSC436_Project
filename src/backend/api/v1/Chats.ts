@@ -2,7 +2,9 @@ import express from 'express';
 export const chatsRouter = express.Router();
 
 chatsRouter.get('/', function(req, res, next) {
-    res.send({
+    // TODO: Add connection to mongodb
+    // TODO: Add auth
+    res.json({
         allMessages: [{
             sender_id: '1',
             sender_username: 'TestUser1',

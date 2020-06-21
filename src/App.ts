@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import {apiRouter} from "./backend/api";
 
-const app = express();
+export const app = express();
 const port = 3000;
 
 app.use('/api', apiRouter);
