@@ -8,7 +8,8 @@
     "build": "tsc",
     "start": "node src/App.js",
     "build-webpack": "npx webpack",
-    "dev": "ts-node-dev --respawn --transpileOnly ./src/App.ts"
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/App.ts",
+    "debug": "ts-node-dev --respawn --transpileOnly --inspect -- ./src/App.ts"
   },
   "dependencies": {
     "@types/chai": "^4.2.9",
@@ -20,6 +21,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/react-select": "^3.0.13",
+    "body-parser": "^1.19.0",
     "bootstrap": "^4.5.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
@@ -29,6 +31,7 @@
     "file-loader": "^6.0.0",
     "immutability-helper": "^3.1.1",
     "mocha": "^7.1.0",
+    "mongoose": "^5.9.19",
     "morgan": "~1.9.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
