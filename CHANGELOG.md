@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.10.0 [2020-06-22]
+### Added 
+- Add API Router
+
 ## 0.9.0 [2020-06-20]
 ### Added 
 - Add friend to menu item
