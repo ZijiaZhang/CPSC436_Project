@@ -11,7 +11,6 @@ const mongoConnectionString = process.env.DB_CONNECTION_STRING || 'mongodb://loc
 
 app.use(bodyParser.json());
 
-// mongoose connection, connect to local database with db name "project", creates new database if "project" doesn't exist
 mongoose.connect(mongoConnectionString, {useNewUrlParser: true});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -21,6 +20,9 @@ db.once('open', function() {
 
 app.use('/api', apiRouter);
 app.use(express.static(path.join(__dirname, '..', 'public')));
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
 
 console.log(path.join(__dirname, 'public'));
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
