@@ -6,15 +6,18 @@ import bodyParser from 'body-parser';
 const mongoose = require('mongoose');
 
 export const app = express();
-const port = 3000;
+
+const port = process.env.PORT || 3000;
+const mongoConnectionString = process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/project';
+
 app.use(bodyParser.json());
 
 // mongoose connection, connect to local database with db name "project", creates new database if "project" doesn't exist
-mongoose.connect('mongodb://localhost:27017/project', {useNewUrlParser: true});
+mongoose.connect(mongoConnectionString, {useNewUrlParser: true});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-    console.log('mongoose connected!');
+    console.log('mongoose connected to ' + mongoConnectionString + ' !');
 });
 
 app.use('/api', apiRouter);
