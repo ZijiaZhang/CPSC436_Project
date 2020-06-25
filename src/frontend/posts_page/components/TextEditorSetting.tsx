@@ -1,12 +1,16 @@
 import React from 'react';
 
+
+interface ITextEditorProps {
+}
+
 interface ITextEditorState {
   rich: boolean,
   plain: boolean,
 }
 
-class TextEditorSetting extends React.Component<{}, ITextEditorState> {
-  constructor(props: {}) {
+class TextEditorSetting extends React.Component<ITextEditorProps, ITextEditorState> {
+  constructor(props: ITextEditorProps) {
     super(props);
     this.state = {
       rich: false,
