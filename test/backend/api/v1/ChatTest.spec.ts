@@ -7,6 +7,7 @@ chai.use(chaiHttp);
 
 
 describe('Chats', () => {
+    var app: any;
     before(async ()=>{
         process.env.DB_CONNECTION_STRING = 'mongodb://localhost:27017/test_project';
         await mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true});
@@ -18,12 +19,13 @@ describe('Chats', () => {
             content: 'This is a test message',
             time: new Date()});
         await mongoose.disconnect();
+        app = require('../../../../src/App').app;
     });
 
     describe('Get all chats', () => {
         // TODO: Add test with mongodb
         it('it should GET all the chats', async () => {
-            return chai.request(require('../../../../src/App').app)
+            return chai.request(app)
                 .get('/api/v1/chats')
                 .query({sender_id: 'test1', receiver_id: 'test2'})
                 .then((res) => {
@@ -36,7 +38,7 @@ describe('Chats', () => {
         });
 
         it('it should raise bad request if no query specified', async () => {
-            return chai.request(require('../../../../src/App').app)
+            return chai.request(app)
                 .get('/api/v1/chats')
                 .query({aaa: 'test1', bbb: 'test2'})
                 .then((res) => {

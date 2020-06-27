@@ -9,7 +9,7 @@ chatsRouter.get('/', function(req, res, next) {
     const receiver_id = req.query.receiver_id;
     if (!sender_id || !receiver_id){
         res.status(400).json({message: 'sender_id or receiver_id not found'});
-        return next();
+        return;
     }
 
     const allMessages= Chat.find({senderUsername: sender_id, receiverUsername: receiver_id});
