@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.13.1 [2020-06-26]
+### Fixed
+- Fixed issue that the router will return 200 even if the endpoint does not exist
+
 ## 0.13.0 [2020-06-26]
 ### Added 
 - Add database connection and models

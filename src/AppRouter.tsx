@@ -49,6 +49,6 @@ const Home = () => {
         ]}/>
     </div>
     );
-}
+};
 
 export default AppRouter;

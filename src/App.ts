@@ -20,9 +20,11 @@ db.once('open', function() {
 
 app.use('/api', apiRouter);
 app.use(express.static(path.join(__dirname, '..', 'public')));
-app.get('*', (req,res) =>{
+app.get(/^\/(settings|chatRoom|searchPage)?$/, (req,res) =>{
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
-
+app.use(function (req, res)  {
+    res.status(404).json({message: 'Requested file not find'})
+});
 console.log(path.join(__dirname, 'public'));
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
