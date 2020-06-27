@@ -1,11 +1,17 @@
 # CPSC436 Project
 
 All changes will be logged here
-##0.12.0 [2020-06-26]
+
+## 0.13.0 [2020-06-26]
+### Added 
+- Add database connection and models
+
+## 0.12.0 [2020-06-26]
 ### Add frontend UI for login + register page and change APP Router accordingly
 - add front UI login register
 - change APP router
-##0.11.0 [2020-06-25]
+
+## 0.11.0 [2020-06-25]
 ### Added A number of redux functionality to post page including:
 - add post to post list
 - add comment to the comment list of a certain post
