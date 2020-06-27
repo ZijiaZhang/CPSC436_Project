@@ -34,6 +34,7 @@ const userSchema = new Schema({
     major: String,
     year: String,
     tags: [String],
+    friendUsernames: [String],
     savedPostIds: [ObjectId],
     hiddenPostIds: [ObjectId]
 });
