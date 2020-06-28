@@ -5,17 +5,17 @@ import passport from 'passport'
 
 
 usersRouter.get('/', (req, res) => {
-    res.send('GET all users');
+    res.json({ user : req.user });
 });
 
 usersRouter.get('/register', (req, res) => {
-    res.render('register', { });
+    res.send("register!!!");
 });
 
 usersRouter.post('/register', (req, res, next) => {
     User.register(new User({ username : req.body.username }), req.body.password, (err: any) => {
         if (err) {
-          return res.render('register', { error : err.message });
+          return res.json({ error : err.message });
         }
 
         passport.authenticate('local')(req, res, () => {
@@ -33,7 +33,7 @@ usersRouter.post('/register', (req, res, next) => {
 
 
 usersRouter.get('/login', (req, res) => {
-    res.render('login', { user : req.user, error : req.flash('error')});
+    res.send({ user : req.user, error : req.flash('error')});
 });
 
 usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), (req, res, next) => {

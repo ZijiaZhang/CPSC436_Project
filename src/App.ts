@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-import {apiRouter} from "./backend/api/index";
+import {apiRouter} from "./backend/api";
 import bodyParser from 'body-parser';
 const mongoose = require('mongoose');
 
@@ -39,7 +39,7 @@ db.once('open', function() {
 app.use('/api', apiRouter);
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
-app.get(/^\/(settings|chatRoom|searchPage)?$/, (req,res) =>{
+app.get(/^\/(settings|chatRoom|searchPage|login|register)?$/, (req,res) =>{
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 app.use(function (req, res)  {

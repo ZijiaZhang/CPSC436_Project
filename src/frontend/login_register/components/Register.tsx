@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Link, Redirect } from 'react-router-dom';
 import CSS from 'csstype';
+import axios from 'axios'
 
 
 interface RegisterPageState {
@@ -36,7 +37,10 @@ class Register extends Component<{}, RegisterPageState> {
             alert("Password is not the same as password confirmed!")
         }
         if (username && password && pwdConfirm && password === pwdConfirm) {
-            //TODO
+            axios.post("http://localhost:3000/api/v1/users/register", {
+                username: username,
+                password: password
+            })
         }
     }
 
