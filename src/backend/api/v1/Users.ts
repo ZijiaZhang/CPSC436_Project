@@ -46,5 +46,3 @@ usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/l
         });
     }
 });
-
-module.exports = usersRouter;
