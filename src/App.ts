@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-import {apiRouter} from "./backend/api/index";
+import {apiRouter} from "./backend/api";
 import bodyParser from 'body-parser';
 const mongoose = require('mongoose');
 import passport from 'passport';
@@ -30,6 +30,7 @@ db.once('open', function() {
     console.log(`mongoose connected to ${mongoConnectionString} !`);
 });
 
+console.log(apiRouter);
 app.use('/api', apiRouter);
 
 app.use(express.static(path.join(__dirname, '..', 'public')));

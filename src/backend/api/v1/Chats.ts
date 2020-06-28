@@ -34,3 +34,5 @@ chatsRouter.post('/', function (req, res) {
         res.status(500).json({message: 'error when try to add entry'})
     );
 });
+
+module.exports = chatsRouter;
