@@ -1,0 +1,31 @@
+import chai, {expect} from 'chai';
+import {User} from '../../../../src/backend/Models';
+const mongoose = require('mongoose');
+import chaiHttp = require("chai-http");
+
+describe('User', ()=> {
+    describe("Get all users", ()=> {
+        let app: any;
+
+        console.log("a");
+        before(async()=> {
+            process.env.DB_CONNECTION_STRING = 'mongodb://127.0.0.1:27017/test';
+            await mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true});
+            mongoose.connection.on('error', ()=> expect.fail("Error connecting to db"));
+            const clear_user = User.deleteMany({});
+            await clear_user.exec();
+            app= require('../../../../src/App').app;            
+        });
+
+        it('register one test user', async() => {
+            return chai.request(app)
+            .post('/api/v1/users/register').send({username: "test", password: "test"})
+            .then((res) => {
+                expect(res).have.status(200);
+                expect(res.redirects[0].endsWith('/login'));
+            })
+
+        })
+       
+    })
+})

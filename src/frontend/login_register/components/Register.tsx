@@ -24,6 +24,18 @@ class Register extends Component<{}, RegisterPageState> {
         };
     }
 
+    // handleSubmit = (e: any) => {
+    //     e.preventDefault();
+    //     this.setState({ submitted: true });
+    //     const { username, password, pwdConfirm } = this.state;
+    //     if (password !== pwdConfirm) {
+    //         alert("Password is not the same as password confirmed!")
+    //     }
+    //     if (username && password && pwdConfirm && password === pwdConfirm) {
+    //         //TODO
+    //     }
+    // }
+
     render() {
         const { username,password, pwdConfirm, submitted } = this.state;
         const register_style: CSS.Properties = {

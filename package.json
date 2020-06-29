@@ -4,7 +4,11 @@
   "private": true,
   "scripts": {
     "test": "nyc --reporter html --reporter json --reporter text npm run tests && nyc report --reporter=text-lcov > coverage.lcov",
+<<<<<<< HEAD
     "tests": "mocha 'test/**/*.ts' --require ts-node/register --timeout 10000 --exit",
+=======
+    "tests": "mocha ./test/**/**/*.ts --require ts-node/register --timeout 10000 --exit",
+>>>>>>> mostly work
     "build": "tsc",
     "start": "node src/App.js",
     "build-webpack": "npx webpack",
