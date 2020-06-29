@@ -6,8 +6,6 @@ import chaiHttp = require("chai-http");
 describe('User', ()=> {
     describe("Get all users", ()=> {
         let app: any;
-
-        console.log("a");
         before(async()=> {
             process.env.DB_CONNECTION_STRING = 'mongodb://127.0.0.1:27017/test';
             await mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true});

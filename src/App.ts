@@ -50,15 +50,12 @@ app.get(/^\/(login|register)/, (req,res) =>{
         res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 app.get(/^\/(settings|chatRoom|searchPage)?$/, (req,res) =>{
-    console.log(req)
     if(req.user)
         {
-            // console.log(req.user);
             res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
         }
     else
         {
-            // console.log(req.user);
             res.redirect('/login');
         }
 });
