@@ -11,7 +11,6 @@ class NavigationItems extends React.Component<IUserProps,{}> {
             <Link to="/searchPage" className="glyphicon glyphicon-user">Friends</Link>
             <Link to="/chatRoom" className="glyphicon glyphicon-envelope">Chats</Link>
             <Link to="/settings" className="glyphicon glyphicon-cog">Setting</Link>
-            <Link to="/login" className="glyphicon glyphicon-log-out">Logout</Link>
         </div>
         );
     }

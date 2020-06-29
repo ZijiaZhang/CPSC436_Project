@@ -8,7 +8,7 @@ describe('User', ()=> {
         let app: any;
         before(async()=> {
             process.env.DB_CONNECTION_STRING = 'mongodb://127.0.0.1:27017/test';
-            await mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true});
+            await mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
             mongoose.connection.on('error', ()=> expect.fail("Error connecting to db"));
             const clear_user = User.deleteMany({});
             await clear_user.exec();
@@ -17,13 +17,21 @@ describe('User', ()=> {
 
         it('register one test user', async() => {
             return chai.request(app)
-            .post('/api/v1/users/register').send({username: "test", password: "test"})
+            .post('/api/v1/users/register').send({username: "test", password: "test", pwdConfirm: "test"})
             .then((res) => {
                 expect(res).have.status(200);
                 expect(res.redirects[0].endsWith('/login'));
             })
-
-        })
+        });
        
+        it('login test user', async() => {
+            return chai.request(app)
+            .post('/api/v1/users/login').send({username: "test", password: "test"})
+            .then((res) => {
+                expect(res).have.status(200);
+                expect(res.redirects[0].endsWith('/'));
+            })
+        });
+
     })
 })
