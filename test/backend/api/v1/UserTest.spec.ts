@@ -23,7 +23,7 @@ describe('User', ()=> {
                 expect(res.redirects[0].endsWith('/login'));
             })
         });
-       
+
         it('login test user', async() => {
             return chai.request(app)
             .post('/api/v1/users/login').send({username: "test", password: "test"})
