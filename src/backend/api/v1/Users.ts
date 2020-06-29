@@ -3,6 +3,9 @@ import {User} from "../../Models";
 export const usersRouter = express.Router();
 import passport from 'passport'
 
+usersRouter.get('/', (req, res) => {
+    res.send( req.user);
+});
 
 usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), (req, res, next) => {
     if (req.session) {

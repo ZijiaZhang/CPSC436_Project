@@ -33,6 +33,15 @@ describe('User', ()=> {
             })
         });
 
+        it('get test user', async() => {
+            return chai.request(app)
+            .get('/api/v1/users')
+            .then((res) => {
+                expect(res).have.status(200);
+            })
+        });
+
+
         it('logout test user', async() => {
             return chai.request(app)
             .get('/api/v1/users/logout')
