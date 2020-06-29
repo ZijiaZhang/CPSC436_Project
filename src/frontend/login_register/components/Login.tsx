@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom';
 import CSS from 'csstype';
+import axios from 'axios';
 
 
 interface LoginPageState {
@@ -30,7 +31,10 @@ class Login extends Component<{}, LoginPageState> {
         this.setState({ submitted: true });
         const { username, password } = this.state;
         if (username && password) {
-            //TODO
+            axios.post("http://localhost:3000/ap1/v1/users/login", {
+                username: username,
+                password: password
+            })
         }
     }
 
