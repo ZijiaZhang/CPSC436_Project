@@ -38,14 +38,14 @@ usersRouter.post('/register', (req, res, next) => {
             });
 });
 
-// usersRouter.get('/logout', (req, res, next) => {
-//     req.logout();
-//     if (req.session) {
-//         req.session.save((err) => {
-//             if (err) {
-//                 return next(err);
-//             }
-//             res.redirect('/login');
-//         });
-//     } 
-// });
+usersRouter.get('/logout', (req, res, next) => {
+    req.logout();
+    if (req.session) {
+        req.session.save((err) => {
+            if (err) {
+                return next(err);
+            }
+            res.redirect('/login');
+        });
+    } 
+});

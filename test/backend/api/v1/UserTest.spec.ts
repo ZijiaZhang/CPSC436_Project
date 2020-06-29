@@ -33,5 +33,13 @@ describe('User', ()=> {
             })
         });
 
+        it('logout test user', async() => {
+            return chai.request(app)
+            .get('/api/v1/users/logout')
+            .then((res) => {
+                expect(res).have.status(200);
+                expect(res.redirects[0].endsWith('/login'));
+            })
+        });
     })
 })
