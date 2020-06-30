@@ -1,9 +1,8 @@
 import express from 'express';
-import {Chat} from "../../Models";
+import {Chat, databaseChat} from "../../Models";
 export const chatsRouter = express.Router();
 
-chatsRouter.get('/', function(req, res, next) {
-    // TODO: Add connection to mongodb
+chatsRouter.get('/', function(req, res) {
     // TODO: Add auth
     const sender_id = req.query.sender_id;
     const receiver_id = req.query.receiver_id;
@@ -14,7 +13,7 @@ chatsRouter.get('/', function(req, res, next) {
 
     const allMessages= Chat.find({senderUsername: sender_id, receiverUsername: receiver_id});
     allMessages.exec();
-    allMessages.then((chats: any) =>{
+    return allMessages.then((chats: any) =>{
         res.json({
             allMessages: chats
         });
@@ -22,6 +21,16 @@ chatsRouter.get('/', function(req, res, next) {
 
 });
 
-chatsRouter.post('/', function (req, res, next) {
-
+chatsRouter.post('/', function (req, res) {
+    // TODO: Add auth
+    return Chat.create({
+        senderUsername: req.body.sender_username,
+        receiverUsername: req.body.receiver_username,
+        content: req.body.content,
+        time: new Date()
+    }).then((chat:databaseChat) => {
+        return res.json(chat);
+    }).catch(()=>
+        res.status(500).json({message: 'error when try to add entry'})
+    );
 });
