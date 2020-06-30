@@ -1,8 +1,6 @@
 coverage:
   status:
-    patch:
-      default:
-        target: 80%
+    patch: off
     project:
       default:
         # basic
@@ -14,8 +12,6 @@ coverage:
         paths:
           - "src"
         # advanced
-        branches:
-          - master
         if_not_found: success
         if_ci_failed: error
         informational: false
