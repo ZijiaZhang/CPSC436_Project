@@ -88,5 +88,6 @@ describe('Chats', () => {
     after(() =>
     {
         stop_server();
+        delete require.cache[require.resolve( '../../../../src/App' )]
     })
 });
