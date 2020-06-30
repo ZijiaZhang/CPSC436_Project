@@ -1,15 +1,20 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom';
 import CSS from 'csstype';
+import { StaticContext } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 
+type LocationState = {
+    from: Location;
+};
 
 interface LoginPageState {
     username: string,
     password: string,
 }
 
-class Login extends Component<{}, LoginPageState> {
-    constructor(props: {}) {
+class Login extends Component<RouteComponentProps<{}, StaticContext, LocationState>, LoginPageState> {
+    constructor(props: RouteComponentProps<{}, StaticContext, LocationState>) {
         super(props);
 
         this.state = {
@@ -25,6 +30,7 @@ class Login extends Component<{}, LoginPageState> {
         return (
             <div className="col-md-6 col-md-offset-3" style={login_style}>
             <h2>Login</h2>
+        <h2>{new URLSearchParams(this.props.location.search).get("err")}</h2>
             <form name="form" action="/api/v1/users/login" method="post" >
                 <div className='form-group'>
                     <label htmlFor="username">Username</label>

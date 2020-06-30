@@ -47,9 +47,14 @@ app.use('/api', apiRouter);
 
 
 app.get(/^\/(login|register)/, (req,res) =>{
+        let flash = req.flash();
+        if (Object.keys(flash).length !== 0){
+            return res.redirect(req.path + `?err=${flash.error}`)
+        }
         res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 app.get(/^\/(settings|chatRoom|searchPage)?$/, (req,res) =>{
+    
     if(req.user)
         {
             res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
