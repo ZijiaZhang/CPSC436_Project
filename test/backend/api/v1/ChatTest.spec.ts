@@ -7,12 +7,10 @@ chai.use(chaiHttp);
 
 
 describe('Chats', () => {
-    let app: any, stop_server: any;
+    let app: any;
     before(async() => {
         process.env.DB_CONNECTION_STRING = 'mongodb://localhost:27017/test_project';
-        let Server = require('../../../../src/App');
-        app = Server.app;
-        stop_server = Server.stop_server;
+        app = require('../../../../src/App').app;
         await mongoose.connect(process.env.DB_CONNECTION_STRING as string, {useNewUrlParser: true});
         mongoose.connection.on('error', () => expect.fail('Error connecting to db'));
     });
@@ -85,8 +83,5 @@ describe('Chats', () => {
                 })
         });
     });
-    after(() =>
-    {
-        stop_server();
-    })
+
 });
