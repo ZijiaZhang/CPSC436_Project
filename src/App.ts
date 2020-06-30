@@ -27,8 +27,8 @@ app.use(function (req, res)  {
     res.status(404).json({message: 'Requested file not find'})
 });
 console.log(path.join(__dirname, 'public'));
-let server = app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
 
-export function stop(){
-    server.close()
+export function stop_server() {
+    mongoose.disconnect();
 }
