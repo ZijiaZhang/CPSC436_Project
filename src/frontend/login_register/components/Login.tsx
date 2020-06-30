@@ -30,7 +30,6 @@ class Login extends Component<RouteComponentProps<{}, StaticContext, LocationSta
         return (
             <div className="col-md-6 col-md-offset-3" style={login_style}>
             <h2>Login</h2>
-        <h2>{new URLSearchParams(this.props.location.search).get("err")}</h2>
             <form name="form" action="/api/v1/users/login" method="post" >
                 <div className='form-group'>
                     <label htmlFor="username">Username</label>
@@ -44,6 +43,7 @@ class Login extends Component<RouteComponentProps<{}, StaticContext, LocationSta
                     <button className="btn btn-primary" type="submit">Login</button>
                     <Link to="/register" className="btn btn-link">Register</Link>
                 </div>
+                {<div className="help-block">{new URLSearchParams(this.props.location.search).get("err")}</div>}
             </form>
         </div>
         );
