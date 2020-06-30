@@ -7,7 +7,7 @@ describe('Non-Exist-API', () => {
     describe('Query some random endpoint', () => {
         it('it should return 404', (done) => {
             let Server = require("../../src/App");
-            return chai.request(Server.app)
+            chai.request(Server.app)
                 .get('/non-exist-api')
                 .then((res) => {
                     Server.stop_server();
