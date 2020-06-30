@@ -32,7 +32,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 const port = process.env.PORT || 3000;
-const mongoConnectionString = process.env.DB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/project';
+const mongoConnectionString = process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/project';
 
 
 // add these to prevent warnings

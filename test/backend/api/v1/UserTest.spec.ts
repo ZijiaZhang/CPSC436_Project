@@ -7,7 +7,7 @@ describe('User', ()=> {
     describe("Get all users", ()=> {
         let app: any;
         before(async()=> {
-            process.env.DB_CONNECTION_STRING = 'mongodb://127.0.0.1:27017/test';
+            process.env.DB_CONNECTION_STRING = 'mongodb://localhost:27017/test';
             await mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
             mongoose.connection.on('error', ()=> expect.fail("Error connecting to db"));
             const clear_user = User.deleteMany({});
