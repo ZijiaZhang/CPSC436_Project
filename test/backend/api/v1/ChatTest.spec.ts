@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {Chat} from "../../../../src/backend/Models";
+import {Chat, databaseChat} from "../../../../src/backend/Models";
 import mongoose = require("mongoose");
 import chaiHttp = require('chai-http');
 
@@ -55,7 +55,7 @@ describe('Chats', () => {
     });
 
 
-    describe('Get all chats2', () => {
+    describe('Post chats', () => {
         before(async ()=>{
             const clear_chat = Chat.deleteMany({});
             await clear_chat.exec();
@@ -74,7 +74,7 @@ describe('Chats', () => {
                     expect(res.body.receiverUsername).equals('test-user2');
                     expect(res.body.content).equals('test string');
                     return Chat.find({senderUsername: 'test-user1', receiverUsername: 'test-user2'}).exec()
-                        .then( (result: any)=>{
+                        .then( (result: databaseChat[])=>{
                             expect(result.length).equals(1)
                         })
                 })

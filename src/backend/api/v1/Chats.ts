@@ -13,7 +13,7 @@ chatsRouter.get('/', function(req, res) {
 
     const allMessages= Chat.find({senderUsername: sender_id, receiverUsername: receiver_id});
     allMessages.exec();
-    return allMessages.then((chats: any) =>{
+    return allMessages.then((chats: databaseChat[]) =>{
         res.json({
             allMessages: chats
         });
