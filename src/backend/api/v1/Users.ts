@@ -11,7 +11,7 @@ usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/l
     if (req.session) {
         req.session.save((err: any) => {
             if (err) {
-                return next(err);
+                return res.redirect(req.path + `?err=${err.message}`);
             }
             res.redirect('/');
         });
@@ -41,10 +41,7 @@ usersRouter.post('/register', (req, res) => {
 usersRouter.get('/logout', (req, res, next) => {
     req.logout();
     if (req.session) {
-        req.session.save((err) => {
-            if (err) {
-                return next(err);
-            }
+        req.session.save(() => {
             res.redirect('/login');
         });
     } 
