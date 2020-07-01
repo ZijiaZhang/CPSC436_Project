@@ -19,27 +19,24 @@ usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/l
 });
 
 // Post new user
-usersRouter.post('/register', (req, res, next) => {
+usersRouter.post('/register', (req, res) => {
     if (req.body.password !== req.body.pwdConfirm) {
-         return res.json({error: "You did not enter the same password twice!"});
+        return res.redirect(req.path + `?err=Password and confirm password do not match`);
     }
     User.register(new User({ username : req.body.username }), req.body.password, (err: any, user: any) => {
                  if (err) {
-                    return res.send({ error : err.message });
+                    return res.redirect(req.path + `?err=${err.message}`);
                 }
-        
                 passport.authenticate('local')(req, res, () => {
                     if (req.session) {
                         req.session.save((err: any) => {
-                            if (err) {
-                                return next(err);
-                            }
                             res.redirect('/login');
                         });
                     }
                 });
             });
 });
+
 
 usersRouter.get('/logout', (req, res, next) => {
     req.logout();
