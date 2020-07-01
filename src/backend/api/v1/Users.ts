@@ -25,7 +25,7 @@ usersRouter.post('/register', (req, res, next) => {
     }
     User.register(new User({ username : req.body.username }), req.body.password, (err: any, user: any) => {
                  if (err) {
-                  return res.json({ error : err.message });
+                    return res.send({ error : err.message });
                 }
         
                 passport.authenticate('local')(req, res, () => {

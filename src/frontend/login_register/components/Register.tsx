@@ -1,6 +1,12 @@
 import React, {Component} from 'react'
 import { Link, Redirect } from 'react-router-dom';
 import CSS from 'csstype';
+import { StaticContext } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
+
+type LocationState = {
+    from: Location;
+};
 
 
 interface RegisterPageState {
@@ -10,8 +16,8 @@ interface RegisterPageState {
 }
 
 
-class Register extends Component<{}, RegisterPageState> {
-    constructor(props: any) {
+class Register extends Component<RouteComponentProps<{}, StaticContext, LocationState>, RegisterPageState> {
+    constructor(props: RouteComponentProps<{}, StaticContext, LocationState>) {
         super(props);
 
         this.state = {
@@ -45,6 +51,7 @@ class Register extends Component<{}, RegisterPageState> {
                     <button className="btn btn-primary" type="submit">Register</button>
                     <Link to="/login" className="btn btn-link">Cancel</Link>
                 </div>
+                {<div className="help-block">{new URLSearchParams(this.props.location.search).get("err")}</div>}
             </form>
         </div>
         );
