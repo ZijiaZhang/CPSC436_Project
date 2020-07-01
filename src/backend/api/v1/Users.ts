@@ -21,7 +21,7 @@ usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/l
 // Post new user
 usersRouter.post('/register', (req, res, next) => {
     if (req.body.password !== req.body.pwdConfirm) {
-        return res.json({error: "You did not enter the same password twice!"});
+         return res.json({error: "You did not enter the same password twice!"});
     }
     User.register(new User({ username : req.body.username }), req.body.password, (err: any, user: any) => {
                  if (err) {
