@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import {Chat, databaseChat} from "../../../../src/backend/Models";
-import mongoose = require("mongoose");
+const mongoose = require("mongoose");
 import chaiHttp = require('chai-http');
 
 chai.use(chaiHttp);
