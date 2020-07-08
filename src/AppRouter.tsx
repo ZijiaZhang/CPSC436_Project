@@ -32,7 +32,7 @@ class AppRouter extends Component {
 const Home = () => {
     return (
         <div className={'row'}>
-        <NavigationBar avatarPath={'./images/test2.png'} name={'Denise'}/>
+        <NavigationBar/>
         <div className="central-panel">
             <Switch>
                 <Route exact path="/" component={PostPage}/>

@@ -1,79 +1,63 @@
 import React, {Component} from 'react'
 import { Link, Redirect } from 'react-router-dom';
 import CSS from 'csstype';
+import { StaticContext } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
+
+type LocationState = {
+    from: Location;
+};
 
 
 interface RegisterPageState {
-    username: string, 
+    username: string,
+    fullname: string, 
     password: string, 
     pwdConfirm: string,
-    submitted: boolean,
 }
 
 
-class Register extends Component<{}, RegisterPageState> {
-    constructor(props: any) {
+class Register extends Component<RouteComponentProps<{}, StaticContext, LocationState>, RegisterPageState> {
+    constructor(props: RouteComponentProps<{}, StaticContext, LocationState>) {
         super(props);
 
         this.state = {
             username: '',
+            fullname: '',
             password: '',
             pwdConfirm: '',
-            submitted: false,
         };
     }
 
-    handleChange = (e: any) => {
-        const { name, value } = e.target;
-        this.setState({ [name]: value } as RegisterPageState);
-    }
-
-    handleSubmit = (e: any) => {
-        e.preventDefault();
-        this.setState({ submitted: true });
-        const { username, password, pwdConfirm } = this.state;
-        if (password !== pwdConfirm) {
-            alert("Password is not the same as password confirmed!")
-        }
-        if (username && password && pwdConfirm && password === pwdConfirm) {
-            //TODO
-        }
-    }
-
     render() {
-        const { username,password, pwdConfirm, submitted } = this.state;
         const register_style: CSS.Properties = {
             paddingTop: "50px"
          };
         return (
             <div className="col-md-6 col-md-offset-3" style={register_style}>
             <h2>Register</h2>
-            <form name="form" onSubmit={this.handleSubmit}>
-                <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
+            <form name="form" action="/api/v1/users/register" method="post">
+                <div className='form-group'>
                     <label htmlFor="username">Username</label>
-                    <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
-                    {submitted && !username &&
-                        <div className="help-block">Please enter the username</div>
-                    }
+                    <input type="text" className="form-control" name="username" />
                 </div>
-                <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
+                <div className='form-group'>
+                    <label htmlFor="fullname">Fullname</label>
+                    <input type="text" className="form-control" name="fullname" />
+                </div>
+                <div className='form-group'>
                     <label htmlFor="password">Password</label>
-                    <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
-                    {submitted && !password &&
-                        <div className="help-block">Please enter the password</div>
-                    }
+                    <input type="password" className="form-control" name="password"/>
                 </div>
-                <div className={'form-group' + (submitted && !pwdConfirm ? ' has-error' : '')}>
+                <div className='form-group'>
                     <label htmlFor="password">Confirm Password</label>
-                    <input type="password" className="form-control" name="pwdConfirm" value={pwdConfirm} onChange={this.handleChange} />
-                    {submitted && !pwdConfirm &&
-                        <div className="help-block">Please enter the password again</div>
-                    }
+                    <input type="password" className="form-control" name="pwdConfirm" />
                 </div>
                 <div className="form-group">
-                    <button className="btn btn-primary" onSubmit={this.handleSubmit}>Register</button>
+                    <button className="btn btn-primary" type="submit">Register</button>
                     <Link to="/login" className="btn btn-link">Cancel</Link>
                 </div>
+                {<div className="help-block">{new URLSearchParams(this.props.location.search).get("err")}</div>}
             </form>
         </div>
         );

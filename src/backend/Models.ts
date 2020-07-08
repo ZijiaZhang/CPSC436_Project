@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const {Schema, model, ObjectId} = mongoose;
+import passportLocalMongoose from 'passport-local-mongoose';
+
 
 function uniqueValidator(uniqueProperties: any, model: any): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -29,7 +31,8 @@ const userSchema = new Schema({
             message: 'Failed to add user because username {VALUE} is used already.'
         }]
     },
-    password: {type: String, required: true},
+    fullname: {type: String, required: true},
+    password: {type: String},
     gender: String,
     major: String,
     year: String,
@@ -39,7 +42,9 @@ const userSchema = new Schema({
     hiddenPostIds: [ObjectId]
 });
 
-export const User = model('user', userSchema);
+userSchema.plugin(passportLocalMongoose);
+
+export const User = model('User', userSchema);
 
 const postSchema = new Schema({
     time: Date,

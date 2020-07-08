@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.15.0 [2020-07-07]
+### Fixed
+- Add backend for login/register/logout
+
 ## 0.14.0 [2020-07-07]
 ### Fixed
 - Add backend API of chats
