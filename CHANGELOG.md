@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.14.0 [2020-07-07]
+### Fixed
+- Add backend API of chats
+
 ## 0.13.2 [2020-06-30]
 ### Fixed
 - Fixed issue that may cause mocha fail to find some tests

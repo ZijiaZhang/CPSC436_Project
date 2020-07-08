@@ -69,6 +69,13 @@ const postSchema = new Schema({
 });
 export const Post = model('post', postSchema);
 
+export interface databaseChat extends Document{
+    senderUsername: string;
+    receiverUsername: string;
+    content: string;
+    time: Date;
+}
+
 const chatSchema = new Schema({
     senderUsername: {type: String, required: true,},
     receiverUsername: {type: String, required: true,},

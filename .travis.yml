@@ -17,4 +17,7 @@ script:
   - npm install codecov -g
   - npm run test
 
-after_success: codecov
+after_success: codecov -f coverage/*.json
+
+services:
+  - mongodb

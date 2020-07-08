@@ -27,4 +27,8 @@ app.use(function (req, res)  {
     res.status(404).json({message: 'Requested file not find'})
 });
 console.log(path.join(__dirname, 'public'));
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+let server = app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+
+export function stop(){
+    server.close()
+}
