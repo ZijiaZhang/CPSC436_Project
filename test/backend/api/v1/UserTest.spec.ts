@@ -17,7 +17,7 @@ describe('User', ()=> {
 
         it('register one test user', async() => {
             return chai.request(app)
-            .post('/api/v1/users/register').send({username: "test", password: "test", pwdConfirm: "test"})
+            .post('/api/v1/users/register').send({username: "test",fullname: "test", password: "test", pwdConfirm: "test"})
             .then((res) => {
                 expect(res).have.status(200);
                 expect(res.redirects[0].endsWith('/login'));
@@ -26,15 +26,24 @@ describe('User', ()=> {
 
         it('register one test user already exists', async() => {
             return chai.request(app)
-            .post('/api/v1/users/register').send({username: "test", password: "test", pwdConfirm: "test"})
+            .post('/api/v1/users/register').send({username: "test", fullname: "test", password: "test", pwdConfirm: "test"})
             .then((res) => {
                 expect(res.redirects[0].endsWith('/register?err=A%20user%20with%20the%20given%20username%20is%20already%20registered'));
             })
         });
 
+        it('register one test user no full name given', async() => {
+            return chai.request(app)
+            .post('/api/v1/users/register').send({username: "test",fullname: null, password: "test", pwdConfirm: "test"})
+            .then((res) => {
+                expect(res).have.status(200);
+                expect(res.redirects[0].endsWith('/register?err=No%20fullname%20was%20given'));
+            })
+        });
+
         it('register one test user Password Confirm Password not match', async() => {
             return chai.request(app)
-            .post('/api/v1/users/register').send({username: "test", password: "test", pwdConfirm: "32132"})
+            .post('/api/v1/users/register').send({username: "test",fullname: "test", password: "test", pwdConfirm: "32132"})
             .then((res) => {
                 expect(res.redirects[0].endsWith('/register?err=Password%20and%20confirm%20password%20do%20not%20match'));
             })

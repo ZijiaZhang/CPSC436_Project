@@ -36,7 +36,7 @@ class NavigationBar extends React.Component<{}, IUserProps> {
 				method: 'GET'
 			});
             let data = await response.json();
-            let name = data.username;
+            let name = data.fullname;
             this.setState({name});
             console.log(name);
 		} catch(e) {

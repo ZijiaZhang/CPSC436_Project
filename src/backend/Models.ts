@@ -31,6 +31,7 @@ const userSchema = new Schema({
             message: 'Failed to add user because username {VALUE} is used already.'
         }]
     },
+    fullname: {type: String, required: true},
     password: {type: String},
     gender: String,
     major: String,

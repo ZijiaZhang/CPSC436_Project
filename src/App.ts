@@ -53,6 +53,7 @@ app.get(/^\/(login|register)/, (req,res) =>{
         }
         res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
+
 app.get(/^\/(settings|chatRoom|searchPage)?$/, (req,res) =>{
     
     if(req.user)

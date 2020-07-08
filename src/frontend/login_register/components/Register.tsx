@@ -3,7 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 import CSS from 'csstype';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import axios from "axios";
 
 type LocationState = {
     from: Location;
@@ -11,7 +10,8 @@ type LocationState = {
 
 
 interface RegisterPageState {
-    username: string, 
+    username: string,
+    fullname: string, 
     password: string, 
     pwdConfirm: string,
 }
@@ -23,6 +23,7 @@ class Register extends Component<RouteComponentProps<{}, StaticContext, Location
 
         this.state = {
             username: '',
+            fullname: '',
             password: '',
             pwdConfirm: '',
         };
@@ -39,6 +40,10 @@ class Register extends Component<RouteComponentProps<{}, StaticContext, Location
                 <div className='form-group'>
                     <label htmlFor="username">Username</label>
                     <input type="text" className="form-control" name="username" />
+                </div>
+                <div className='form-group'>
+                    <label htmlFor="fullname">Fullname</label>
+                    <input type="text" className="form-control" name="fullname" />
                 </div>
                 <div className='form-group'>
                     <label htmlFor="password">Password</label>

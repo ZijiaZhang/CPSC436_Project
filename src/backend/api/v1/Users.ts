@@ -23,7 +23,10 @@ usersRouter.post('/register', (req, res) => {
     if (req.body.password !== req.body.pwdConfirm) {
         return res.redirect(req.path + `?err=Password and confirm password do not match`);
     }
-    User.register(new User({ username : req.body.username }), req.body.password, (err: any, user: any) => {
+    if (!req.body.fullname) {
+        return res.redirect(req.path + `?err=No fullname was given`);
+    }
+    User.register(new User({ username : req.body.username, fullname: req.body.fullname }), req.body.password, (err: any, user: any) => {
                  if (err) {
                     return res.redirect(req.path + `?err=${err.message}`);
                 }
