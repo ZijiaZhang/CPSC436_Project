@@ -1,5 +1,50 @@
 import {combineReducers} from 'redux';
-import {Comment, IPost} from "../components/PostBlock";
+import {IPost} from "../components/PostBlock";
+import {IUser} from "../components/UserBlock";
+
+const userList: IUser[] = [
+    {
+        name: 'Will',
+        avatarPath: './images/dora.png',
+        gender: "male",
+        department: "Science",
+        major: "Computer Science",
+        level: "Bachelor",
+        interests: ['music', 'basketball', 'math'],
+        friends: ['Denise'],
+    },
+    {
+        name: 'Gary',
+        avatarPath: './images/test.png',
+        gender: "male",
+        department: "Computer Science",
+        major: "Computer Science",
+        level: "Bachelor",
+        interests: ['music', 'basketball', 'math', 'games'],
+        friends: ['Rommel', 'Denise', 'Will'],
+
+    },
+    {
+        name: 'Denise',
+        avatarPath: './images/test2.png',
+        gender: "female",
+        department: "Science",
+        major: "HON Computer Science",
+        level: "Bachelor",
+        interests: ['music', 'reading'],
+        friends: ['Gary', 'Will'],
+    },
+    {
+        name: 'Rommel',
+        avatarPath: './images/1.ico',
+        gender: "male",
+        department: "Science",
+        major: "CMJ Computer Science And Math",
+        level: "Bachelor",
+        interests: ['math', 'coding', 'games'],
+        friends: ['Gary', 'Denise'],
+    }
+];
 
 const postList: IPost[] =  [
     {
@@ -148,7 +193,12 @@ const postListReducer = (posts = postList, action: { type: string; modification:
     }
 };
 
+const userListReducer = (users = userList, actions: any) => {
+    return users;
+};
+
 export default combineReducers({
     postList: postListReducer,
-    inputDraft: inputDraftReducer
+    inputDraft: inputDraftReducer,
+    userList: userListReducer
 });

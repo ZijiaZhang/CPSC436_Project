@@ -8,7 +8,6 @@ export class Tag extends React.Component<ITagProps, {}> {
     render() {
         return <div className={'tag'}>
             <span>{this.props.content}</span>
-            <span className="close">&times;</span>
         </div>;
     }
 }

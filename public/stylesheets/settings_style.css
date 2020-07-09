@@ -7,7 +7,7 @@ h1 {
 }
 
 .settings-form {
-    border-style: outset;
+    border: none;
     border-radius: 6px;
     padding: 1%;
     margin: 1%;
@@ -21,11 +21,12 @@ h1 {
 .settings-item-label {
     padding: 1%;
     margin: 1%;
-    width: 6%;
+    width: 16%;
     display: inline-block;
+    margin-right: 20px;
 }
 
-.settings.item-input {
+.settings-item-input {
     padding: 1%;
     margin: 1%;
     width: 50%;
@@ -34,20 +35,21 @@ h1 {
 
 .tag-container {
     border-style: solid;
-    border-radius: 1px;
-    height: 200px;
-    width: 30%;
-    margin-right: 6px;
+    border-radius: 10px;
+    height: 120px;
+    width: 250px;
     display: inline-block;
+    background: skyblue;
 }
 
 .tag {
-    border-style: solid;
-    border-radius: 1px;
-    border-color: grey;
     padding: 5px;
     margin: 4px;
     display: inline-block;
+    background: honeydew;
+    box-shadow: 2px 2px 2px 2px lightblue;
+    color: black;
+    font-weight: bold;
 }
 
 .settings-save-button {
@@ -55,10 +57,233 @@ h1 {
     margin: 1%;
 }
 
-.height-md {
-    height: 40%
+.height-lg {
+    background: #f1f1f1;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    position: relative;
+    overflow: auto;
+    height: 100%;
+}
+.user-profile-page{
+    border-radius: 10px;
+    border: 10px;
+    margin: 10px auto;
+    background: white;
+    box-shadow: 5px 3px 5px 3px lightgray;
+    width: 60%;
+    padding: 6px 3px 6px 4px;
+}
+.user-profile-page-avatar-block{
+    display: inline-block;
+    margin: 10px;
+    vertical-align: top;
+}
+.user-avatar{
+    height: 200px;
+    width: 200px;
+}
+.profile-listed-detail-left-block{
+    display: inline-block;
+    margin: 10px;
+    width: 300px;
+    vertical-align: top;
+}
+.profile-detail-user-name{
+    color: black;
+    font-size: 18pt;
+    font-weight: bold;
+}
+.profile-detail-user-department{
+    font-size: 12pt;
+    color: dimgray;
+}
+.profile-detail-user-major{
+    font-size: 12pt;
+    color: dimgray;
 }
 
-.height-lg {
-    height: 100%;
+.profile-listed-detail-right-block{
+    display: inline-block;
+    margin: 10px;
+    position: relative;
+    left: 40px;
+}
+.profile-detail-user-interests{
+
+}
+.user-interests-block-title{
+    background: skyblue;
+    color: #1031ff !important;
+    font-size: 13pt;
+    font-weight: bold;
+    padding: 5px 5px 5px 10px;
+    border-radius: 5px;
+}
+.user-interests-block-content{
+
+}
+.profile-interaction-button-list{
+    position: relative;
+    top: 30px;
+}
+.profile-interaction-button{
+    background: royalblue;
+    border-radius: 2px;
+    border: none;
+    margin-right: 5px;
+    font-size: 13pt;
+    color: honeydew;
+}
+.profile-interaction-button:hover{
+    color: white;
+    box-shadow: 2px 1px 1px 2px gray;
+}
+
+.profile-detail-user-recent-posts{
+    display: inline-block;
+    width: 60%;
+}
+
+.profile-detail-user-friend-list{
+    display: inline-block;
+    width: 25%;
+    margin-left: 20px;
+    vertical-align: top;
+}
+
+.settings-profile-photo-block{
+    margin-left: 5px;
+    margin-top: 5px;
+    vertical-align: top;
+    position: relative;
+    top: 0;
+    display: inline-block;
+}
+.settings-post-block{
+    border-radius: 10px;
+    border: 10px;
+    margin: 10px;
+    background: skyblue;
+    box-shadow: 5px 3px 5px 3px lightgray;
+    width: 100%;
+    padding: 6px 3px 6px 4px;
+}
+.settings-post-time{
+    font-size: 10pt;
+    margin: 0;
+    display: inline-block;
+    padding-left: 10px;
+    color: dimgray;
+    float: right;
+    font-weight: 600;
+}
+.settings-post-detail-block{
+    padding-left: 10px;
+    display: inline-block;
+    width: calc(100% - 100px);
+}
+.settings-post-user-name{
+    font-size: 16pt;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+.settings-post-detail{
+    word-wrap: break-word;
+    margin-top: 3px;
+    margin-bottom: 8px;
+    line-height: 24px;
+    font-size: 12pt;
+    color: black;
+    font-weight: 500;
+}
+.settings-profile-photo{
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+.settings-inserted-image{
+    margin: 20px 10px 10px 10px;
+    width: 200px;
+}
+.settings-user-block{
+    border-radius: 10px;
+    border: 10px;
+    margin: 10px;
+    background: skyblue;
+    box-shadow: 5px 3px 5px 3px lightgray;
+    width: 120%;
+    padding: 6px 3px 6px 4px;
+}
+.settings-user-block-user-info{
+    margin: 5px;
+    width: 60%;
+    display: inline-block;
+}
+.settings-user-block-name{
+    font-weight: bold;
+    font-size: 11pt;
+    color: #1031ff !important;
+    margin: 5px;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.settings-user-block-interactions{
+    display: inline-block;
+    margin: 5px;
+    float: right;
+}
+.settings-user-block-avatar{
+    width: 30px;
+    height: 30px;
+    vertical-align: top;
+    display: inline-block;
+}
+.settings-user-block-message-button{
+    width: 50px;
+    font-size: 10pt;
+}
+.profile-block-title{
+    display: inline-block;
+    font-size: 14pt;
+    margin: 5px 10px 5px 20px;
+    color: #1031ff !important;
+    font-weight: bolder;
+}
+
+.user-profile-editor{
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    border: 1px solid #ccc;
+    background: #fff;
+    WebkitOverflowScrolling: touch;
+    borderRadius: 4px;
+    outline: none;
+    padding: 20px;
+    width: 1200px;
+    height: 600px;
+    margin: auto;
+}
+.settings-tag-container{
+    width: 52%;
+    display: inline-block;
+    padding: 1%;
+}
+.profile-settings-buttons-block{
+    top: 20px;
+    position: relative;
+    margin: 20px;
+}
+.profile-settings-button{
+    margin-right: 10px;
 }

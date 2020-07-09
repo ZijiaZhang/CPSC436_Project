@@ -1,15 +1,29 @@
 import * as React from 'react';
-import {AcademicYear, GenderOption, SettingsForm} from "./SettingsForm";
-import {SettingsSaveButton} from "./SettingsSaveButton";
+import UserProfile from "./UserProfile";
+import {connect, Provider} from "react-redux";
+import {createStore} from "redux";
+import reducers from "../reducers";
+
+const user = {
+    name: 'Denise',
+    avatarPath: './images/test2.png',
+    gender: "female",
+    department: "Science",
+    major: "HON Computer Science",
+    level: "Bachelor",
+    interests: ['music', 'reading'],
+    friends: ['Gary', 'Will'],
+};
 
 const Settings = () => {
     return (
-        <div className={'height-lg'}>
-            <h1>Settings</h1>
-            <SettingsForm name={'Denise'} gender={GenderOption.RatherNotSay} major={'Computer Science'} year={AcademicYear.Three} chosenTags={['music', 'basketball', 'math']} tags={['games', 'volleyball', 'reading']}/>
-            <SettingsSaveButton/>
-        </div>
+        <Provider store={createStore(reducers)}>
+            <div className={'height-lg'}>
+                <UserProfile />
+            </div>
+        </Provider>
     );
 };
+
 
 export default Settings;

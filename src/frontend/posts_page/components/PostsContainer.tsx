@@ -6,7 +6,7 @@ interface IPostsContainerProps {
   postList: IPost[];
 }
 
-class PostsLayout extends React.Component<IPostsContainerProps, {}> {
+class PostsContainer extends React.Component<IPostsContainerProps, {}> {
   constructor(props: IPostsContainerProps) {
     super(props);
   }
@@ -28,5 +28,5 @@ const mapStateToProps = (state: { postList: IPost[]; }) => { //name is by conven
   return { postList: state.postList }; //now it will appear as props
 };
 
-export default connect(mapStateToProps)(PostsLayout);
+export default connect(mapStateToProps)(PostsContainer);
 
