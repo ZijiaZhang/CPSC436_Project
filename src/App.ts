@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 // import passport and flash here
 import passport from 'passport';
+import {User} from "./backend/models/UserModel";
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require("connect-flash");
 
@@ -26,7 +27,6 @@ app.use(passport.initialize());
 app.use(flash());
 app.use(passport.session());
 // import User from model and apply passport library functions
-const User = require('./backend/Models').User;
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

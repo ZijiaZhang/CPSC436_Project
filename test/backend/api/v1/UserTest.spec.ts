@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {User} from '../../../../src/backend/Models';
+import {User} from '../../../../src/backend/shared/Models';
 const mongoose = require('mongoose');
 import chaiHttp = require("chai-http");
 

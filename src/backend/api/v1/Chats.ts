@@ -1,11 +1,11 @@
 import express from 'express';
-import {Chat, databaseChat} from "../../Models";
+import {Chat, IChat} from "../../models/ChatModel";
 export const chatsRouter = express.Router();
 
 chatsRouter.get('/', function(req, res) {
     // TODO: Add auth
-    const sender_id = req.query.sender_id;
-    const receiver_id = req.query.receiver_id;
+    const sender_id = req.query.sender_id as string;
+    const receiver_id = req.query.receiver_id as string;
     if (!sender_id || !receiver_id){
         res.status(400).json({message: 'sender_id or receiver_id not found'});
         return;
@@ -13,7 +13,7 @@ chatsRouter.get('/', function(req, res) {
 
     const allMessages= Chat.find({senderUsername: sender_id, receiverUsername: receiver_id});
     allMessages.exec();
-    return allMessages.then((chats: databaseChat[]) =>{
+    return allMessages.then((chats: IChat[]) =>{
         res.json({
             allMessages: chats
         });
@@ -28,7 +28,7 @@ chatsRouter.post('/', function (req, res) {
         receiverUsername: req.body.receiver_username,
         content: req.body.content,
         time: new Date()
-    }).then((chat:databaseChat) => {
+    }).then((chat: IChat) => {
         return res.json(chat);
     }).catch(()=>
         res.status(500).json({message: 'error when try to add entry'})
