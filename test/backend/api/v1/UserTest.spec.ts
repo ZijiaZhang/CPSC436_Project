@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
-import {User} from '../../../../src/backend/shared/Models';
 const mongoose = require('mongoose');
 import chaiHttp = require("chai-http");
+import {User} from "../../../../src/backend/models/UserModel";
 
 describe('User', ()=> {
     describe("Get all users", ()=> {
