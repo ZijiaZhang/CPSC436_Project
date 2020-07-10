@@ -100,5 +100,14 @@ describe('User', ()=> {
                     expect(res).have.status(400);
                 })
         });
+
+        it('update user with year', async() => {
+            return chai.request(app)
+                .patch('/api/v1/users/test').send({year: 'master'})
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.body).to.include({username: "test", fullname: 'newFullname',  year: 'master'})
+                })
+        });
     })
 })
