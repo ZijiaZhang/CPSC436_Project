@@ -284,7 +284,7 @@
     margin-right: 10px;
 }
 .search-block{
-    background: #0e2473;
+    background:#0e2473;
     height: 80px;
     font-weight: bold;
     font-family: Arial, sans-serif;
@@ -308,7 +308,7 @@
 }
 .nav-button-to-some-page{
     display: inline-block;
-    background: royalblue;
+    background:#0e2473;
     color: white;
     border: none;
     margin: 3px 10px;
@@ -316,7 +316,7 @@
     height: 30px;
 }
 .nav-button-to-some-page:hover{
-    background: #2140ff !important;
+    background: royalblue !important;
 }
 .search-block-search-filters{
     background: white;
