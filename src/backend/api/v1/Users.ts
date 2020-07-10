@@ -49,3 +49,20 @@ usersRouter.get('/logout', (req, res, next) => {
         });
     } 
 });
+
+usersRouter.patch('/:username', (req, res, next) => {
+    const {username} = req.params;
+    const newProperties = req.body;
+    const query = User.findOneAndUpdate({username: username}, newProperties, {new: true});
+    query.exec()
+        .then((user: any) => {
+            if (user === null) {
+                res.status(400).json({message: `Cannot find user with username ${username}`});
+            } else{
+                res.json(user);
+            }
+        })
+        .catch(() => {
+            res.status(500).json({message: `Failed to update user with username ${username}`});
+        })
+});

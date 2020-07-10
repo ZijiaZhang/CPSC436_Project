@@ -83,5 +83,31 @@ describe('User', ()=> {
                 expect(res.redirects[0].endsWith('/login'));
             })
         });
+
+        it('update user', async() => {
+            return chai.request(app)
+                .patch('/api/v1/users/test').send({fullname: 'newFullname'})
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.body).to.include({username: "test", fullname: 'newFullname'})
+                })
+        });
+
+        it('update user with wrong username', async() => {
+            return chai.request(app)
+                .patch('/api/v1/users/randomUsername').send({fullname: 'newFullname'})
+                .then((res) => {
+                    expect(res).have.status(400);
+                })
+        });
+
+        it('update user with year', async() => {
+            return chai.request(app)
+                .patch('/api/v1/users/test').send({year: 'master'})
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.body).to.include({username: "test", fullname: 'newFullname',  year: 'master'})
+                })
+        });
     })
 })
