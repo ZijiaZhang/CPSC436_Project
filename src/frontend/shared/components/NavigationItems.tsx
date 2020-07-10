@@ -10,8 +10,8 @@ class NavigationItems extends React.Component<IUserProps, {}> {
             <a><img src='./images/test.png' alt="img not found" width="100" height="100"/><p className="username-display">{"   " + this.props.name}</p></a>
             <Link to="/" className="glyphicon glyphicon-home">Home</Link>
             <Link to="/chatRoom" className="glyphicon glyphicon-envelope">Chats</Link>
-            <a href="/api/v1/users/logout" className="glyphicon glyphicon-log-out">Logout</a>
             <Link to="/settings" className="glyphicon glyphicon-cog">Profile</Link>
+            <a href="/api/v1/users/logout" className="glyphicon glyphicon-log-out">Logout</a>
         </div>
         );
     }
