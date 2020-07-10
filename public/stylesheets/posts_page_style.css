@@ -62,11 +62,14 @@
 }
 .like-button{
     margin-right: 10px;
+    border-radius: 3px;
 }
 .comment-button{
     margin-right: 10px;
+    border-radius: 3px;
 }
 .share-button{
+    border-radius: 3px;
     margin-right: 10px
 }
 .post-drop-down-block{

@@ -93,9 +93,12 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
                             v
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item className="post-drop-down-button">Save Post</Dropdown.Item>
-                            <Dropdown.Item className="post-drop-down-button" onClick={() => this.hidePost(this.props.post)}>Hide Post</Dropdown.Item>
-                            <Dropdown.Item className="post-drop-down-button">Report Post</Dropdown.Item>
+                            <Dropdown.Item className="profile-drop-down-button">
+                                <span className={'fa fa-bookmark-o'} /> Save Post</Dropdown.Item>
+                            <Dropdown.Item className="profile-drop-down-button" onClick={() => this.hidePost(this.props.post)}>
+                                <span className={'fa fa-times-rectangle-o'} /> Hide Post</Dropdown.Item>
+                            <Dropdown.Item className="profile-drop-down-button">
+                                <span className={'fa fa-exclamation-triangle'} /> Report Post</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
@@ -106,9 +109,12 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
                     {this.props.post.image ? <img className="inserted-image" src={this.props.post.image} alt={''}/>: ''}
                 </div>
                 <div className="interaction-buttons">
-                    <button className="like-button" onClick={() => this.markLike(this.props.post)}>Like {this.props.post.numLikes}</button>
-                    <button className="comment-button" onClick={this.displayComment}>Comment {this.props.post.comments.length}</button>
-                    <button className="share-button">Share</button>
+                    <button className="like-button" onClick={() => this.markLike(this.props.post)}>
+                        <span className={'fa fa-thumbs-o-up'} /> Like {this.props.post.numLikes}</button>
+                    <button className="comment-button" onClick={this.displayComment}>
+                        <span className={'fa fa-commenting-o'} /> Comment {this.props.post.comments.length}</button>
+                    <button className="share-button">
+                        <span className={'fa fa-share-square-o'} /> Share</button>
                 </div>
                 <div style={this.state.showComments ? {display: 'block'} : {display: 'none'}}>
                     <CommentsContainer comments={this.props.post.comments}/>

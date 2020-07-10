@@ -246,10 +246,6 @@ h1 {
     vertical-align: top;
     display: inline-block;
 }
-.settings-user-block-message-button{
-    width: 50px;
-    font-size: 10pt;
-}
 .profile-block-title{
     display: inline-block;
     font-size: 14pt;
@@ -257,7 +253,6 @@ h1 {
     color: #1031ff !important;
     font-weight: bolder;
 }
-
 .user-profile-editor{
     position: absolute;
     top: 40px;
@@ -286,4 +281,33 @@ h1 {
 }
 .profile-settings-button{
     margin-right: 10px;
+}
+#profile-button-more-icon{
+    position: relative;
+    bottom: 3px;
+    margin-left: 5px;
+}
+.profile-interaction-drop-down-buttons{
+    display: none;
+    position: absolute;
+    background: white;
+    z-index: 1;
+    box-shadow: 0 8px 16px 0 lightgray;
+}
+.profile-drop-down-button{
+    display: block;
+    text-align: left;
+    margin: 5px;
+}
+.profile-drop-down-button:hover{
+    text-decoration: none;
+}
+.post-drop-down-button{
+    text-align: left;
+    margin: 5px;
+    font-size: 12pt;
+}
+.post-drop-down-button:hover{
+    color: #1031ff !important;
+    background: none;
 }

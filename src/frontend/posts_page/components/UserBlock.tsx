@@ -1,5 +1,6 @@
 import React from "react";
 import {IUserProps} from "../../shared/interfaces/IUserProps";
+import Dropdown from "react-bootstrap/Dropdown";
 
 export interface IUser extends IUserProps{
     name: string,
@@ -40,8 +41,9 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
         const iconStyle = {margin: "0px 5px 0px 0px"};
         const friendRelatedButton = this.props.registeredUser.friends.includes(this.props.displayedUser.name) ?
             <button className="user-block-friends-button" onClick={this.deleteFriend}>
-                <span className="fa fa-check" style={iconStyle}/>Friends</button> :
-            <button className="user-block-stranger-button" onClick={this.addFriend}>Add Friend</button>;
+                <span className="fa fa-check" style={iconStyle}/> Friends</button> :
+            <button className="user-block-stranger-button" onClick={this.addFriend}>
+                <span className={'glyphicon glyphicon-user'} /> Add Friend</button>;
         return (
             <div className="post-block">
                 <div className="user-block-user-info">
@@ -54,7 +56,8 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
                 </div>
                 <div className="user-block-interactions">
                     {friendRelatedButton}
-                    <button className="user-block-message-button">Send Message</button>
+                    <button className="user-block-message-button">
+                        <span className={'fa fa-comments-o'}/> Send Message</button>
                 </div>
             </div>
         );

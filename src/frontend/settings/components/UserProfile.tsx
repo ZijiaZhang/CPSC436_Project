@@ -13,7 +13,8 @@ interface IUserProfileProps {
 
 interface IUserProfileState {
     opened: boolean,
-    savedUserInfo: IUser
+    isUser: boolean,
+    dropDown: boolean,
 }
 
 const samplePostList: IPost[] = [{
@@ -87,26 +88,35 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
         super(props);
         this.state = {
             opened: false,
-            savedUserInfo: {
-                name: '',
-                avatarPath: '',
-                gender: "",
-                department: "",
-                major: "",
-                level: "",
-                interests: [],
-                friends: [],
-            },
+            isUser: false,
+            dropDown: false,
         }
     }
 
-    startEditProfile = (userInfo: IUser) => {
-        this.setState({savedUserInfo: Object.create(userInfo)});
+    startEditProfile = () => {
         this.openCloseEditor();
     };
 
     openCloseEditor = () => {
         this.setState({opened: !this.state.opened});
+    };
+
+    showDropDown = () => {
+        this.setState({dropDown: true})
+    };
+
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    }
+
+    handleClickOutside = (event: any) => {
+        if (!event.target.matches('#profile-interaction-button-with-drop-down') && !event.target.matches('.profile-drop-down-button')) {
+            this.setState({dropDown: false})
+        }
+    };
+
+    viewAllPosts = () => {
+        console.log('view all posts')
     };
 
     render() {
@@ -126,8 +136,20 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                     <p className="profile-detail-user-department">{this.props.userInfo.name}, in {this.props.userInfo.level} of {this.props.userInfo.department} program</p>
                     <p className="profile-detail-user-major">Major in {this.props.userInfo.major}</p>
                     <div className="profile-interaction-button-list">
-                        <button className="profile-interaction-button" onClick={() => this.startEditProfile(this.props.userInfo)}>Edit Profile</button>
-                        <button className="profile-interaction-button">More</button>
+                        <button className="profile-interaction-button" onClick={this.startEditProfile}>
+                            <span className={'fa fa-edit'}/> Edit Profile</button>
+                        <button className="profile-interaction-button" id="profile-interaction-button-with-drop-down" onClick={this.showDropDown}>
+                            More
+                            <span className={'fa fa-sort-down'} id="profile-button-more-icon"/>
+                            <div className="profile-interaction-drop-down-buttons" style={this.state.dropDown ? {display: 'block'} : {display: 'none'}}>
+                                <a className="profile-drop-down-button" onClick={this.viewAllPosts} >
+                                    <span className={'glyphicon glyphicon-list-alt'} /> View All Posts</a>
+                                <a className="profile-drop-down-button">
+                                    <span className={'glyphicon glyphicon-user'}/> View All Friends</a>
+                                <a className="profile-drop-down-button">
+                                    <span className={'fa fa-comments-o'}/> Send Message</a>
+                            </div>
+                        </button>
                     </div>
                 </div>
                 <div className="profile-listed-detail-right-block">
