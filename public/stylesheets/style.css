@@ -4,8 +4,13 @@ header {
   background-color: #0e2473;
   color: #e9e1e1;
   padding: 20px;
-  font: sans-serif;
+  font: Arial;
   z-index: 1;
+  background-image: url('../images/background.jpg') ;
+  height: 300px;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; 
 }
 
 body {
