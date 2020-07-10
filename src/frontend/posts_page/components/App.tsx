@@ -1,15 +1,24 @@
-import PostsContainer from './PostsContainer';
 import React from "react";
 import reducers from '../reducers';
 import {createStore} from "redux";
 import {Provider} from "react-redux";
-import InputBlock from "./InputBlock";
-const PostPage = () => {   //this is how you make a functional component
+import HomePage from "./HomePage";
+
+const user = {
+    name: 'Denise',
+    avatarPath: './images/test2.png',
+    gender: "female",
+    department: "Science",
+    major: "HON Computer Science",
+    level: "Bachelor",
+    interests: ['music', 'reading'],
+    friends: ['Gary', 'Will'],
+};
+const PostPage = () => {
     return (
-    <div id="post-blog-page">
+    <div>
         <Provider store={createStore(reducers)}>
-            <InputBlock />
-            <PostsContainer />
+            <HomePage user={user} />
         </Provider>
     </div>
   );

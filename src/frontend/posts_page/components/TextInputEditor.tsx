@@ -6,13 +6,15 @@ import VisibilitySetting from "./VisibilitySetting";
 import CreatableSelect from 'react-select/creatable';
 import TextEditorSetting from "./TextEditorSetting";
 import Modal from "react-modal";
+import {IUser} from "./UserBlock";
 
 interface ITextareaProps {
     addPost: any,
     saveInputDraft: any,
     inputDraft: string,
     opened: boolean,
-    postList: IPost[]
+    postList: IPost[],
+    user: IUser
 }
 
 interface ITextareaState {
@@ -47,8 +49,8 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             for (let index in this.state.selectedTags) {
                 tags.push(this.state.selectedTags[index].value);
             }
-            let newPost: IPost = {id: this.props.postList.length.toString(), time: date + ' ' + time, name:'N/A', detail: this.state.message,
-                avatarPath: './images/nobu!.png', image: '', numLikes: 0, comments: [], type: 'post',
+            let newPost: IPost = {id: this.props.postList.length.toString(), time: date + ' ' + time, name: this.props.user.name, detail: this.state.message,
+                avatarPath: this.props.user.avatarPath, image: '', numLikes: 0, comments: [], type: 'post',
                 visibility: this.state.visibility, tags: tags, liked: false, hidden: false};
             this.props.addPost(newPost);
             this.setState({message: ''});

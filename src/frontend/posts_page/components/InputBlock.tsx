@@ -2,11 +2,13 @@ import React from "react";
 import {connect} from "react-redux";
 import {addPost, saveInputDraft} from "../actions";
 import TextInputEditor from "./TextInputEditor";
+import {IUser} from "./UserBlock";
 
 interface IInputBlockProps {
     addPost: any,
     saveInputDraft: any,
-    inputDraft: string
+    inputDraft: string,
+    user: IUser
 }
 
 interface IInputBlockState {
@@ -36,10 +38,10 @@ class InputBlock extends React.Component<IInputBlockProps, IInputBlockState> {
         ];
         return(<div className="post-block">
             <div id="new-post-editor">
-                <img src={"./images/nobu!.png"} alt="ProfilePhoto" className="post-profile-photo" id="input-bar-user-avatar"/>
+                <img src={this.props.user.avatarPath} alt="ProfilePhoto" className="post-profile-photo" id="input-bar-user-avatar"/>
                 <input id="text-area" type="submit" value="Type your message here" onClick={this.startEditor} />
             </div>
-            <TextInputEditor opened={this.state.editing}/>
+            <TextInputEditor user={this.props.user} opened={this.state.editing}/>
         </div>);
     }
 }

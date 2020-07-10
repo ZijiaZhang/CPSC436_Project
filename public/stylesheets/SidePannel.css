@@ -14,7 +14,7 @@
 }
 
 .sidebar a {
-  padding: 0 30px 60px 30px;
+  margin: 0 30px 60px 30px;
   text-decoration: none;
   font-size: 25px;
   color: #e9e1e1;
@@ -67,15 +67,21 @@
 .myFriend p {
   text-align: center;
   font-size: 30px;
+  padding-bottom: 20px;
 }
 .myFriend li {
-  padding: 10px 40px 30px 20px;
+  padding: 10px 20px 10px 10px;
   text-decoration: none;
   font-size: 20px;
   color: #e9e1e1;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  border-radius: 5px;
+  margin: 15px 10px 15px 10px;
+}
+.myFriend li:hover {
+  background: royalblue;
+  color: white;
 }
 
 .myFriend li span {
@@ -99,6 +105,7 @@
 
 .right_collapse {
   transition: 0.3s ease-in-out;
+  width: 200px;
 }
 
 .username-display {

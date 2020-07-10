@@ -9,7 +9,6 @@ import ChatRoom from "./frontend/chat_room/components/App";
 import Settings from "./frontend/settings/components/App";
 import NavigationBar from "./frontend/shared/components/NavigationBar";
 import FriendsPanel from "./frontend/shared/components/FriendsPanel";
-import SearchPage from "./frontend/search_page/components/App";
 import Login from "./frontend/login_register/components/Login";
 import Register from "./frontend/login_register/components/Register"
 
@@ -23,7 +22,6 @@ class AppRouter extends Component {
                 <Route exact path="/" component={Home}/>
                 <Route path="/settings" component={Home}/>
                 <Route path="/chatRoom" component={Home}/>
-                <Route path="/searchPage" component={Home}/>
             </Switch>
         );
     }
@@ -38,7 +36,6 @@ const Home = () => {
                 <Route exact path="/" component={PostPage}/>
                 <Route path="/settings" component={Settings} />
                 <Route path="/chatRoom" component={ChatRoom} />
-                <Route path="/searchPage" component={SearchPage} />
             </Switch>
         </div>
         <FriendsPanel friends={[

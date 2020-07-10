@@ -2,6 +2,15 @@
 
 All changes will be logged here
 
+## 0.16.0 [2020-07-07]
+### Updated Frontend
+- Brand new Profile Page 
+- Posts Page with friend list page
+- Search Bar and sub-nav-bar under posts page
+### Deleted
+- Search Page 
+
+
 ## 0.15.1 [2020-07-09]
 ### Added
 - Add patch api for UserRouter
