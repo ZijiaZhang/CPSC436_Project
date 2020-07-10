@@ -21,7 +21,7 @@ class ProfileFriendBlock extends React.Component<IProfileFriendBlockProps, {}>{
                 <div className="settings-user-block">
                     <div className="settings-user-block-user-info">
                         <img className="settings-user-block-avatar" src={this.props.friend.avatarPath} alt="img not found"/>
-                        <p className="settings-user-block-name">{this.props.friend.name}</p>
+                        <p className="settings-user-block-name">{this.props.friend.fullname}</p>
                     </div>
                     <div className="settings-user-block-interactions">
                         <Dropdown>

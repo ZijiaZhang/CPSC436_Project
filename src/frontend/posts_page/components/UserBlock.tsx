@@ -2,14 +2,15 @@ import React from "react";
 import {IUserProps} from "../../shared/interfaces/IUserProps";
 import Dropdown from "react-bootstrap/Dropdown";
 
-export interface IUser extends IUserProps{
-    name: string,
+export interface IUser {
+    username: string,
+    fullname: string,
     avatarPath: string,
     gender: string,
     department: string,
     major: string,
     level: string,
-    interests: string[],
+    tags: string[],
     friends: string[],
 }
 
@@ -39,7 +40,7 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
 
     render() {
         const iconStyle = {margin: "0px 5px 0px 0px"};
-        const friendRelatedButton = this.props.registeredUser.friends.includes(this.props.displayedUser.name) ?
+        const friendRelatedButton = this.props.registeredUser.friends.includes(this.props.displayedUser.username) ?
             <button className="user-block-friends-button" onClick={this.deleteFriend}>
                 <span className="fa fa-check" style={iconStyle}/> Friends</button> :
             <button className="user-block-stranger-button" onClick={this.addFriend}>
@@ -49,7 +50,7 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
                 <div className="user-block-user-info">
                     <img className="user-block-avatar" src={this.props.displayedUser.avatarPath} alt="img not found"/>
                     <div className="user-block-user-detail">
-                        <p className="user-block-name">{this.props.displayedUser.name}</p>
+                        <p className="user-block-name">{this.props.displayedUser.fullname}</p>
                         <p className="user-block-department">{this.props.displayedUser.level} of {this.props.displayedUser.department}</p>
                         <p className="user-block-major">{this.props.displayedUser.major}</p>
                     </div>

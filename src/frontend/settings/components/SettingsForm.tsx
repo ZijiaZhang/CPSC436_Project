@@ -9,17 +9,20 @@ export interface ISettingsFormProps {
     opened: boolean,
     userInfo: IUser,
     loadUserInfo: any,
-}
-
-export interface ISettingsFormState {
-    editing: boolean,
     name: string,
     gender: string,
     department: string,
     avatarPath: string,
     major: string,
     level: string,
-    interests: string[],
+    tags: string[],
+    userInfoOnChange: any,
+    interestsOnChange: any,
+}
+
+export interface ISettingsFormState {
+    editing: boolean,
+
 }
 
 export enum GenderOption {
@@ -35,69 +38,42 @@ export enum AcademicLevel {
     PhD = 'PhD'
 }
 
-const tags=['games', 'volleyball', 'reading'];
-
 class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormState> {
     constructor(props: ISettingsFormProps) {
         super(props);
         this.state = {
             editing: false,
-            name: this.props.userInfo.name,
-            gender: this.props.userInfo.gender,
-            department: this.props.userInfo.department,
-            avatarPath: this.props.userInfo.avatarPath,
-            major: this.props.userInfo.major,
-            level: this.props.userInfo.level,
-            interests: this.props.userInfo.interests,
         }
     }
 
-    userInfoOnChange = (event: any) => {
-        switch (event.target.name) {
-            case "name":
-                this.setState({name: event.target.value});
-                break;
-            case "gender":
-                this.setState({gender: event.target.value});
-                break;
-            case "department":
-                this.setState({department: event.target.value});
-                break;
-            case "avatarPath":
-                this.setState({avatarPath: event.target.value});
-                break;
-            case "major":
-                this.setState({major: event.target.value});
-                break;
-            case "level":
-                this.setState({level: event.target.value});
-                break;
-            default:
-                break;
-        }
-    };
+    componentDidMount(){
 
-    interestsOnChange = (newValue: any) => {
-        let tagList = [];
-        for (let tag of newValue) {
-            tagList.push(tag.value);
-        }
-        this.setState({interests: tagList});
-    };
+    }
 
-    saveEdit = () => {
-        const updatedUser: IUser = {
-            name: this.state.name,
-            gender: this.state.gender,
-            avatarPath: this.state.avatarPath,
-            department: this.state.department,
-            major: this.state.major,
-            level: this.state.level,
-            interests: this.state.interests,
-            friends: this.props.userInfo.friends
+
+    saveEdit = async (event: any) => {
+        event.preventDefault();
+        const updatedUser = {
+            fullname: this.props.name,
+            gender: this.props.gender,
+            department: this.props.department,
+            major: this.props.major,
+            avatarPath: this.props.avatarPath,
+            level: this.props.level,
+            tags: this.props.tags,
         };
-        this.props.loadUserInfo(updatedUser);
-        this.setState({editing: !this.state.editing});
+        let response = await fetch('http://localhost:3000/api/v1/users/' + this.props.userInfo.username, {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedUser)
+        });
+        let data = await response.json();
+        console.log(data);
+        this.props.loadUserInfo(data);
+        this.cancelEdit();
     };
 
     cancelEdit = () => {
@@ -114,11 +90,11 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
             <form className={'settings-form'}>
                 <div className={'settings-item'}>
                     <label className={'settings-item-label'}>Name</label>
-                    <input className={'settings-item-input'} type="text" name="name" value={this.state.name} onChange={this.userInfoOnChange}/>
+                    <input className={'settings-item-input'} type="text" name="name" value={this.props.name} onChange={this.props.userInfoOnChange}/>
                 </div>
                 <div className={'settings-item'}>
                     <label className={'settings-item-label'}>Gender</label>
-                    <select className={'settings-item-input'} name="gender" value={this.state.gender} onChange={this.userInfoOnChange}>
+                    <select className={'settings-item-input'} name="gender" value={this.props.gender} onChange={this.props.userInfoOnChange}>
                         <option value={GenderOption.Female}>{GenderOption.Female}</option>
                         <option value={GenderOption.Male}>{GenderOption.Male}</option>
                         <option value={GenderOption.Other}>{GenderOption.Other}</option>
@@ -127,15 +103,15 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
                 </div>
                 <div className={'settings-item'}>
                     <label className={'settings-item-label'}>Department</label>
-                    <input className={'settings-item-input'} type="text" name="department" value={this.state.department} onChange={this.userInfoOnChange}/>
+                    <input className={'settings-item-input'} type="text" name="department" value={this.props.department} onChange={this.props.userInfoOnChange}/>
                 </div>
                 <div className={'settings-item'}>
                     <label className={'settings-item-label'}>Major</label>
-                    <input className={'settings-item-input'} type="text" name="major" value={this.state.major} onChange={this.userInfoOnChange}/>
+                    <input className={'settings-item-input'} type="text" name="major" value={this.props.major} onChange={this.props.userInfoOnChange}/>
                 </div>
                 <div className={'settings-item'}>
                     <label className={'settings-item-label'}>Academic Year</label>
-                    <select className={'settings-item-input'} name="level" value={this.state.level} onChange={this.userInfoOnChange}>
+                    <select className={'settings-item-input'} name="level" value={this.props.level} onChange={this.props.userInfoOnChange}>
                         <option value={AcademicLevel.Bachelor}>{AcademicLevel.Bachelor}</option>
                         <option value={AcademicLevel.Master}>{AcademicLevel.Master}</option>
                         <option value={AcademicLevel.PhD}>{AcademicLevel.PhD}</option>
@@ -143,7 +119,7 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
                 </div>
                 <div className={'settings-item height-md'}>
                     <label className={'settings-item-label'}>Interests</label>
-                    <CreatableSelect isMulti={true} options={options} onChange={this.interestsOnChange} className="settings-tag-container" />
+                    <CreatableSelect isMulti={true} options={options} onChange={this.props.interestsOnChange} className="settings-tag-container" />
                 </div>
                 <div className="profile-settings-buttons-block">
                     <button className="profile-settings-button" onClick={this.saveEdit}>

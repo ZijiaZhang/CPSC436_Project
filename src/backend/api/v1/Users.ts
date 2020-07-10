@@ -7,6 +7,12 @@ usersRouter.get('/', (req, res) => {
     res.send( req.user);
 });
 
+usersRouter.get('/all', (req, res) => {
+    const userList = User.find({});
+    userList.exec()
+        .then((users: any) => res.send(users));
+});
+
 usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), (req, res, next) => {
     if (req.session) {
         req.session.save((err: any) => {
@@ -53,6 +59,7 @@ usersRouter.get('/logout', (req, res, next) => {
 usersRouter.patch('/:username', (req, res, next) => {
     const {username} = req.params;
     const newProperties = req.body;
+    console.log(newProperties);
     const query = User.findOneAndUpdate({username: username}, newProperties, {new: true});
     query.exec()
         .then((user: any) => {

@@ -30,7 +30,7 @@ class SearchBlock extends React.Component<ISearchBlockProps, ISearchBlockState> 
                 <div className="search-block-nav-buttons">
                     <button className="nav-button-to-some-page">
                         <img src={this.props.user.avatarPath} alt="img not found" height="30px" width="30px" />
-                        <span>{this.props.user.name}</span>
+                        <span>{this.props.user.fullname}</span>
                     </button>
                     <button className="nav-button-to-some-page" onClick={this.props.getPosts}>Home</button>
                     <button className="nav-button-to-some-page" onClick={this.props.getUsers}>Friends</button>

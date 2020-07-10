@@ -5,13 +5,14 @@ import {Provider} from "react-redux";
 import HomePage from "./HomePage";
 
 const user = {
-    name: 'Denise',
+    username: 'Denise',
+    fullname: 'Denise',
     avatarPath: './images/test2.png',
     gender: "female",
     department: "Science",
     major: "HON Computer Science",
     level: "Bachelor",
-    interests: ['music', 'reading'],
+    tags: ['music', 'reading'],
     friends: ['Gary', 'Will'],
 };
 const PostPage = () => {
