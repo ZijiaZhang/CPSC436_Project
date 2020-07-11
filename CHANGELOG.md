@@ -2,12 +2,23 @@
 
 All changes will be logged here
 
+## 0.17.0 [2020-07-10]
+### Updated Frontend
+- Add profile photo settings page
+- Minor Styling changes
+- Connect user info update to backend
+### Updated Backend
+- APIs for updating user info
+### Other Modifications
+- README Usage Update
+- README Project Requirements Update
+
 ## 0.16.1 [2020-07-10]
 ### Updated Frontend
 - Add background image
 - Modify CSS a bit to make the color consistent
 
-## 0.16.0 [2020-07-07]
+## 0.16.0 [2020-07-09]
 ### Updated Frontend
 - Brand new Profile Page 
 - Posts Page with friend list page

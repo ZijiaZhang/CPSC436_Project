@@ -7,12 +7,12 @@
 
 ## Preview Frontend React
 ```shell script 
-npm run start
+npm run dev
 ```
 
 ## Preview Frontend React
 ```shell script 
-npm run build-webpack
+npx webpack
 ```
 
 
@@ -73,11 +73,13 @@ UBC students who want to find friends with same classes, hobbies, and etc
 - Able to set blog post to public/private/to friends
 - Announcement system (public posts)
 - Comment, Like to a post
+- Hide Post, and Avoid Similar Posts
 - BlackList
 
 ## 2-3 stretch requirements (plan to complete 1!)
 - Group chat
 - Apps and games to help users interact
+- Smart Algorithm for recommended posts and friends as well as avoided posts and users
 
 # Designs
 ![](Docs/images/Project_layouts-1.png)
