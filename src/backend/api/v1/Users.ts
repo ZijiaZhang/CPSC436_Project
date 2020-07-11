@@ -7,8 +7,10 @@ import * as fs from "fs";
 const multer = require('multer');
 
 usersRouter.get('/', (req, res) => {
-    res.send( req.user);
+    res.send(req.user);
 });
+
+
 
 usersRouter.get('/all', (req, res) => {
     const userList = User.find({});
@@ -76,6 +78,20 @@ usersRouter.patch('/:username', (req, res, next) => {
         .catch(() => {
             res.status(500).json({message: `Failed to update user with username ${username}`});
         })
+});
+
+usersRouter.get('/:username',  (req, res) => {
+    if (req.user) {
+        User.findOne({username: req.params.username}).exec().then(
+            (user: any) => {
+                res.json(user);
+            }
+        ).catch(() => {
+            res.status(500).json({'message': 'error'});
+        });
+    } else {
+        res.status(401).json({'message': 'Not Authorized'});
+    }
 });
 
 const storage = multer.diskStorage({

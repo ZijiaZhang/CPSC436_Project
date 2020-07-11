@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {Chat, databaseChat} from "../../../../src/backend/Models";
+import {Chat, databaseChat, User} from "../../../../src/backend/Models";
 const mongoose = require("mongoose");
 import chaiHttp = require('chai-http');
 
@@ -8,21 +8,41 @@ chai.use(chaiHttp);
 
 describe('Chats', () => {
     let app: any;
+    let cookie: any;
     before(async() => {
+        process.env.PORT = '6000';
         process.env.DB_CONNECTION_STRING = 'mongodb://localhost:27017/test_project';
         app = require('../../../../src/App').app;
         await mongoose.connect(process.env.DB_CONNECTION_STRING as string, {useNewUrlParser: true});
         mongoose.connection.on('error', () => expect.fail('Error connecting to db'));
+        await User.deleteMany({}).exec();
+        await chai.request(app)
+            .post('/api/v1/users/register')
+            .set('content-type', 'application/json')
+            .send({
+                username: 'testUser',
+                password: 'testPass',
+                fullname: 'fullname',
+                pwdConfirm: 'testPass'
+            });
+
+        await chai.request(app)
+            .post('/api/v1/users/register')
+            .set('content-type', 'application/json')
+            .send({
+                username: 'testUser2',
+                password: 'testPass',
+                fullname: 'fullname',
+                pwdConfirm: 'testPass'
+            });
     });
 
     describe('Get all chats', () => {
-
-
         before(async ()=>{
             const clear_chat = Chat.deleteMany({});
             await clear_chat.exec();
-            await Chat.create({senderUsername: 'test1',
-                receiverUsername: 'test2',
+            await Chat.create({senderUsername: 'testUser',
+                receiverUsername: 'testUser2',
                 content: 'This is a test message',
                 time: new Date()});
         });
@@ -30,7 +50,8 @@ describe('Chats', () => {
         it('it should GET all the chats', async () => {
             return chai.request(app)
                 .get('/api/v1/chats')
-                .query({sender_id: 'test1', receiver_id: 'test2'})
+                .auth('testUser', 'testPass')
+                .query({sender_id: 'testUser', receiver_id: 'testUser2'})
                 .then((res) => {
                     expect(res).have.status(200);
                     expect(res.body).have.key('allMessages');
@@ -43,7 +64,8 @@ describe('Chats', () => {
         it('it should raise bad request if no query specified', async () => {
             return chai.request(app)
                 .get('/api/v1/chats')
-                .query({aaa: 'test1', bbb: 'test2'})
+                .query({aaa: 'testUser', bbb: 'testUser2'})
+                .auth('testUser', 'testPass')
                 .then((res) => {
                     expect(res).have.status(400);
                     expect(res.body).have.key('message');
@@ -64,16 +86,17 @@ describe('Chats', () => {
         it('it should post chat correctly', async () => {
             return chai.request(app)
                 .post('/api/v1/chats')
+                .auth('testUser', 'testPass')
                 .send({
-                    sender_username: 'test-user1',
-                    receiver_username: 'test-user2',
+                    sender_username: 'testUser',
+                    receiver_username: 'testUser2',
                     content: 'test string'
                 })
                 .then((res) => {
-                    expect(res.body.senderUsername).equals('test-user1');
-                    expect(res.body.receiverUsername).equals('test-user2');
+                    expect(res.body.senderUsername).equals('testUser');
+                    expect(res.body.receiverUsername).equals('testUser2');
                     expect(res.body.content).equals('test string');
-                    return Chat.find({senderUsername: 'test-user1', receiverUsername: 'test-user2'}).exec()
+                    return Chat.find({senderUsername: 'testUser', receiverUsername: 'testUser2'}).exec()
                         .then( (result: databaseChat[])=>{
                             expect(result.length).equals(1)
                         })
