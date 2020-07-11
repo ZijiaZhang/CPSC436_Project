@@ -2,6 +2,11 @@
 
 All changes will be logged here
 
+## 0.16.1 [2020-07-10]
+### Updated Frontend
+- Add background image
+- Modify CSS a bit to make the color consistent
+
 ## 0.16.0 [2020-07-07]
 ### Updated Frontend
 - Brand new Profile Page 
