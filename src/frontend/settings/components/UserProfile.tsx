@@ -209,7 +209,7 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
         return (
             <div className="user-profile-page">
                 <div className="user-profile-page-avatar-block">
-                    <img className="user-avatar" src={this.props.userInfo.avatarPath} alt="image not found" />
+                    <img className="user-avatar" src={this.props.userInfo.avatarPath ? this.props.userInfo.avatarPath : './images/photoP.png' } alt="image not found" />
                     <button className="profile-change-profile-photo" onClick={this.startEditAvatar}>
                         <p className={'fa fa-camera'} id="upload-profile-photo-icon" />
                         <p className="upload-profile-photo-title">Upload Picture</p>
