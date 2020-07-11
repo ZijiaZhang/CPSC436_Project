@@ -73,8 +73,9 @@ usersRouter.get('/:username',  (req, res) => {
         ).catch(() => {
             res.status(500).json({'message': 'error'});
         });
+    } else {
+        res.status(401).json({'message': 'Not Authorized'});
     }
-    res.status(401).json({'message': 'Not Authorized'});
 });
 
 // update user with username

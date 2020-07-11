@@ -2,7 +2,6 @@ import {MessageStatus, ISingleMessage} from "../components/ChatRoomBubbles";
 import {combineReducers} from "redux";
 import update from 'immutability-helper';
 import {ChatRoomActions} from "../Actions";
-import {IUserProps} from "../../shared/interfaces/IUserProps";
 
 export interface ChatRoomState {
     messages: Array<ISingleMessage>;
@@ -17,6 +16,9 @@ function handle_message(messages: ISingleMessage[] = [],
         case ChatRoomActions.SEND_MESSAGE:
             return update(messages,
                 {$push: [{message: action.message, status:MessageStatus.SENT, sender: action.sender}]});
+        case ChatRoomActions.RECEIVE_MESSAGE:
+            console.log(action);
+            return update(messages, {$push: [action.message]});
         default:
             return messages
     }

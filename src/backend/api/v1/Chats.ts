@@ -1,6 +1,8 @@
 import express from 'express';
 import {Chat, IChat} from "../../models/ChatModel";
 import passport from "passport";
+import {SocketStore} from "../../SocketStore";
+import {SocketEvents} from "../../../shared/SocketEvents";
 export const chatsRouter = express.Router();
 
 
@@ -44,6 +46,11 @@ chatsRouter.post('/', (req, res, next)=> {
             content: req.body.content,
             time: new Date()
         }).then((chat: IChat) => {
+
+            if (req.body.receiver_username in SocketStore.allSockets){
+                console.log('sent');
+                SocketStore.allSockets[req.body.receiver_username].emit(SocketEvents.ReceiveMessage, {message: chat})
+            }
             return res.json(chat);
         }).catch(()=>
             res.status(500).json({message: 'error when try to add entry'})

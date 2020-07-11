@@ -11,13 +11,14 @@ import thunk from 'redux-thunk'
 import {RouteComponentProps} from "react-router-dom";
 import {StaticContext} from "react-router";
 import {getCurrentUser, getUserInfo} from "../../shared/globleFunctions";
+import {IUser} from "../../posts_page/components/UserBlock";
 
 type LocationState = {
     from: Location;
 };
 
 interface ChatRoomState{
-    user: any;
+    user: IUser| undefined| null;
 }
 
 
@@ -27,6 +28,7 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
     constructor(props: RouteComponentProps<{}, StaticContext, LocationState>) {
         super(props);
         this.state = {user: undefined};
+
     }
 
     ref = createRef<ChatRoomInputBox>();
@@ -36,7 +38,7 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
             return (
                 <Provider store={chatRoomStore}>
                     <div>
-                        <ChatRoomTitle name={this.state.user!.fullname}/>
+                        <ChatRoomTitle name={this.state.user!.name}/>
                         <ChatRoomChatAreaConnected user={this.state.user}/>
                         <div className={'chat-room-input-area'}>
                             <ChatRoomInputBox ref={this.ref}/>

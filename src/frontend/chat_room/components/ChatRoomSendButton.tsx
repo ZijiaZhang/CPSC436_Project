@@ -5,12 +5,13 @@ import {connect} from "react-redux";
 import {sendMessage} from "../Actions";
 import {ButtonState} from "../../shared/enums/ButtonState";
 import {IButtonState} from "../../shared/interfaces/IButtonState";
+import {IUser} from "../../posts_page/components/UserBlock";
 
 
 interface IChatRoomSendButtonProps {
     inputBox: RefObject<ChatRoomInputBox>;
     sendMessage: (text: string, receiver: string|null) => any;
-    user: any;
+    user: IUser;
 }
 
 export class ChatRoomSendButton extends React.Component<IChatRoomSendButtonProps, IButtonState> {
@@ -26,7 +27,7 @@ export class ChatRoomSendButton extends React.Component<IChatRoomSendButtonProps
                            if (inputBox) {
                                 const inputElement = inputBox.inputElement.current;
                                 if (inputElement)
-                                this.props.sendMessage(inputElement.value, this.props.user.username)
+                                this.props.sendMessage(inputElement.value, this.props.user.name)
                            }
                        }}>
             SEND
