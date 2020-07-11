@@ -3,7 +3,7 @@ export const usersRouter = express.Router();
 import passport from 'passport'
 import * as fs from "fs";
 const multer = require('multer');
-import {User} from "../../models/UserModel";
+import {IUser, User} from "../../models/UserModel";
 
 usersRouter.get('/', (req, res) => {
     res.send(req.user);
@@ -13,7 +13,7 @@ usersRouter.get('/', (req, res) => {
 usersRouter.get('/all', (req, res) => {
     const userList = User.find({});
     userList.exec()
-        .then((users: any) => res.send(users));
+        .then((users: IUser[]) => res.send(users));
 });
 
 usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), (req, res, next) => {
@@ -69,7 +69,7 @@ usersRouter.patch('/:username', (req, res, next) => {
     console.log(newProperties);
     const query = User.findOneAndUpdate({username: username}, newProperties, {new: true});
     query.exec()
-        .then((user: any) => {
+        .then((user: IUser | null) => {
             if (user === null) {
                 res.status(400).json({message: `Cannot find user with username ${username}`});
             } else{
