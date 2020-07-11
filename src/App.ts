@@ -30,7 +30,7 @@ app.use(passport.session());
 // import User from model and apply passport library functions
 passport.use(new LocalStrategy(User.authenticate()));
 passport.use(new BasicStrategy(
-    function(userid, password, done) {
+    function(userid: string, password: string, done: any) {
         User.findOne({ username: userid }, function (err: any, user: any) {
             if (err) { return done(err); }
             if (!user) { return done(null, false); }
