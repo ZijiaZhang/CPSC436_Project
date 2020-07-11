@@ -2,6 +2,9 @@ import express from 'express';
 import {User} from "../../Models";
 export const usersRouter = express.Router();
 import passport from 'passport'
+import * as fs from "fs";
+
+const multer = require('multer');
 
 usersRouter.get('/', (req, res) => {
     res.send( req.user);
@@ -59,6 +62,7 @@ usersRouter.get('/logout', (req, res, next) => {
 usersRouter.patch('/:username', (req, res, next) => {
     const {username} = req.params;
     const newProperties = req.body;
+    console.log(username);
     console.log(newProperties);
     const query = User.findOneAndUpdate({username: username}, newProperties, {new: true});
     query.exec()
@@ -72,4 +76,23 @@ usersRouter.patch('/:username', (req, res, next) => {
         .catch(() => {
             res.status(500).json({message: `Failed to update user with username ${username}`});
         })
+});
+
+const storage = multer.diskStorage({
+    destination: './public/images',
+    filename(req: any, file: any, cb: any) {
+        cb(null, `${file.originalname}`);
+    },
+});
+
+const upload = multer({ storage });
+
+usersRouter.post('/uploadAvatar', upload.single('file'), (req, res, next) => {
+    res.send("./images/" + req.file.filename);
+});
+
+usersRouter.delete('/deleteAvatar', (req, res, next) => {
+    fs.unlink('./public' + req.body.oldPath.substring(1, req.body.oldPath.length), (err) => {
+        res.send('Deleted')
+    });
 });

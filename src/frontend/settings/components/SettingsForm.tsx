@@ -12,7 +12,6 @@ export interface ISettingsFormProps {
     name: string,
     gender: string,
     department: string,
-    avatarPath: string,
     major: string,
     level: string,
     tags: string[],
@@ -22,7 +21,8 @@ export interface ISettingsFormProps {
 
 export interface ISettingsFormState {
     editing: boolean,
-
+    imageFile: any,
+    imagePreview: any,
 }
 
 export enum GenderOption {
@@ -43,13 +43,14 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
         super(props);
         this.state = {
             editing: false,
+            imageFile: null,
+            imagePreview: "./not_uploaded",
         }
     }
 
     componentDidMount(){
 
     }
-
 
     saveEdit = async (event: any) => {
         event.preventDefault();
@@ -58,7 +59,6 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
             gender: this.props.gender,
             department: this.props.department,
             major: this.props.major,
-            avatarPath: this.props.avatarPath,
             level: this.props.level,
             tags: this.props.tags,
         };
@@ -79,6 +79,7 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
     cancelEdit = () => {
         this.setState({editing: !this.state.editing});
     };
+
 
     render() {
         const options = [

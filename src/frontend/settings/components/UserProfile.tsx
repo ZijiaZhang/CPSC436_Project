@@ -7,6 +7,7 @@ import ProfileFriendBlock from "./ProfileFriendBlock";
 import SettingsForm from "./SettingsForm";
 import {connect} from "react-redux";
 import {loadUserInfo} from "../actions";
+import SettingsProfilePhoto from "./SettingsProfilePhoto";
 
 interface IUserProfileProps {
     userInfo: IUser,
@@ -14,7 +15,8 @@ interface IUserProfileProps {
 }
 
 interface IUserProfileState {
-    opened: boolean,
+    infoEditorOpened: boolean,
+    avatarEditorOpened: boolean,
     isUser: boolean,
     dropDown: boolean,
     name: string,
@@ -24,6 +26,7 @@ interface IUserProfileState {
     major: string,
     level: string,
     tags: string[],
+    data: any,
 }
 
 const samplePostList: IPost[] = [{
@@ -99,7 +102,8 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     constructor(props: IUserProfileProps) {
         super(props);
         this.state = {
-            opened: false,
+            infoEditorOpened: false,
+            avatarEditorOpened: false,
             isUser: false,
             dropDown: false,
             name: this.props.userInfo.fullname,
@@ -109,6 +113,7 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             major: this.props.userInfo.major,
             level: this.props.userInfo.level,
             tags: this.props.userInfo.tags,
+            data: {}
         }
     }
 
@@ -123,9 +128,6 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             case "department":
                 this.setState({department: event.target.value});
                 break;
-            case "avatarPath":
-                this.setState({avatarPath: event.target.value});
-                break;
             case "major":
                 this.setState({major: event.target.value});
                 break;
@@ -135,6 +137,10 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             default:
                 break;
         }
+    };
+
+    userAvatarOnChange = (newPath: string) => {
+        this.setState({avatarPath: newPath});
     };
 
     interestsOnChange = (newValue: any) => {
@@ -152,10 +158,11 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                 method: 'GET'
             });
             let data = await response.json();
-            this.props.loadUserInfo(data);
+            this.setState({data: data});
         } catch(e) {
             console.log(e.message);
         }
+        this.props.loadUserInfo(this.state.data);
     }
 
     startEditProfile = () => {
@@ -168,11 +175,14 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             level: this.props.userInfo.level,
             tags: this.props.userInfo.tags,
         });
-        this.openCloseEditor();
+        this.setState({infoEditorOpened: !this.state.infoEditorOpened});
     };
 
-    openCloseEditor = () => {
-        this.setState({opened: !this.state.opened});
+    startEditAvatar = () => {
+        this.setState({
+            avatarPath: this.props.userInfo.avatarPath,
+        });
+        this.setState({avatarEditorOpened: !this.state.avatarEditorOpened});
     };
 
     showDropDown = () => {
@@ -200,6 +210,10 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             <div className="user-profile-page">
                 <div className="user-profile-page-avatar-block">
                     <img className="user-avatar" src={this.props.userInfo.avatarPath} alt="image not found" />
+                    <button className="profile-change-profile-photo" onClick={this.startEditAvatar}>
+                        <p className={'fa fa-camera'} id="upload-profile-photo-icon" />
+                        <p className="upload-profile-photo-title">Upload Picture</p>
+                    </button>
                 </div>
                 <div className="profile-listed-detail-left-block">
                     <p className="profile-detail-user-name">{this.props.userInfo.fullname}</p>
@@ -242,9 +256,11 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                     </div>
                     {friends}
                 </div>
-                <SettingsForm opened={this.state.opened} interestsOnChange={this.interestsOnChange} userInfoOnChange={this.userInfoOnChange}
-                              name={this.state.name} gender={this.state.gender} department={this.state.department} avatarPath={this.state.avatarPath}
+                <SettingsForm opened={this.state.infoEditorOpened} interestsOnChange={this.interestsOnChange} userInfoOnChange={this.userInfoOnChange}
+                              name={this.state.name} gender={this.state.gender} department={this.state.department}
                               major={this.state.major} level={this.state.level} tags={this.state.tags}/>
+                <SettingsProfilePhoto curAvatar={this.state.avatarPath} opened={this.state.avatarEditorOpened} userAvatarOnChange={this.userAvatarOnChange}
+                                      avatarPath={this.state.avatarPath}/>
             </div>
         );
     }

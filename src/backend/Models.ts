@@ -31,6 +31,7 @@ const userSchema = new Schema({
             message: 'Failed to add user because username {VALUE} is used already.'
         }]
     },
+    avatarPath: String,
     fullname: {type: String, required: true},
     password: {type: String},
     gender: String,
@@ -51,7 +52,6 @@ const postSchema = new Schema({
     time: Date,
     username: {type: String, required: true,},
     detail: String,
-    avatarPath: String,
     uploadedFiles: [{
         type: String,
         path: String
