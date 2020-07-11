@@ -7,7 +7,7 @@ class NavigationItems extends React.Component<IUserProps, {}> {
     render() {
         return ( 
         <div>
-            <a><img src='./images/test.png' alt="img not found" width="100" height="100"/><p className="username-display">{"   " + this.props.name}</p></a>
+            <a><img src={this.props.avatarPath ? this.props.avatarPath : './images/photoP.png'} alt='img not found' width="100" height="100"/><p className="username-display">{"   " + this.props.name}</p></a>
             <Link to="/" className="glyphicon glyphicon-home">Home</Link>
             <Link to="/chatRoom" className="glyphicon glyphicon-envelope">Chats</Link>
             <Link to="/settings" className="glyphicon glyphicon-cog">Profile</Link>

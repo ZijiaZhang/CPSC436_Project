@@ -311,3 +311,57 @@ h1 {
     color: #1031ff !important;
     background: none;
 }
+.profile-change-profile-photo{
+    display: none;
+    position: absolute;
+    left: 320px;
+    top: 160px;
+    z-index: 1;
+    background: black;
+    border: none;
+    font-size: 12pt;
+    color: white;
+    height: 60px;
+    width: 200px;
+    opacity: 0.65;
+    border-radius: 3px;
+}
+.user-profile-page-avatar-block:hover .profile-change-profile-photo{
+    display: block;
+}
+.upload-profile-photo-title{
+    color: white;
+    opacity: 1;
+}
+#upload-profile-photo-icon{
+    position: relative;
+    margin-top: 5px;
+    top: 10px;
+}
+.settings-avatar-item{
+
+}
+.settings-avatar-item-label{
+    font-size: 18pt;
+}
+.settings-avatar-item-label-description{
+    font-size: 14pt;
+}
+.settings-avatar-item-input{
+
+}
+.profile-picture-previews{
+    margin: 20px 0;
+}
+.settings-avatar-item-preview{
+    display: inline-block;
+    border: 1px solid lawngreen;
+    vertical-align: bottom;
+    margin: 10px
+}
+.settings-avatar-buttons-lock{
+    margin: 30px 0;
+}
+.settings-avatar-button{
+    margin: 5px;
+}

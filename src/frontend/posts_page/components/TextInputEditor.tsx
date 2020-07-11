@@ -49,7 +49,7 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             for (let index in this.state.selectedTags) {
                 tags.push(this.state.selectedTags[index].value);
             }
-            let newPost: IPost = {id: this.props.postList.length.toString(), time: date + ' ' + time, name: this.props.user.name, detail: this.state.message,
+            let newPost: IPost = {id: this.props.postList.length.toString(), time: date + ' ' + time, name: this.props.user.fullname, detail: this.state.message,
                 avatarPath: this.props.user.avatarPath, image: '', numLikes: 0, comments: [], type: 'post',
                 visibility: this.state.visibility, tags: tags, liked: false, hidden: false};
             this.props.addPost(newPost);

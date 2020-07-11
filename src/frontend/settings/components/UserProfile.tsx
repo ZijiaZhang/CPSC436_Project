@@ -6,15 +6,27 @@ import ProfilePostBlock from "./ProfilePostBlock";
 import ProfileFriendBlock from "./ProfileFriendBlock";
 import SettingsForm from "./SettingsForm";
 import {connect} from "react-redux";
+import {loadUserInfo} from "../actions";
+import SettingsProfilePhoto from "./SettingsProfilePhoto";
 
 interface IUserProfileProps {
-    userInfo: IUser
+    userInfo: IUser,
+    loadUserInfo: any
 }
 
 interface IUserProfileState {
-    opened: boolean,
+    infoEditorOpened: boolean,
+    avatarEditorOpened: boolean,
     isUser: boolean,
     dropDown: boolean,
+    name: string,
+    gender: string,
+    department: string,
+    avatarPath: string,
+    major: string,
+    level: string,
+    tags: string[],
+    data: any,
 }
 
 const samplePostList: IPost[] = [{
@@ -51,34 +63,37 @@ const samplePostList: IPost[] = [{
 
 const sampleFriendList =[
     {
-        name: 'Will',
+        username: 'Will',
+        fullname: 'Will',
         avatarPath: './images/dora.png',
         gender: "male",
         department: "Science",
         major: "Computer Science",
         level: "Bachelor",
-        interests: ['music', 'basketball', 'math'],
+        tags: ['music', 'basketball', 'math'],
         friends: ['Denise'],
     },
     {
-        name: 'Gary',
+        username: 'Gary',
+        fullname: 'Gary',
         avatarPath: './images/test.png',
         gender: "male",
         department: "Computer Science",
         major: "Computer Science",
         level: "Bachelor",
-        interests: ['music', 'basketball', 'math', 'games'],
+        tags: ['music', 'basketball', 'math', 'games'],
         friends: ['Rommel', 'Denise', 'Will'],
 
     },
     {
-        name: 'Rommel',
+        username: 'Rommel',
+        fullname: 'Rommel',
         avatarPath: './images/1.ico',
         gender: "male",
         department: "Science",
         major: "CMJ Computer Science And Math",
         level: "Bachelor",
-        interests: ['math', 'coding', 'games'],
+        tags: ['math', 'coding', 'games'],
         friends: ['Gary', 'Denise'],
     }
 ];
@@ -87,27 +102,92 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     constructor(props: IUserProfileProps) {
         super(props);
         this.state = {
-            opened: false,
+            infoEditorOpened: false,
+            avatarEditorOpened: false,
             isUser: false,
             dropDown: false,
+            name: this.props.userInfo.fullname,
+            gender: this.props.userInfo.gender,
+            department: this.props.userInfo.department,
+            avatarPath: this.props.userInfo.avatarPath,
+            major: this.props.userInfo.major,
+            level: this.props.userInfo.level,
+            tags: this.props.userInfo.tags,
+            data: {}
         }
     }
 
-    startEditProfile = () => {
-        this.openCloseEditor();
+    userInfoOnChange = (event: any) => {
+        switch (event.target.name) {
+            case "name":
+                this.setState({name: event.target.value});
+                break;
+            case "gender":
+                this.setState({gender: event.target.value});
+                break;
+            case "department":
+                this.setState({department: event.target.value});
+                break;
+            case "major":
+                this.setState({major: event.target.value});
+                break;
+            case "level":
+                this.setState({level: event.target.value});
+                break;
+            default:
+                break;
+        }
     };
 
-    openCloseEditor = () => {
-        this.setState({opened: !this.state.opened});
+    userAvatarOnChange = (newPath: string) => {
+        this.setState({avatarPath: newPath});
+    };
+
+    interestsOnChange = (newValue: any) => {
+        let tagList = [];
+        for (let tag of newValue) {
+            tagList.push(tag.value);
+        }
+        this.setState({tags: tagList});
+    };
+
+    async componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+        try {
+            let response = await fetch('http://localhost:3000/api/v1/users', {
+                method: 'GET'
+            });
+            let data = await response.json();
+            this.setState({data: data});
+        } catch(e) {
+            console.log(e.message);
+        }
+        this.props.loadUserInfo(this.state.data);
+    }
+
+    startEditProfile = () => {
+        this.setState({
+            name: this.props.userInfo.fullname,
+            gender: this.props.userInfo.gender,
+            department: this.props.userInfo.department,
+            avatarPath: this.props.userInfo.avatarPath,
+            major: this.props.userInfo.major,
+            level: this.props.userInfo.level,
+            tags: this.props.userInfo.tags,
+        });
+        this.setState({infoEditorOpened: !this.state.infoEditorOpened});
+    };
+
+    startEditAvatar = () => {
+        this.setState({
+            avatarPath: this.props.userInfo.avatarPath,
+        });
+        this.setState({avatarEditorOpened: !this.state.avatarEditorOpened});
     };
 
     showDropDown = () => {
         this.setState({dropDown: true})
     };
-
-    componentDidMount() {
-        document.addEventListener('mousedown', this.handleClickOutside);
-    }
 
     handleClickOutside = (event: any) => {
         if (!event.target.matches('#profile-interaction-button-with-drop-down') && !event.target.matches('.profile-drop-down-button')) {
@@ -129,11 +209,15 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
         return (
             <div className="user-profile-page">
                 <div className="user-profile-page-avatar-block">
-                    <img className="user-avatar" src={this.props.userInfo.avatarPath} alt="image not found" />
+                    <img className="user-avatar" src={this.props.userInfo.avatarPath ? this.props.userInfo.avatarPath : './images/photoP.png' } alt="image not found" />
+                    <button className="profile-change-profile-photo" onClick={this.startEditAvatar}>
+                        <p className={'fa fa-camera'} id="upload-profile-photo-icon" />
+                        <p className="upload-profile-photo-title">Upload Picture</p>
+                    </button>
                 </div>
                 <div className="profile-listed-detail-left-block">
-                    <p className="profile-detail-user-name">{this.props.userInfo.name}</p>
-                    <p className="profile-detail-user-department">{this.props.userInfo.name}, in {this.props.userInfo.level} of {this.props.userInfo.department} program</p>
+                    <p className="profile-detail-user-name">{this.props.userInfo.fullname}</p>
+                    <p className="profile-detail-user-department">{this.props.userInfo.fullname}, in {this.props.userInfo.level} of {this.props.userInfo.department} program</p>
                     <p className="profile-detail-user-major">Major in {this.props.userInfo.major}</p>
                     <div className="profile-interaction-button-list">
                         <button className="profile-interaction-button" onClick={this.startEditProfile}>
@@ -156,7 +240,7 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                     <div className="profile-detail-user-interests">
                         <p className="user-interests-block-title">Interests</p>
                         <div className="user-interests-block-content">
-                            <TagContainer tags={this.props.userInfo.interests} />
+                            <TagContainer tags={this.props.userInfo.tags} />
                         </div>
                     </div>
                 </div>
@@ -172,7 +256,11 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                     </div>
                     {friends}
                 </div>
-                <SettingsForm opened={this.state.opened} />
+                <SettingsForm opened={this.state.infoEditorOpened} interestsOnChange={this.interestsOnChange} userInfoOnChange={this.userInfoOnChange}
+                              name={this.state.name} gender={this.state.gender} department={this.state.department}
+                              major={this.state.major} level={this.state.level} tags={this.state.tags}/>
+                <SettingsProfilePhoto curAvatar={this.state.avatarPath} opened={this.state.avatarEditorOpened} userAvatarOnChange={this.userAvatarOnChange}
+                                      avatarPath={this.state.avatarPath}/>
             </div>
         );
     }
@@ -184,4 +272,4 @@ const mapStateToProps = (state: { userInfo: any }) => {
     };
 };
 
-export default connect(mapStateToProps)(UserProfile);
+export default connect(mapStateToProps, {loadUserInfo})(UserProfile);
