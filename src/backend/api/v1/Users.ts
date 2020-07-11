@@ -22,6 +22,7 @@ usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/l
             if (err) {
                 return res.redirect(req.path + `?err=${err.message}`);
             }
+            console.log('Login Success');
             res.redirect('/');
         });
     }
@@ -73,6 +74,7 @@ usersRouter.get('/:username',  (req, res) => {
             res.status(500).json({'message': 'error'});
         });
     }
+    res.status(401).json({'message': 'Not Authorized'});
 });
 
 // update user with username

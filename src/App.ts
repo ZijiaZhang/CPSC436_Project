@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 // import passport and flash here
 import passport from 'passport';
+import {BasicStrategy} from "passport-http";
 import {User} from "./backend/models/UserModel";
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require("connect-flash");
@@ -20,7 +21,7 @@ app.use(require('express-session')({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false
-}))
+}));
 
 // passport initialize and session
 app.use(passport.initialize());
@@ -28,6 +29,16 @@ app.use(flash());
 app.use(passport.session());
 // import User from model and apply passport library functions
 passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new BasicStrategy(
+    function(userid, password, done) {
+        User.findOne({ username: userid }, function (err: any, user: any) {
+            if (err) { return done(err); }
+            if (!user) { return done(null, false); }
+            if (!user.authenticate(password)) { return done(null, false); }
+            return done(null, user);
+        });
+    }
+));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
