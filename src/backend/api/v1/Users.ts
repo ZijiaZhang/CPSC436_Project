@@ -1,19 +1,19 @@
 import express from 'express';
-import {User} from "../../Models";
 export const usersRouter = express.Router();
 import passport from 'passport'
 import * as fs from "fs";
-
 const multer = require('multer');
+import {IUser, User} from "../../models/UserModel";
 
 usersRouter.get('/', (req, res) => {
-    res.send( req.user);
+    res.send(req.user);
 });
+
 
 usersRouter.get('/all', (req, res) => {
     const userList = User.find({});
     userList.exec()
-        .then((users: any) => res.send(users));
+        .then((users: IUser[]) => res.send(users));
 });
 
 usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), (req, res, next) => {
@@ -35,18 +35,21 @@ usersRouter.post('/register', (req, res) => {
     if (!req.body.fullname) {
         return res.redirect(req.path + `?err=No fullname was given`);
     }
-    User.register(new User({ username : req.body.username, fullname: req.body.fullname }), req.body.password, (err: any, user: any) => {
-                 if (err) {
-                    return res.redirect(req.path + `?err=${err.message}`);
-                }
-                passport.authenticate('local')(req, res, () => {
-                    if (req.session) {
-                        req.session.save((err: any) => {
-                            res.redirect('/login');
-                        });
-                    }
+    User.register(new User({
+        username: req.body.username,
+        fullname: req.body.fullname
+    }), req.body.password, (err: any, user: any) => {
+        if (err) {
+            return res.redirect(req.path + `?err=${err.message}`);
+        }
+        passport.authenticate('local')(req, res, () => {
+            if (req.session) {
+                req.session.save((err: any) => {
+                    res.redirect('/login');
                 });
-            });
+            }
+        });
+    });
 });
 
 
@@ -56,7 +59,7 @@ usersRouter.get('/logout', (req, res, next) => {
         req.session.save(() => {
             res.redirect('/login');
         });
-    } 
+    }
 });
 
 usersRouter.patch('/:username', (req, res, next) => {
@@ -66,7 +69,7 @@ usersRouter.patch('/:username', (req, res, next) => {
     console.log(newProperties);
     const query = User.findOneAndUpdate({username: username}, newProperties, {new: true});
     query.exec()
-        .then((user: any) => {
+        .then((user: IUser | null) => {
             if (user === null) {
                 res.status(400).json({message: `Cannot find user with username ${username}`});
             } else{

@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
-import {Chat, databaseChat} from "../../../../src/backend/Models";
 const mongoose = require("mongoose");
 import chaiHttp = require('chai-http');
+import {Chat, IChat} from "../../../../src/backend/models/ChatModel";
 
 chai.use(chaiHttp);
 
@@ -74,7 +74,7 @@ describe('Chats', () => {
                     expect(res.body.receiverUsername).equals('test-user2');
                     expect(res.body.content).equals('test string');
                     return Chat.find({senderUsername: 'test-user1', receiverUsername: 'test-user2'}).exec()
-                        .then( (result: databaseChat[])=>{
+                        .then( (result: IChat[])=>{
                             expect(result.length).equals(1)
                         })
                 })
