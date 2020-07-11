@@ -30,7 +30,7 @@ app.use(passport.session());
 const User = require('./backend/Models').User;
 passport.use(new LocalStrategy(User.authenticate()));
 passport.use(new BasicStrategy(
-    function(userid, password, done) {
+    function(userid: any, password: any, done: any) {
         User.findOne({ username: userid }, function (err: any, user: any) {
             if (err) { return done(err); }
             if (!user) { return done(null, false); }

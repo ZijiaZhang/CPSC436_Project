@@ -80,6 +80,20 @@ usersRouter.patch('/:username', (req, res, next) => {
         })
 });
 
+usersRouter.get('/:username',  (req, res) => {
+    if (req.user) {
+        User.findOne({username: req.params.username}).exec().then(
+            (user: any) => {
+                res.json(user);
+            }
+        ).catch(() => {
+            res.status(500).json({'message': 'error'});
+        });
+    } else {
+        res.status(401).json({'message': 'Not Authorized'});
+    }
+});
+
 const storage = multer.diskStorage({
     destination: './public/images',
     filename(req: any, file: any, cb: any) {
