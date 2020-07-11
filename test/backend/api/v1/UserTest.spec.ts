@@ -103,10 +103,10 @@ describe('User', ()=> {
 
         it('update user with year', async() => {
             return chai.request(app)
-                .patch('/api/v1/users/test').send({year: 'master'})
+                .patch('/api/v1/users/test').send({level: 'master'})
                 .then((res) => {
                     expect(res).have.status(200);
-                    expect(res.body).to.include({username: "test", fullname: 'newFullname',  year: 'master'})
+                    expect(res.body).to.include({username: "test", fullname: 'newFullname',  level: 'master'})
                 })
         });
     })
