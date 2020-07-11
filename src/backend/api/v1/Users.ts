@@ -62,6 +62,19 @@ usersRouter.get('/logout', (req, res, next) => {
     }
 });
 
+
+usersRouter.get('/:username',  (req, res) => {
+    if (req.user) {
+        User.findOne({username: req.params.username}).exec().then(
+            (user: any) => {
+                res.json(user);
+            }
+        ).catch(() => {
+            res.status(500).json({'message': 'error'});
+        });
+    }
+});
+
 // update user with username
 usersRouter.patch('/:username', (req, res, next) => {
     const {username} = req.params;

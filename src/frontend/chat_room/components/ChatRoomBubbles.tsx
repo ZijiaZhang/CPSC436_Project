@@ -9,7 +9,7 @@ export enum MessageStatus{
 export interface ISingleMessage {
     message: string;
     status: MessageStatus;
-    sender: IUserProps;
+    sender: any;
 }
 
 export class ChatRoomBubbles extends React.Component<ISingleMessage, {}> {
@@ -17,7 +17,7 @@ export class ChatRoomBubbles extends React.Component<ISingleMessage, {}> {
         return <div className={'conversation-bubble-wrap'}>
             <div className={['received', 'sent', 'unsent'][this.props.status]}>
             <p className = 'conversation-bubble'>{this.props.message}</p>
-            <img className='conversation-avatar' src={this.props.sender.avatarPath} alt={this.props.sender.name}/>
+            <img className='conversation-avatar' src={this.props.sender} alt={this.props.sender}/>
             </div>
         </div>;
     }
