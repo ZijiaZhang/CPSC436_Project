@@ -7,8 +7,10 @@ import * as fs from "fs";
 const multer = require('multer');
 
 usersRouter.get('/', (req, res) => {
-    res.send( req.user);
+    res.send(req.user);
 });
+
+
 
 usersRouter.get('/all', (req, res) => {
     const userList = User.find({});

@@ -4,9 +4,11 @@ import {ChatRoomState} from "../reducer";
 import {connect} from "react-redux";
 import {getInitialMessages} from "../Actions";
 
-interface IChatRoomChatAreaProps {
+
+interface IChatRoomChatAreaProps{
     messages: ISingleMessage[];
-    getInitialMessages: () => any;
+    getInitialMessages: (x: any) => any;
+    user: any;
 }
 
 export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}> {
@@ -17,7 +19,7 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
         </div>;
     }
     componentDidMount(): void {
-        this.props.getInitialMessages();
+        this.props.getInitialMessages(this.props.user ? this.props.user: null);
     }
 }
 
