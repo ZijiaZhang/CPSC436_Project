@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.18.0 [2020-07-12]
+### Added Posts Router
+- Add endpoints for Posts collection and Comments collection
+
 ## 0.17.0 [2020-07-10]
 ### Updated Frontend
 - Add profile photo settings page
