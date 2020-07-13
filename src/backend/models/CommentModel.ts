@@ -20,7 +20,7 @@ interface ICommentModel extends Model<IComment> {
 const commentSchema: Schema = new Schema({
     userId: {type: ObjectId, required: true,},
     postId: {type: ObjectId, required: true,},
-    detail: String,
+    detail: {type: String, required: true,},
     time: Date,
     visibility: String,
 });

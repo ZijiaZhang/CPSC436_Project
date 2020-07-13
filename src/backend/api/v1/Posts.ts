@@ -61,7 +61,7 @@ postsRouter.post('/', (req, res, next) => {
             res.json(newPost)
         })
         .catch(() => {
-            res.status(500).json({errMessage: `Failed add new post for user ${post.username}.`})
+            res.status(500).json({message: `Failed add new post for user ${post.username}.`})
         });
 });
 
