@@ -5,6 +5,7 @@ import {uniqueValidator} from "../shared/Helpers";
 import {ITag} from "./TagModel";
 
 interface IUserSchema extends Document {
+    _id: string,
     username: string,
     fullname: string,
     password: string,

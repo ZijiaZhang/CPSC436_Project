@@ -2,8 +2,8 @@ import express from 'express';
 export const usersRouter = express.Router();
 import passport from 'passport'
 import * as fs from "fs";
-const multer = require('multer');
 import {IUser, User} from "../../models/UserModel";
+const multer = require('multer');
 
 usersRouter.get('/', (req, res) => {
     res.send(req.user);
@@ -62,11 +62,10 @@ usersRouter.get('/logout', (req, res, next) => {
     }
 });
 
+// update user with username
 usersRouter.patch('/:username', (req, res, next) => {
     const {username} = req.params;
     const newProperties = req.body;
-    console.log(username);
-    console.log(newProperties);
     const query = User.findOneAndUpdate({username: username}, newProperties, {new: true});
     query.exec()
         .then((user: IUser | null) => {

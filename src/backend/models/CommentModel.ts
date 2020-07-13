@@ -4,11 +4,10 @@ import {IUploadedFile} from "./PostModel";
 
 interface ICommentSchema extends Document {
     _id: string,
-    username: string,
-    post: string,
+    userId: string,
+    postId: string,
     time: Date,
     detail: string,
-    uploadedFiles: IUploadedFile[],
     visibility: string,
 }
 
@@ -19,15 +18,11 @@ interface ICommentModel extends Model<IComment> {
 }
 
 const commentSchema: Schema = new Schema({
-    username: {type: String, required: true,},
-    post: {type: ObjectId, required: true,},
-    detail: String,
+    userId: {type: ObjectId, required: true,},
+    postId: {type: ObjectId, required: true,},
+    detail: {type: String, required: true,},
     time: Date,
     visibility: String,
-    uploadedFiles: [{
-        type: String,
-        path: String
-    }]
 });
 
 export const Comment = model<IComment, ICommentModel>('comment', commentSchema);
