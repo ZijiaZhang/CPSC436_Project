@@ -101,5 +101,10 @@ io.use(function(socket:any, next:any){
 io.on("connection", function(socket:any){
     var userId = socket.request.session.passport.user;
     SocketStore.allSockets[userId] = socket;
+    console.log(socket.id + ' connected');
+        socket.on('disconnect', function (reason: any) {
+        console.log(socket.id + ' disconnected ' + reason);
+    })
 });
+
 

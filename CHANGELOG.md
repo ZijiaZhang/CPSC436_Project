@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.19.0 [2020-07-14]
+### Connect Chat Frontend
+- Connect Chat Frontend to Backend
+
 ## 0.18.0 [2020-07-12]
 ### Added Posts Router
 - Add endpoints for Posts collection and Comments collection
