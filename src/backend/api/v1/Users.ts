@@ -64,7 +64,13 @@ usersRouter.get('/logout', (req, res, next) => {
 });
 
 
-usersRouter.get('/:username',  (req, res) => {
+usersRouter.get('/:username',  (req, res, next)=> {
+    if(!req.isAuthenticated()){
+        passport.authenticate('basic', { session: false })(req, res, next)
+    } else {
+        next();
+    }
+}, (req, res) => {
     if (req.user) {
         User.findOne({username: req.params.username}).exec().then(
             (user: any) => {
