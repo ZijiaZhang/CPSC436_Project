@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 import chaiHttp = require("chai-http");
 import {User} from "../../../../src/backend/models/UserModel";
 
+chai.use(chaiHttp);
+
 describe('User', ()=> {
     describe("Get all users", ()=> {
         let app: any;
@@ -13,6 +15,46 @@ describe('User', ()=> {
             const clear_user = User.deleteMany({});
             await clear_user.exec();
             app= require('../../../../src/App').app;            
+        });
+
+        it('get user by id', async ()=>{
+            await chai.request(app)
+                .post('/api/v1/users/register')
+                .set('content-type', 'application/json')
+                .send({
+                    username: 'testUser',
+                    password: 'testPass',
+                    fullname: 'fullname',
+                    pwdConfirm: 'testPass'
+                });
+            return chai.request(app)
+                .get('/api/v1/users/testUser')
+                .auth('testUser', 'testPass')
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.body.username).equals('testUser');
+                }).catch((err) => {
+                    expect.fail('should not throw error' + err);
+                })
+        });
+
+        it('should not get user by id if not authorized', async ()=>{
+            await chai.request(app)
+                .post('/api/v1/users/register')
+                .set('content-type', 'application/json')
+                .send({
+                    username: 'testUser',
+                    password: 'testPass',
+                    fullname: 'fullname',
+                    pwdConfirm: 'testPass'
+                });
+            return chai.request(app)
+                .get('/api/v1/users/testUser')
+                .then((res) => {
+                    expect(res).have.status(401);
+                }).catch((err) => {
+                    expect.fail('should not throw error' + err);
+                })
         });
 
         it('register one test user', async() => {
@@ -110,4 +152,4 @@ describe('User', ()=> {
                 })
         });
     })
-})
+});

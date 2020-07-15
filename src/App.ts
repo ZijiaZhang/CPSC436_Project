@@ -4,23 +4,29 @@ import {apiRouter} from "./backend/api";
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 const mongoose = require('mongoose');
-
+let  expressSession = require('express-session');
 // import passport and flash here
 import passport from 'passport';
+import {BasicStrategy} from "passport-http";
 import {User} from "./backend/models/UserModel";
+import {SocketStore} from "./backend/SocketStore";
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require("connect-flash");
 
+let sessionMiddleWare = expressSession({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    store: new (require("connect-mongo")(expressSession))({
+        url: "mongodb://localhost:27017/project"
+    })
+});
 
 export const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(require('express-session')({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false
-}))
+app.use(sessionMiddleWare);
 
 // passport initialize and session
 app.use(passport.initialize());
@@ -28,6 +34,16 @@ app.use(flash());
 app.use(passport.session());
 // import User from model and apply passport library functions
 passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new BasicStrategy(
+    function(userid: string, password: string, done: any) {
+        User.findOne({ username: userid }, function (err: any, user: any) {
+            if (err) { return done(err); }
+            if (!user) { return done(null, false); }
+            if (!user.authenticate(password)) { return done(null, false); }
+            return done(null, user);
+        });
+    }
+));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -75,4 +91,20 @@ let server = app.listen(port, () => console.log(`Example app listening at http:/
 export function stop(){
     server.close()
 }
+
+var io = require('socket.io')(server);
+
+io.use(function(socket:any, next:any){
+    sessionMiddleWare(socket.request, {}, next);
+});
+
+io.on("connection", function(socket:any){
+    var userId = socket.request.session.passport.user;
+    SocketStore.allSockets[userId] = socket;
+    console.log(socket.id + ' connected');
+        socket.on('disconnect', function (reason: any) {
+        console.log(socket.id + ' disconnected ' + reason);
+    })
+});
+
 

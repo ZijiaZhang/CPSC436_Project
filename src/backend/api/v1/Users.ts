@@ -22,6 +22,7 @@ usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/l
             if (err) {
                 return res.redirect(req.path + `?err=${err.message}`);
             }
+            console.log('Login Success');
             res.redirect('/');
         });
     }
@@ -59,6 +60,27 @@ usersRouter.get('/logout', (req, res, next) => {
         req.session.save(() => {
             res.redirect('/login');
         });
+    }
+});
+
+
+usersRouter.get('/:username',  (req, res, next)=> {
+    if(!req.isAuthenticated()){
+        passport.authenticate('basic', { session: false })(req, res, next)
+    } else {
+        next();
+    }
+}, (req, res) => {
+    if (req.user) {
+        User.findOne({username: req.params.username}).exec().then(
+            (user: any) => {
+                res.json(user);
+            }
+        ).catch(() => {
+            res.status(500).json({'message': 'error'});
+        });
+    } else {
+        res.status(401).json({'message': 'Not Authorized'});
     }
 });
 
