@@ -38,7 +38,7 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
             return (
                 <Provider store={chatRoomStore}>
                     <div>
-                        <ChatRoomTitle name={this.state.user!.name}/>
+                        <ChatRoomTitle name={this.state.user!.username}/>
                         <ChatRoomChatAreaConnected user={this.state.user}/>
                         <div className={'chat-room-input-area'}>
                             <ChatRoomInputBox ref={this.ref}/>

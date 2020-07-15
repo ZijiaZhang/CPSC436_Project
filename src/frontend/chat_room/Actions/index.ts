@@ -1,7 +1,7 @@
 import {Action, Dispatch} from "redux";
 import {getCurrentUser, user} from "../../shared/globleFunctions";
 import {ISingleMessage, MessageStatus} from "../components/ChatRoomBubbles";
-import {databaseChat} from "../../../backend/Models";
+import {IChat} from "../../../backend/models/ChatModel";
 
 export enum ChatRoomActions{
     RECEIVE_MESSAGE,
@@ -34,7 +34,7 @@ export const sendMessage = (text: string, receiver: string|null) => {
         });
 
 
-        sendMessageAPICall(user.name, receiver, text).then((res) => {
+        sendMessageAPICall(user.username, receiver, text).then((res) => {
             if (res.status === 200) {
                 dispatch({
                     type: ChatRoomActions.SEND_MESSAGE,
@@ -71,10 +71,10 @@ export const getInitialMessages = (receiver: string| null) => {
         if (!receiver){
             return;
         }
-        let user_id = user.name;
+        let user_id = user.username;
 
         let sent_messages = await getMessages(user_id, receiver);
-        sent_messages = sent_messages.map((m: databaseChat) => {
+        sent_messages = sent_messages.map((m: IChat) => {
             return {
                 message: m.content,
                 status:MessageStatus.SENT,
@@ -84,7 +84,7 @@ export const getInitialMessages = (receiver: string| null) => {
         });
 
         let receive_messages = await getMessages(receiver, user_id);
-        receive_messages = receive_messages.map((m: databaseChat) => {
+        receive_messages = receive_messages.map((m: IChat) => {
             return {
                 message: m.content,
                 status: MessageStatus.RECEIVED,

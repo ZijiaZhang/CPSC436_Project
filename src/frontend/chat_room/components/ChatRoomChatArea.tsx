@@ -36,7 +36,7 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
     }
 
     componentDidMount(): void {
-        this.props.getInitialMessages(this.props.user.name ? this.props.user.name: null);
+        this.props.getInitialMessages(this.props.user.username ? this.props.user.username: null);
     }
 }
 

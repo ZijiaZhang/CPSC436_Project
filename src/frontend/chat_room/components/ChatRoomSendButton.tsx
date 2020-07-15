@@ -27,7 +27,7 @@ export class ChatRoomSendButton extends React.Component<IChatRoomSendButtonProps
                            if (inputBox) {
                                 const inputElement = inputBox.inputElement.current;
                                 if (inputElement)
-                                this.props.sendMessage(inputElement.value, this.props.user.name)
+                                this.props.sendMessage(inputElement.value, this.props.user.username)
                            }
                        }}>
             SEND
