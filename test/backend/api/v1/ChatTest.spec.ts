@@ -2,6 +2,7 @@ import chai, {expect} from 'chai';
 const mongoose = require("mongoose");
 import chaiHttp = require('chai-http');
 import {Chat, IChat} from "../../../../src/backend/models/ChatModel";
+import {User} from "../../../../src/backend/models/UserModel";
 
 chai.use(chaiHttp);
 
