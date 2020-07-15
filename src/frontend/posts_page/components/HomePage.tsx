@@ -50,6 +50,8 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
         } else {
             // console.log("user");
         }
+        let d = document.getElementsByClassName("search-input-block")[0] as HTMLInputElement;
+        d.value = '';
     }
 
     render() {
