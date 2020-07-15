@@ -1,14 +1,23 @@
 import React from "react";
 import {IUser} from "./UserBlock";
+import {IPost} from "./PostBlock";
+import {connect} from "react-redux";
+import {IComponentsType} from "./HomePage";
 
-interface ISearchBlockProps {
+
+export interface ISearchBlockProps {
     user: IUser,
     getPosts: any,
     getUsers: any,
+    searchContent: any,
+    changeContent: any,
+    componentsType: any,
+    postList: any,
+    userList: any,
+    contentSearch: String
 }
 
 interface ISearchBlockState {
-
 }
 
 class SearchBlock extends React.Component<ISearchBlockProps, ISearchBlockState> {
@@ -16,16 +25,22 @@ class SearchBlock extends React.Component<ISearchBlockProps, ISearchBlockState> 
     constructor(props: ISearchBlockProps) {
         super(props);
         this.state = {
-
         }
     }
 
     render() {
+        const content = this.props.contentSearch;
+        let objectList: any;
+        if (this.props.componentsType === IComponentsType.posts) {
+            objectList = this.props.postList;
+        } else {
+            objectList = this.props.userList;
+        }
         return (
             <div className="search-block">
                 <div className="search-block-search-bar">
-                    <input type="text" className="search-input-block" placeholder="Search"/>
-                    <button className="search-submit-button">Search</button>
+                    <input type="text" className="search-input-block" placeholder="Search" onChange={this.props.changeContent}/>
+                    <button className="search-submit-button" onClick={()=> {this.props.searchContent(content, objectList)}}>Search</button>
                 </div>
                 <div className="search-block-nav-buttons">
                     <button className="nav-button-to-some-page">
@@ -47,4 +62,11 @@ class SearchBlock extends React.Component<ISearchBlockProps, ISearchBlockState> 
     }
 }
 
-export default SearchBlock;
+const mapStateToProps = (state: { postList: IPost[], userList: IUser[]} ) => {
+    return {
+        postList: state.postList,
+        userList: state.userList
+    };
+};
+
+export default connect(mapStateToProps)(SearchBlock);

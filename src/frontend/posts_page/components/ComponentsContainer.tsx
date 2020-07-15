@@ -9,10 +9,11 @@ interface IComponentsContainerProps {
     postList: IPost[],
     componentsType: IComponentsType,
     registeredUser: IUser,
+    contentSearch: String,
+    searchContent: any
 }
 
 interface IComponentsContainerState {
-
 }
 
 
@@ -20,6 +21,7 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
     constructor(props: IComponentsContainerProps) {
         super(props);
         this.state= {
+            
         }
     }
 
