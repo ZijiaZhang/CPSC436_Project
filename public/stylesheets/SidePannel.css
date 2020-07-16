@@ -52,7 +52,8 @@
 
 .myFriend {
   height: 100%;
-  top: 108px;
+  z-index: 2;
+  top: 0;
   right: 0;
   background-color: #0e2473;
   overflow-x: hidden;
