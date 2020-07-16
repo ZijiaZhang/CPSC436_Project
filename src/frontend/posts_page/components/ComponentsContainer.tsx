@@ -30,13 +30,15 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
         switch (this.props.componentsType) {
             case IComponentsType.posts:
                 const postList: IPost[] = this.props.postList.slice().reverse();
-                listComponents = postList.map((post) =>
+                const retPost: IPost[] = this.props.searchContent(this.props.contentSearch,postList);
+                listComponents = retPost.map((post) =>
                     <PostBlock post={post} />
                 );
                 break;
             case IComponentsType.users:
                 const userList: IUser[] = this.props.userList.slice().reverse();
-                listComponents = userList.map((user) =>
+                const retUser: IUser[] = this.props.searchContent(this.props.contentSearch,userList);
+                listComponents = retUser.map((user) =>
                     <UserBlock registeredUser={this.props.registeredUser} displayedUser={user} />
                 );
                 break;

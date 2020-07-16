@@ -39,19 +39,36 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
         this.setState({contentSearch: e.target.value});
     }
 
+    searchContentByName = (content: String, objList: any) => {
+        let retval: any = [];
+        for (let i=0; i < objList.length; i++) {
+            if (objList[i].fullname.toLowerCase().includes(content.toLowerCase())) {
+                retval.push(objList[i]);
+            }
+        }
+        return retval;
+    }
+
+
+    searchContentByPostDetail = (content: String, objList: any) => {
+        let retval: any = [];
+        for (let i=0; i < objList.length; i++) {
+            if (objList[i].detail.toLowerCase().includes(content.toLowerCase())) {
+                retval.push(objList[i]);
+            }
+        }
+        return retval.reverse();
+    }
+
     searchContent = (content: String, objList: any) => {
-        // console.log(this.state.contentSearch);
-        // console.log(this.state.componentsType);
-        console.log(content);
-        console.log(objList);
+        let retList: any = [];
         if (content === "") return objList;
         if (this.state.componentsType ===IComponentsType.posts) {
-            // console.log("post");
+            retList = this.searchContentByPostDetail(content, objList);
         } else {
-            // console.log("user");
+            retList = this.searchContentByName(content, objList);
         }
-        let d = document.getElementsByClassName("search-input-block")[0] as HTMLInputElement;
-        d.value = '';
+        return retList.reverse();
     }
 
     render() {
