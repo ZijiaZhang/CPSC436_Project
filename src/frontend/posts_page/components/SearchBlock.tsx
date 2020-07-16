@@ -10,7 +10,6 @@ export interface ISearchBlockProps {
     getPosts: any,
     getUsers: any,
     searchContent: any,
-    changeContent: any,
     componentsType: any,
     postList: any,
     userList: any,
@@ -18,6 +17,7 @@ export interface ISearchBlockProps {
 }
 
 interface ISearchBlockState {
+    content: string
 }
 
 class SearchBlock extends React.Component<ISearchBlockProps, ISearchBlockState> {
@@ -25,11 +25,16 @@ class SearchBlock extends React.Component<ISearchBlockProps, ISearchBlockState> 
     constructor(props: ISearchBlockProps) {
         super(props);
         this.state = {
+            content: ""
         }
     }
 
+    changeContent = (e: any) => {
+        this.setState({content: e.target.value});
+    }
+
     render() {
-        const content = this.props.contentSearch;
+        const content = this.state.content;
         let objectList: any;
         if (this.props.componentsType === IComponentsType.posts) {
             objectList = this.props.postList;
@@ -39,7 +44,7 @@ class SearchBlock extends React.Component<ISearchBlockProps, ISearchBlockState> 
         return (
             <div className="search-block">
                 <div className="search-block-search-bar">
-                    <input type="text" className="search-input-block" placeholder="Search" onChange={this.props.changeContent}/>
+                    <input type="text" className="search-input-block" placeholder="Search" onChange={this.changeContent}/>
                     <button className="search-submit-button" onClick={()=> {this.props.searchContent(content, objectList)}}>Search</button>
                 </div>
                 <div className="search-block-nav-buttons">

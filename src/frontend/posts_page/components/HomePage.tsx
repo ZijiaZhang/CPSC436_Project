@@ -35,10 +35,6 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
         this.setState({componentsType: IComponentsType.users})
     };
 
-    changeContent = (e: any) => {
-        this.setState({contentSearch: e.target.value});
-    }
-
     searchContentByName = (content: String, objList: any) => {
         let retval: any = [];
         for (let i=0; i < objList.length; i++) {
@@ -61,6 +57,7 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
     }
 
     searchContent = (content: String, objList: any) => {
+        this.setState({contentSearch: content});
         let retList: any = [];
         if (content === "") return objList;
         if (this.state.componentsType ===IComponentsType.posts) {
@@ -68,13 +65,15 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
         } else {
             retList = this.searchContentByName(content, objList);
         }
+        // let d = document.getElementsByClassName("search-input-block")[0] as HTMLInputElement;
+        // d.value = '';
         return retList.reverse();
     }
 
     render() {
         return (
             <div id="post-blog-page">
-                <SearchBlock user={this.props.user} getPosts={this.getPosts} getUsers={this.getUsers} searchContent={this.searchContent} changeContent={this.changeContent} componentsType={this.state.componentsType} contentSearch={this.state.contentSearch} />
+                <SearchBlock user={this.props.user} getPosts={this.getPosts} getUsers={this.getUsers} searchContent={this.searchContent} componentsType={this.state.componentsType} contentSearch={this.state.contentSearch} />
                 <div className="home-page-body">
                     <InputBlock user={this.props.user} />
                     <ComponentsContainer registeredUser={this.props.user} componentsType={this.state.componentsType} searchContent={this.searchContent} contentSearch={this.state.contentSearch} />
