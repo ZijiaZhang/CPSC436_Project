@@ -1,16 +1,10 @@
 import {Document, Model, model, Schema} from "mongoose";
+import { IChat } from "../../shared/ModelInterfaces";
 
-interface IChatSchema extends Document {
-    senderUsername: string;
-    receiverUsername: string;
-    content: string;
-    time: Date;
+interface IChatSchema extends Document, IChat {
 }
 
-export interface IChat extends IChatSchema {
-}
-
-interface IChatModel extends Model<IChat> {
+interface IChatModel extends Model<IChatSchema> {
 }
 
 const chatSchema: Schema = new Schema({
@@ -20,4 +14,4 @@ const chatSchema: Schema = new Schema({
     time: Date
 });
 
-export const Chat = model<IChat, IChatModel>('chat', chatSchema);
+export const Chat = model<IChatSchema, IChatModel>('chat', chatSchema);

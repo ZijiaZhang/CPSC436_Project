@@ -1,8 +1,9 @@
 import express from 'express';
 import {checkIsValidObjectId} from "../../shared/Middlewares";
-import {IPost, Post} from "../../models/PostModel";
+import {Post} from "../../models/PostModel";
 import {Comment} from "../../models/CommentModel";
 import {commentsRouter} from "./Comments";
+import {IPost} from "../../../shared/ModelInterfaces";
 
 export const postsRouter = express.Router();
 

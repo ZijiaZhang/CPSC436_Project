@@ -1,8 +1,9 @@
 import express from 'express';
-import {Chat, IChat} from "../../models/ChatModel";
+import {Chat} from "../../models/ChatModel";
 import passport from "passport";
 import {SocketStore} from "../../SocketStore";
 import {SocketEvents} from "../../../shared/SocketEvents";
+import { IChat } from '../../../shared/ModelInterfaces';
 export const chatsRouter = express.Router();
 
 

@@ -1,15 +1,12 @@
 import {Document, Model, model, Schema} from "mongoose";
 import {uniqueValidator} from "../shared/Helpers";
+import {ITag} from "../../shared/ModelInterfaces";
 
-interface ITagSchema extends Document {
+interface ITagSchema extends Document, ITag {
     _id: string,
-    name: string
 }
 
-export interface ITag extends ITagSchema {
-}
-
-interface ITagModel extends Model<ITag> {
+interface ITagModel extends Model<ITagSchema> {
 }
 
 const tagSchema: Schema = new Schema({
@@ -25,4 +22,4 @@ const tagSchema: Schema = new Schema({
     }
 });
 
-export const Tag = model<ITag, ITagModel>('tag', tagSchema);
+export const Tag = model<ITagSchema, ITagModel>('tag', tagSchema);
