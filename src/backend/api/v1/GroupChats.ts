@@ -13,7 +13,7 @@ groupChatsRouter.use((req, res, next)=> {
     } else {
         next();
     }
-}, );
+} );
 
 
 groupChatsRouter.get('/', function(req, res) {
@@ -47,7 +47,6 @@ groupChatsRouter.post('/', function (req, res) {
             Group.findById(req.body.group_id).then((group: IGroup| null) =>{
                 for(let username of group!.users){
                     if (username in SocketStore.allSockets && username!== req.body.sender_username){
-                        console.log('sent');
                         SocketStore.allSockets[req.body.receiver_username].emit(SocketEvents.ReceiveMessage, {message: chat})
                     }
                 }

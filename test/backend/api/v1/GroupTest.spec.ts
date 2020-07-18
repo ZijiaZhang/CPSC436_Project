@@ -66,6 +66,41 @@ describe('Group', () => {
     });
 
 
+    describe('Get Group', () => {
+        before(async ()=>{
+            const clear_group = Group.deleteMany({});
+            await clear_group.exec();
+            let response = await chai.request(app)
+                .put('/api/v1/groups/testGroup')
+                .auth('testUser', 'testPass');
+            group_id = response.body._id;
+        });
+
+        it('it should Get a Group', async () => {
+            return chai.request(app)
+                .get('/api/v1/groups/'+group_id)
+                .auth('testUser', 'testPass')
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.body.name).equals('testGroup');
+                }).catch((err) => {
+                    expect.fail('should not throw error' + err);
+                })
+        });
+
+        it('it should not Get a Group with wrong id', async () => {
+            return chai.request(app)
+                .get('/api/v1/groups/test')
+                .auth('testUser', 'testPass')
+                .then((res) => {
+                    expect(res).have.status(404);
+                }).catch((err) => {
+                    expect.fail('should not throw error' + err);
+                })
+        });
+    });
+
+
     describe('Add user Test', () => {
         beforeEach(async ()=>{
             const clear_chat = Group.deleteMany({});

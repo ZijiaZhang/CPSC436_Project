@@ -122,6 +122,22 @@ describe('GroupChats', () => {
                     expect.fail('should not throw error' + err);
                 })
         });
+
+        it('it should not post chat if unauthorized', async () => {
+            return chai.request(app)
+                .post('/api/v1/group_chats')
+                .send({
+                    sender_username: 'testUser',
+                    group_id: group_id,
+                    content: 'test string'
+                })
+                .then((res) => {
+                    expect(res).have.status(401);
+                })
+                .catch((err) => {
+                    expect.fail('should not throw error' + err);
+                })
+        });
     });
 
 });

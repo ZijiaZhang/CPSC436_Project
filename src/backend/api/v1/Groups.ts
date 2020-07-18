@@ -22,7 +22,7 @@ groupsRouter.get('/:groupID', function (req, res, next) {
             res.json(data)
         }
     ).catch(
-        () => res.status(500).json({message: 'error when fetching the data'})
+        () => res.status(404).json({message: "The group ID not found"})
     )
 });
 
