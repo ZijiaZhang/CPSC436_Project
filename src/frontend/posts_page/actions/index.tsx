@@ -42,9 +42,3 @@ export const loadSavedPosts = (savedPosts: any) => {
         loadSavedPosts: savedPosts
     }
 };
-export const displayDetail = (detailedMessage: any) => {
-    return {
-        type: 'DETAILED_MESSAGE',
-        displayDetail: detailedMessage
-    }
-};

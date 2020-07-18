@@ -6,7 +6,6 @@ import {IUser} from "../../../shared/ModelInterfaces";
 
 interface IUserBlockProps {
     displayedUser: IUser,
-    registeredUser: IUser,
     loadUserInfo: any,
     userInfo: IUser,
     userFriends: any,
@@ -24,8 +23,9 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
     };
 
     addFriend = async () => {
-        if (!this.props.registeredUser.friendUsernames.includes(this.props.displayedUser.username)) {
-            let friends = this.props.registeredUser.friendUsernames.slice();
+        console.log(this.props.userInfo.friendUsernames);
+        if (!this.props.userInfo.friendUsernames.includes(this.props.displayedUser.username)) {
+            let friends = this.props.userInfo.friendUsernames.slice();
             friends.push(this.props.displayedUser.username);
             await this.updateUserInfo(friends);
         }
@@ -37,7 +37,7 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
             friendUsernames: friends
         };
         console.log(updatedUser);
-        let response = await fetch('http://localhost:3000/api/v1/users/' + this.props.registeredUser.username, {
+        let response = await fetch('http://localhost:3000/api/v1/users/' + this.props.userInfo.username, {
             method: 'PATCH',
             headers: {
                 'Accept': 'application/json',
@@ -50,12 +50,15 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
         this.props.loadUserInfo(responseData);
         this.props.loadUserFriends(friendsInfo);
         console.log(responseData);
+        console.log(responseData.friendUsernames);
+        console.log(this.props.userInfo.friendUsernames);
     };
 
     deleteFriend = async () => {
-        if (this.props.registeredUser.friendUsernames.includes(this.props.displayedUser.username)) {
-            let index = this.props.registeredUser.friendUsernames.indexOf(this.props.displayedUser.username);
-            let friends = this.props.registeredUser.friendUsernames.slice();
+        console.log(this.props.userInfo.friendUsernames);
+        if (this.props.userInfo.friendUsernames.includes(this.props.displayedUser.username)) {
+            let index = this.props.userInfo.friendUsernames.indexOf(this.props.displayedUser.username);
+            let friends = this.props.userInfo.friendUsernames.slice();
             friends.splice(index, 1);
             await this.updateUserInfo(friends);
         }

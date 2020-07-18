@@ -116,6 +116,13 @@ describe('User', ()=> {
             })
         });
 
+        it('update user with wrong id', async() => {
+            return chai.request(app)
+                .patch('/api/v1/users/ids/randomId').send({_id: 'abcde'})
+                .then((res) => {
+                    expect(res).have.status(400);
+                })
+        });
 
         it('logout test user', async() => {
             return chai.request(app)

@@ -7,13 +7,15 @@ import CommentsContainer from "./CommentsContainer";
 import CommentInputBar from "./CommentInputBar";
 import {getPostsByIds, getPostsByUserId} from "../../shared/globleFunctions";
 import {IUser} from "../../../shared/ModelInterfaces";
+import {loadUserInfo} from "../../settings/actions";
 
 export interface IPostBlockProps {
     post: any,
     updateLike: any,
-    user: IUser,
+    userInfo: IUser,
     deletePost: any,
-    loadSavedPosts: any
+    loadSavedPosts: any,
+    loadUserInfo: any
 }
 
 export interface IPost extends IUserProps{
@@ -51,10 +53,10 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
           likedUserIds: []
       };
       const likes = this.props.post.likedUserIds.slice();
-      if(likes.includes(this.props.user._id)) {
-          likes.splice(likes.indexOf(this.props.user._id), 1);
+      if(likes.includes(this.props.userInfo._id)) {
+          likes.splice(likes.indexOf(this.props.userInfo._id), 1);
       } else {
-          likes.push(this.props.user._id);
+          likes.push(this.props.userInfo._id);
       }
       update.likedUserIds = likes;
       let response = await fetch('/api/v1/posts/' + this.props.post.id, {method: 'PATCH',
@@ -70,14 +72,14 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
 
   savePost = async () => {
       let update = {
-          savedPostIds: this.props.user.savedPostIds.slice()
+          savedPostIds: this.props.userInfo.savedPostIds.slice()
       };
-      if (this.props.user.savedPostIds.includes(this.props.post.id)) {
+      if (this.props.userInfo.savedPostIds.includes(this.props.post.id)) {
           update.savedPostIds.splice(update.savedPostIds.indexOf(this.props.post.id), 1);
       } else {
           update.savedPostIds.push(this.props.post.id);
       }
-      let response = await fetch('/api/v1/users/' + this.props.user.username, {
+      let response = await fetch('/api/v1/users/' + this.props.userInfo.username, {
           method: 'PATCH',
           headers: {
               'Accept': 'application/json',
@@ -87,18 +89,19 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
       });
       let responseData = await response.json();
       this.props.loadSavedPosts(await getPostsByIds(responseData.savedPostIds));
+      this.props.loadUserInfo(responseData);
   };
 
   hidePost = async () => {
       let update = {
-          hiddenPostIds: this.props.user.hiddenPostIds.slice()
+          hiddenPostIds: this.props.userInfo.hiddenPostIds.slice()
       };
-      if (this.props.user.hiddenPostIds.includes(this.props.post.id)) {
+      if (this.props.userInfo.hiddenPostIds.includes(this.props.post.id)) {
           update.hiddenPostIds.splice(update.hiddenPostIds.indexOf(this.props.post.id), 1);
       } else {
           update.hiddenPostIds.push(this.props.post.id);
       }
-      await fetch('/api/v1/users/' + this.props.user.username, {
+      await fetch('/api/v1/users/' + this.props.userInfo.username, {
           method: 'PATCH',
           headers: {
               'Accept': 'application/json',
@@ -128,7 +131,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
       background: 'white',
       borderColor: 'white'
     };
-    const deleteButton = this.props.post.userId === this.props.user._id ?
+    const deleteButton = this.props.post.userId === this.props.userInfo._id ?
         <Dropdown.Item className="profile-drop-down-button" onClick={this.deletePost}>
             <span className={'glyphicon glyphicon-remove'} /> Delete Post</Dropdown.Item> : "";
     return(<div className="post-block" key={this.props.post.id}>
@@ -176,15 +179,18 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
                 <div style={this.state.showComments ? {display: 'block'} : {display: 'none'}}>
                     <CommentsContainer comments={this.props.post.comments}/>
                 </div>
-                <CommentInputBar post={this.props.post} user={this.props.user} />
+                <CommentInputBar post={this.props.post} user={this.props.userInfo} />
             </div>
         </div>
     </div>)
   }
 }
 
-const mapStateToProps = (state: { postList: any}) => {
-    return {postList: state.postList};
+const mapStateToProps = (state: { postList: any, userInfo: any}) => {
+    return {
+        postList: state.postList,
+        userInfo: state.userInfo
+    };
 };
 
-export default connect(mapStateToProps, {updateLike, deletePost, loadSavedPosts})(PostBlock);
+export default connect(mapStateToProps, {updateLike, deletePost, loadSavedPosts, loadUserInfo})(PostBlock);

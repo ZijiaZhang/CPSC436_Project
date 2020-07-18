@@ -94,7 +94,7 @@ usersRouter.get('/ids/:userId', checkIsValidObjectId, (req, res, next) => {
     return query.exec()
         .then((user: IUser | null) => {
             if (user === null) {
-                res.status(400).json({message: `Cannot find post with id ${userId}`});
+                res.status(400).json({message: `Cannot find user with id ${userId}`});
             } else {
                 res.json(user);
             }

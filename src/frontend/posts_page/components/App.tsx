@@ -1,5 +1,4 @@
 import React from "react";
-import reducers from '../reducers';
 import {createStore} from "redux";
 import {connect, Provider} from "react-redux";
 import HomePage from "./HomePage";
@@ -47,9 +46,9 @@ class PostPage extends React.Component<IPostsPageProps, IPostsPageState>{
     render() {
         if (this.state.user) {
             return (
-                <Provider store={createStore(reducers)}>
+                <div>
                     <HomePage user={this.state.user} />
-                </Provider>
+                </div>
             );
         } else if (this.state.user === null){
             return (<h1>Error User Not Found</h1>)

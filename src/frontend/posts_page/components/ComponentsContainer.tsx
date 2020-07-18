@@ -38,13 +38,13 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
             case IComponentsType.posts:
                 const postList: IPost[] = this.props.postList.slice().reverse();
                 listComponents = postList.map((post) =>
-                    <PostBlock post={post} user={this.props.registeredUser} />
+                    <PostBlock post={post} />
                 );
                 break;
             case IComponentsType.users:
                 const userList: IUser[] = this.state.userList.slice().reverse();
                 listComponents = userList.map((user) =>
-                    <UserBlock registeredUser={this.props.registeredUser} displayedUser={user} />
+                    <UserBlock displayedUser={user} />
                 );
                 break;
             case IComponentsType.personal:

@@ -20,7 +20,7 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
     render() {
         const postList = this.props.savedPosts.slice().reverse();
         const savedPosts = postList.map((post) =>
-            <PostBlock post={post} user={this.props.user} />
+            <PostBlock post={post} />
         );
         return (
             <div>
