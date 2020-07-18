@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.20.0 [2020-07-18]
+### Added
+- Add Tags apis
+
 ## 0.19.1 [2020-07-17]
 ### Updated
 - Modify models
