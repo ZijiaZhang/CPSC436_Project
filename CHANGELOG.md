@@ -2,7 +2,7 @@
 
 All changes will be logged here
 
-## 0.13.1 [2020-07-17]
+## 0.19.1 [2020-07-17]
 ### Updated
 - Modify models
 
