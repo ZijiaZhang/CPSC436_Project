@@ -1,11 +1,13 @@
 import React from "react";
 import {connect} from "react-redux";
-import {addComment, addLike, undoLike} from "../actions";
+import {addComment} from "../actions";
 import {IPost} from "./PostBlock";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface ICommentInputBarProps{
     addComment: any,
-    post: IPost
+    post: IPost,
+    user: IUser
 }
 interface ICommentInputBarState{
     comment: string,
@@ -40,14 +42,31 @@ class CommentInputBar extends React.Component<ICommentInputBarProps, ICommentInp
         this.setState({comment: ''});
     };
 
-    postComment = (post: IPost) => {
+    postComment = async () => {
         if(this.state.comment.trim() !== '') {
             let d = new Date();
             let time = d.getHours() + ':' + d.getMinutes();
             let date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
-            const newComment = {time: date + ' ' + time, name:'N/A', detail: this.state.comment,
-                avatar: './images/nobu!.png', image: '', visibility: this.state.checked ? 'private' : 'public'};
-            this.props.addComment({index: post.id, detail: newComment});
+            const newComment = {time: date + ' ' + time, userId: this.props.user._id, detail: this.state.comment,
+                postId: this.props.post.id, visibility: this.state.checked ? 'private' : 'public'};
+            let response = await fetch('/api/v1/comments/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newComment)});
+            let responseData = await response.json();
+            this.props.addComment(
+                {
+                    time: responseData.time,
+                    name: this.props.user.fullname,
+                    detail: responseData.detail,
+                    visibility: responseData.visibility,
+                    avatarPath: this.props.user.avatarPath
+                },
+                this.props.post.id
+            );
             this.setState({editing: false});
             this.setState({comment: ''});
         }
@@ -70,7 +89,7 @@ class CommentInputBar extends React.Component<ICommentInputBarProps, ICommentInp
                 </span>
                     <input className="comment-private-checkbox" type="checkbox" checked={this.state.checked}
                            onClick={this.setPrivate}/>
-                    <button className="comment-modification-button" onClick={() => this.postComment(this.props.post)}>Post</button>
+                    <button className="comment-modification-button" onClick={this.postComment}>Post</button>
                     <button className="comment-modification-button" onClick={this.cancelComment}>Cancel</button>
                 </div>
             </div>

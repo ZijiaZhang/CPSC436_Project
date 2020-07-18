@@ -5,6 +5,7 @@ import * as fs from "fs";
 import {User} from "../../models/UserModel";
 import {IUser} from "../../../shared/ModelInterfaces";
 import { useEffect } from 'react';
+import {checkIsValidObjectId} from "../../shared/Middlewares";
 const multer = require('multer');
 import {applyRecommendation} from '../../shared/Helpers'
 
@@ -85,6 +86,23 @@ usersRouter.get('/:username',  (req, res, next)=> {
     } else {
         res.status(401).json({'message': 'Not Authorized'});
     }
+});
+
+usersRouter.get('/ids/:userId', checkIsValidObjectId, (req, res, next) => {
+    const userId = req.params.userId;
+    const query = User.findById(userId);
+    return query.exec()
+        .then((user: IUser | null) => {
+            if (user === null) {
+                res.status(400).json({message: `Cannot find post with id ${userId}`});
+            } else {
+                res.json(user);
+            }
+        })
+        .catch((err: Error) => {
+            console.error(err);
+            res.status(500).json({message: 'Failed getting post.'})
+        });
 });
 
 // update user with username

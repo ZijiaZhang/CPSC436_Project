@@ -1,5 +1,5 @@
-import {IUser} from "../../posts_page/components/UserBlock";
 import {combineReducers} from "redux";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 export let loginUser: IUser = {
     _id: "",
@@ -12,6 +12,8 @@ export let loginUser: IUser = {
     level: "",
     tags: [],
     friendUsernames: [],
+    savedPostIds: [],
+    hiddenPostIds: []
 };
 
 export let userFriendList: IUser[] = [];

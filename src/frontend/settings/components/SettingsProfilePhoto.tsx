@@ -2,6 +2,7 @@ import * as React from "react";
 import Modal from "react-modal";
 import {connect} from "react-redux";
 import {loadUserInfo} from "../actions";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface ISettingsProfilePhotoProps {
     opened: boolean,
@@ -9,7 +10,7 @@ interface ISettingsProfilePhotoProps {
     userAvatarOnChange: any,
     avatarPath: string,
     loadUserInfo: any,
-    userInfo: any,
+    userInfo: IUser,
 }
 
 interface ISettingsProfilePhotoState {

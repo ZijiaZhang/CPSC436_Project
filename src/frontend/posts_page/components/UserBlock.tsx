@@ -2,19 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {loadUserFriends, loadUserInfo} from "../../settings/actions";
 import {getManyUsersInfo} from "../../shared/globleFunctions";
-
-export interface IUser {
-    _id: string,
-    username: string,
-    fullname: string,
-    avatarPath: string,
-    gender: string,
-    department: string,
-    major: string,
-    level: string,
-    tags: string[],
-    friendUsernames: string[],
-}
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface IUserBlockProps {
     displayedUser: IUser,
@@ -25,7 +13,6 @@ interface IUserBlockProps {
     loadUserFriends: any
 }
 interface IUserBlockState {
-
 }
 
 class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
@@ -37,14 +24,19 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
     };
 
     addFriend = async () => {
-        let friends = this.props.registeredUser.friendUsernames.concat(this.props.displayedUser.username);
-        await this.updateUserInfo(friends);
+        if (!this.props.registeredUser.friendUsernames.includes(this.props.displayedUser.username)) {
+            let friends = this.props.registeredUser.friendUsernames.slice();
+            friends.push(this.props.displayedUser.username);
+            await this.updateUserInfo(friends);
+        }
     };
 
     updateUserInfo = async (friends: string[]) => {
+        console.log(friends);
         let updatedUser = {
             friendUsernames: friends
         };
+        console.log(updatedUser);
         let response = await fetch('http://localhost:3000/api/v1/users/' + this.props.registeredUser.username, {
             method: 'PATCH',
             headers: {
@@ -54,17 +46,19 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
             body: JSON.stringify(updatedUser)
         });
         let responseData = await response.json();
+        let friendsInfo = await getManyUsersInfo(responseData.friendUsernames);
         this.props.loadUserInfo(responseData);
-        let friendsInfo = await getManyUsersInfo(friends);
         this.props.loadUserFriends(friendsInfo);
         console.log(responseData);
     };
 
     deleteFriend = async () => {
-        let index = this.props.registeredUser.friendUsernames.indexOf(this.props.displayedUser.username);
-        let friends = this.props.registeredUser.friendUsernames.slice(0, this.props.registeredUser.friendUsernames.length);
-        friends.splice(index, 1);
-        await this.updateUserInfo(friends);
+        if (this.props.registeredUser.friendUsernames.includes(this.props.displayedUser.username)) {
+            let index = this.props.registeredUser.friendUsernames.indexOf(this.props.displayedUser.username);
+            let friends = this.props.registeredUser.friendUsernames.slice();
+            friends.splice(index, 1);
+            await this.updateUserInfo(friends);
+        }
     };
 
     render() {
@@ -75,7 +69,7 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
             <button className="user-block-stranger-button" onClick={this.addFriend}>
                 <span className={'glyphicon glyphicon-user'} /> Add Friend</button>;
         return (
-            <div className="post-block">
+            <div className="post-block" key={this.props.displayedUser._id}>
                 <div className="user-block-user-info">
                     <img className="user-block-avatar" src={this.props.displayedUser.avatarPath} alt="img not found"/>
                     <div className="user-block-user-detail">

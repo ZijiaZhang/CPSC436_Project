@@ -1,6 +1,6 @@
 import React, {CSSProperties} from "react";
-import {IUser} from "../../posts_page/components/UserBlock";
 import Dropdown from "react-bootstrap/Dropdown";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface IProfileFriendBlockProps{
     friend: IUser

@@ -2,15 +2,15 @@ import React from "react";
 import InputBlock from "./InputBlock";
 import ComponentsContainer from "./ComponentsContainer";
 import SearchBlock from "./SearchBlock";
-import {IUser} from "./UserBlock";
-import {IPost} from "./PostBlock";
-import {getPosts} from "../../shared/globleFunctions";
+import {getPosts, getPostsByIds} from "../../shared/globleFunctions";
 import {connect} from "react-redux";
-import {loadPosts} from "../actions";
+import {loadPosts, loadSavedPosts} from "../actions";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface IHomePageProps {
     user: IUser,
-    loadPosts: any
+    loadPosts: any,
+    loadSavedPosts: any
 }
 
 interface IHomePageState {
@@ -20,6 +20,7 @@ interface IHomePageState {
 export enum IComponentsType {
     posts = 'posts',
     users = 'users',
+    personal = 'personal'
 }
 
 class HomePage extends React.Component<IHomePageProps, IHomePageState> {
@@ -31,8 +32,9 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
     }
 
     async componentDidMount() {
-        let postList: IPost[] = await getPosts();
+        let postList: any[] = await getPosts();
         this.props.loadPosts(postList);
+        this.props.loadSavedPosts(await getPostsByIds(this.props.user.savedPostIds))
     }
 
     getPosts = () => {
@@ -43,10 +45,14 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
         this.setState({componentsType: IComponentsType.users})
     };
 
+    getPersonal = () => {
+        this.setState({componentsType: IComponentsType.personal})
+    };
+
     render() {
         return (
             <div id="post-blog-page">
-                <SearchBlock user={this.props.user} getPosts={this.getPosts} getUsers={this.getUsers} />
+                <SearchBlock user={this.props.user} getPosts={this.getPosts} getUsers={this.getUsers} getPersonal={this.getPersonal}/>
                 <div className="home-page-body">
                     <InputBlock user={this.props.user} />
                     <ComponentsContainer registeredUser={this.props.user} componentsType={this.state.componentsType} />
@@ -62,4 +68,4 @@ const mapStateToProps = (state: {postList: any }) => {
         postList: state.postList
     };
 };
-export default connect(mapStateToProps, {loadPosts})(HomePage);
+export default connect(mapStateToProps, {loadPosts, loadSavedPosts})(HomePage);

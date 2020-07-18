@@ -5,8 +5,8 @@ import VisibilitySetting from "./VisibilitySetting";
 import CreatableSelect from 'react-select/creatable';
 import TextEditorSetting from "./TextEditorSetting";
 import Modal from "react-modal";
-import {IUser} from "./UserBlock";
 import {IPost} from "./PostBlock";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface ITextareaProps {
     addPost: any,
@@ -14,7 +14,7 @@ interface ITextareaProps {
     inputDraft: string,
     opened: boolean,
     postList: IPost[],
-    user: any
+    user: IUser
 }
 
 interface ITextareaState {
@@ -40,7 +40,8 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
         this.setState({message: event.target.value});
     };
 
-    sendPost = async () => {
+    sendPost = async (event: any) => {
+        event.preventDefault();
         if (this.state.message.trim() !== '') {
             let d = new Date();
             let time = d.getHours() + ':' + d.getMinutes();
@@ -60,18 +61,17 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             let responseData = await response.json();
             console.log(responseData);
             this.props.addPost({
-                id: this.props.postList.length,
+                id: responseData._id,
                 time: responseData.time,
-                name: 'TBD',
+                name: this.props.user.fullname,
                 detail: responseData.detail,
-                avatarPath: './images/photoP.png',
+                avatarPath: this.props.user.avatarPath,
                 image: '',
-                numLikes: 0,
+                likedUserIds: [],
                 comments: [],
                 type: responseData.type,
                 visibility: responseData.visibility,
                 tags: [],
-                liked: false,
                 hidden: false
             });
             this.setState({message: ''});

@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {sendMessage} from "../Actions";
 import {ButtonState} from "../../shared/enums/ButtonState";
 import {IButtonState} from "../../shared/interfaces/IButtonState";
-import {IUser} from "../../posts_page/components/UserBlock";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 
 interface IChatRoomSendButtonProps {

@@ -1,8 +1,7 @@
 import React from "react";
-import {Comment} from "./PostBlock";
 
 interface ICommentBlockProps {
-    comment: Comment
+    comment: any
 }
 interface ICommentBlockState {
 
@@ -19,7 +18,7 @@ class CommentBlock extends React.Component<ICommentBlockProps, ICommentBlockStat
         return (
             <div className="comment-block">
                 <div className="comment-profile-photo-block">
-                    <img src={this.props.comment.avatar} alt="ProfilePhoto" className="comment-profile-photo"/>
+                    <img src={this.props.comment.avatarPath} alt="ProfilePhoto" className="comment-profile-photo"/>
                 </div>
                 <div className="comment-detail-block">
                     <p className="comment-user-name">{this.props.comment.name}:</p>

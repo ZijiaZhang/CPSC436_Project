@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {addPost, saveInputDraft} from "../actions";
 import TextInputEditor from "./TextInputEditor";
-import {IUser} from "./UserBlock";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface IInputBlockProps {
     addPost: any,

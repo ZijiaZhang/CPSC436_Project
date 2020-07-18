@@ -7,7 +7,6 @@ export interface IUser {
     _id: string,
     username: string,
     fullname: string,
-    password: string,
     gender: string,
     major: string,
     level: string,

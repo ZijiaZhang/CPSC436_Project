@@ -1,14 +1,17 @@
 import React from "react";
-import UserBlock, {IUser} from "./UserBlock";
-import PostBlock, {IPost} from "./PostBlock";
+import UserBlock from "./UserBlock";
+import PostBlock from "./PostBlock";
 import {connect} from "react-redux";
 import {IComponentsType} from "./HomePage";
 import {getAllUsersInfo} from "../../shared/globleFunctions";
+import {IPost, IUser} from "../../../shared/ModelInterfaces";
+import PersonalPage from "./PersonalPage";
 
 interface IComponentsContainerProps {
     postList: IPost[],
     componentsType: IComponentsType,
     registeredUser: IUser,
+    savedPosts: any;
 }
 
 interface IComponentsContainerState {
@@ -35,7 +38,7 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
             case IComponentsType.posts:
                 const postList: IPost[] = this.props.postList.slice().reverse();
                 listComponents = postList.map((post) =>
-                    <PostBlock post={post} />
+                    <PostBlock post={post} user={this.props.registeredUser} />
                 );
                 break;
             case IComponentsType.users:
@@ -44,7 +47,11 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
                     <UserBlock registeredUser={this.props.registeredUser} displayedUser={user} />
                 );
                 break;
+            case IComponentsType.personal:
+                listComponents = <PersonalPage user={this.props.registeredUser} savedPosts={this.props.savedPosts}/>;
+                break;
         }
+
         return (
             <div id="all-components">
                 {listComponents}
@@ -53,9 +60,10 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
     }
 }
 
-const mapStateToProps = (state: { postList: IPost[]} ) => {
+const mapStateToProps = (state: { postList: IPost[], savedPosts: any[]} ) => {
     return {
-        postList: state.postList
+        postList: state.postList,
+        savedPosts: state.savedPosts
     };
 };
 

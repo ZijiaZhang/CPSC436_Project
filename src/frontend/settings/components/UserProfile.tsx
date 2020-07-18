@@ -1,19 +1,18 @@
 import React from "react";
-import {IUser} from "../../posts_page/components/UserBlock";
 import {TagContainer} from "./TagContainer";
-import {IPost} from "../../posts_page/components/PostBlock";
 import ProfilePostBlock from "./ProfilePostBlock";
 import ProfileFriendBlock from "./ProfileFriendBlock";
 import SettingsForm from "./SettingsForm";
 import {connect} from "react-redux";
 import {loadUserFriends, loadUserInfo} from "../actions";
 import SettingsProfilePhoto from "./SettingsProfilePhoto";
-import {getManyUsersInfo, getUserInfo} from "../../shared/globleFunctions";
+import {getManyUsersInfo, getPostsByUserId, getUserInfo} from "../../shared/globleFunctions";
+import {ITag, IUser} from "../../../shared/ModelInterfaces";
 
 interface IUserProfileProps {
     userInfo: IUser,
     loadUserInfo: any,
-    curUser: any,
+    curUser: IUser,
     loadUserFriends: any,
     userFriends: any
 }
@@ -30,40 +29,9 @@ interface IUserProfileState {
     avatarPath: string,
     major: string,
     level: string,
-    tags: string[]
+    tags: ITag[],
+    postList: any[]
 }
-
-const samplePostList: IPost[] = [{
-    id: '2',
-    time: "2019/10/11 22:22",
-    name: "Denise",
-    detail: "False modesty is as bad as false pride. Know exactly what you are " +
-        "capable of at any moment, and act accordingly. Any other path is folly—and could be deadly in battle.",
-    avatarPath: './images/test2.png',
-    image: '',
-    numLikes: 20,
-    comments: [],
-    type: 'post',
-    visibility: 'public',
-    tags: [],
-    liked: false,
-    hidden: false,
-},
-    {
-        id: '3',
-        time: "2019/12/1 4:10",
-        name: "Denise",
-        detail: "They say truth is the first causality of war.",
-        avatarPath: './images/test2.png',
-        image: './images/nobu!.png',
-        numLikes: 18,
-        comments: [],
-        type: 'post',
-        visibility: 'public',
-        tags: [],
-        liked: false,
-        hidden: false,
-    },];
 
 class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     constructor(props: IUserProfileProps) {
@@ -79,7 +47,8 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             avatarPath: this.props.userInfo.avatarPath,
             major: this.props.userInfo.major,
             level: this.props.userInfo.level,
-            tags: this.props.userInfo.tags
+            tags: this.props.userInfo.tags,
+            postList: []
         }
     }
 
@@ -122,6 +91,8 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
         this.props.loadUserInfo(this.props.curUser);
         let friendInfoList: IUser[] = await getManyUsersInfo(this.props.userInfo.friendUsernames);
         this.props.loadUserFriends(friendInfoList);
+        let postList = await getPostsByUserId(this.props.userInfo._id);
+        this.setState({postList: postList});
     }
 
     startEditProfile = () => {
@@ -149,7 +120,9 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     };
 
     handleClickOutside = (event: any) => {
-        if (!event.target.matches('#profile-interaction-button-with-drop-down') && !event.target.matches('.profile-drop-down-button')) {
+        if (!event.target.matches('#profile-interaction-button-with-drop-down')
+            && !event.target.matches('.profile-drop-down-button')
+            && this.state.dropDown) {
             this.setState({dropDown: false})
         }
     };
@@ -159,7 +132,8 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     };
 
     render() {
-        const posts = samplePostList.map(post =>
+        const postList = this.state.postList.slice(0, this.state.postList.length);
+        const posts = postList.reverse().slice(0,4).map(post =>
             <ProfilePostBlock post={post} />
         );
         const friends = this.props.userFriends.map((friend: any) =>

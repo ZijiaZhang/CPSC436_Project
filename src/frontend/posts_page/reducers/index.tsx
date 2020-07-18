@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
-import {IPost} from "../components/PostBlock";
 import {userFriendsReducer, userInfoReducer} from "../../settings/reducers";
 
-let postList: IPost[] = [];
+let postList: any[] = [];
+let savedPostList: any[] = [];
 
 const inputDraftReducer = (draft = "", action: { type: string; saveInputDraft: string; }) => {
     if (action.type === 'SAVE_DRAFT') {
@@ -10,32 +10,37 @@ const inputDraftReducer = (draft = "", action: { type: string; saveInputDraft: s
     }
     return draft;
 };
-const postListReducer = (posts = postList, action: any) => {
+const postListReducer = (posts = postList.slice(), action: any) => {
     switch(action.type) {
         case 'LOAD_POST':
             postList = action.loadPosts;
             return action.loadPosts;
         case 'ADD_POST':
             postList.push(action.addPost);
-            return posts.slice(0, posts.length).concat(action.addPost);
-        case 'ADD_LIKE':
-            posts[action.addLike].numLikes += 1;
-            posts[action.addLike].liked = true;
-            return posts.slice(0, posts.length);
-        case 'UNDO_LIKE':
-            posts[action.undoLike].numLikes -= 1;
-            posts[action.undoLike].liked = false;
-            return posts.slice(0, posts.length);
+            return posts.slice().concat(action.addPost);
+        case 'UPDATE_LIKE':
+            let updateLike = posts.findIndex(post => post.id === action.updateId);
+            console.log(updateLike);
+            posts[updateLike].likedUserIds = action.updateLike;
+            return posts.slice();
         case 'ADD_COMMENT':
-            const comment = action.newComment;
-            posts[comment.index].comments.push(comment.detail);
-            return posts.slice(0, posts.length);
-        case 'HIDE_POST':
-            posts[action.hidePost].hidden = !posts[action.hidePost].hidden;
-            return posts.slice(0, posts.length);
+            let updateComment = posts.findIndex(post => post.id === action.updateId);
+            posts[updateComment].comments.push(action.newComment);
+            return posts.slice();
+        case 'DELETE_POST':
+            let deletePost = posts.findIndex(post => post.id === action.deletePost);
+            posts.splice(deletePost, 1);
+            return posts.slice();
         default:
             return posts;
     }
+};
+const savedPostsReducer = (savedPosts = savedPostList.slice(), action: any) => {
+    if (action.type === "LOAD_SAVED_POSTS") {
+        savedPostList = action.loadSavedPosts;
+        return action.loadSavedPosts;
+    }
+    return savedPosts;
 };
 
 
@@ -43,5 +48,6 @@ export default combineReducers({
     postList: postListReducer,
     inputDraft: inputDraftReducer,
     userInfo: userInfoReducer,
-    userFriends: userFriendsReducer
+    userFriends: userFriendsReducer,
+    savedPosts: savedPostsReducer
 });

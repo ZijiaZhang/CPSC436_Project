@@ -1,10 +1,9 @@
 import * as React from 'react';
 import FriendsPanelItem from "./FriendsPanelItem";
-import {IUserProps} from "../interfaces/IUserProps";
 import {connect} from "react-redux";
 import {getCurrentUser, getManyUsersInfo} from "../globleFunctions";
-import {IUser} from "../../posts_page/components/UserBlock";
 import {loadUserFriends, loadUserInfo} from "../../settings/actions";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 
 export interface IFriendsPanelProps {

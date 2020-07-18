@@ -1,11 +1,9 @@
-import {IUser} from "../posts_page/components/UserBlock";
 import {MessageStatus} from "../chat_room/components/ChatRoomBubbles";
-import {IChat} from "../../shared/ModelInterfaces";
-import {IPost} from "../posts_page/components/PostBlock";
+import {IChat, IUser} from "../../shared/ModelInterfaces";
 
 export let user: IUser;
 export let user_info: {[name: string] : IUser} = {};
-
+export let post_info: {[id: string] : any} = {};
 
 export async function getCurrentUser() {
     let user_res = await fetch('/api/v1/users');
@@ -21,7 +19,9 @@ export async function getCurrentUser() {
         gender: temp_user.gender,
         level: temp_user.level,
         major: temp_user.major,
-        username: temp_user.username
+        username: temp_user.username,
+        savedPostIds: temp_user.savedPostIds,
+        hiddenPostIds: temp_user.hiddenPostIds
     };
     return user
 }
@@ -42,7 +42,9 @@ export async function getUserInfo(user_id: string) {
         gender: user.gender,
         level: user.level,
         major: user.major,
-        username: user.username
+        username: user.username,
+        savedPostIds: user.savedPostIds,
+        hiddenPostIds: user.hiddenPostIds
     };
     return user_info[user_id];
 }
@@ -75,25 +77,93 @@ export async function convert_to_ISingeleMessage(chat: IChat, status: MessageSta
 export async function getPosts() {
     let response = await fetch('/api/v1/posts', {method: 'GET'});
     let responseData = await response.json();
-    let postList: IPost[] = [];
-    let id = 0;
+    return await mapDataToPost(responseData);
+}
+
+
+export async function getPostsByIds(postIds: string[]) {
+    let dataList = [];
+    for (let id of postIds) {
+        let response = await fetch('/api/v1/posts/' + id, {method: 'GET'});
+        let responseData = await response.json();
+        dataList.push(responseData);
+    }
+    return await mapDataToPost(dataList);
+}
+
+export async function getPostsByUserId(userId: string) {
+    let response = await fetch('/api/v1/posts/user/' + userId, {method: 'GET'});
+    let responseData = await response.json();
+    return await mapDataToPost(responseData);
+}
+
+async function mapDataToPost(responseData: any[]) {
+    let postList = [];
     for (let post of responseData) {
-        postList.push({
-            id: id.toString(),
-            time: post.time,
-            name: 'TBD',
-            detail: post.detail,
-            avatarPath: './images/photoP.png',
-            image: '',
-            numLikes: 0,
-            comments: [],
-            type: post.type,
-            visibility: post.visibility,
-            tags: [],
-            liked: false,
-            hidden: false
-        });
-        id++;
+        if (post._id in post_info) {
+            postList.push(post_info[post._id]);
+        } else {
+            let user = await getUserById(post.userId);
+            let comments = await getCommentsByPost(post._id);
+            post_info[post._id] = {
+                id: post._id,
+                userId: user._id,
+                time: post.time,
+                name: user.fullname,
+                detail: post.detail,
+                avatarPath: user.avatarPath,
+                image: '',
+                likedUserIds: post.likedUserIds,
+                comments: comments,
+                type: post.type,
+                visibility: post.visibility,
+                tags: [],
+                hidden: false
+            };
+            postList.push(post_info[post._id]);
+        }
     }
     return postList;
+}
+
+export async function getUserById(userId: string) {
+    let user_res = await fetch('/api/v1/users/ids/' + userId);
+    let user = await user_res.json();
+    if (user.username in user_info) {
+        return user_info[user.username];
+    } else {
+        user_info[user.username] = {
+            _id: user._id,
+            fullname: user.fullname,
+            tags: user.tags,
+            avatarPath: user.avatarPath,
+            department: user.department,
+            friendUsernames: user.friendUsernames,
+            gender: user.gender,
+            level: user.level,
+            major: user.major,
+            username: user.username,
+            savedPostIds: user.savedPostIds,
+            hiddenPostIds: user.hiddenPostIds
+        };
+        return user_info[user.username];
+    }
+}
+export async function getCommentsByPost(postId: string) {
+    let comment_res = await fetch('/api/v1/comments/' + postId);
+    let comments = await comment_res.json();
+    let commentList = [];
+    for (let comment of comments) {
+        let user = await getUserById(comment.userId);
+        commentList.push({
+            userId: comment.userId,
+            postId: postId,
+            time: comment.time,
+            detail: comment.detail,
+            visibility: comment.visibility,
+            name: user.fullname,
+            avatarPath: user.avatarPath
+        })
+    }
+    return commentList;
 }
