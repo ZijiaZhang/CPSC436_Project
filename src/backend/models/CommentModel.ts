@@ -1,20 +1,12 @@
 import {Document, Model, model, Schema, Types} from "mongoose";
 import ObjectId = Types.ObjectId;
-import {IUploadedFile} from "./PostModel";
+import { IComment } from "../../shared/ModelInterfaces";
 
-interface ICommentSchema extends Document {
+interface ICommentSchema extends Document, IComment {
     _id: string,
-    userId: string,
-    postId: string,
-    time: Date,
-    detail: string,
-    visibility: string,
 }
 
-export interface IComment extends ICommentSchema {
-}
-
-interface ICommentModel extends Model<IComment> {
+interface ICommentModel extends Model<ICommentSchema> {
 }
 
 const commentSchema: Schema = new Schema({
@@ -25,4 +17,4 @@ const commentSchema: Schema = new Schema({
     visibility: String,
 });
 
-export const Comment = model<IComment, ICommentModel>('comment', commentSchema);
+export const Comment = model<ICommentSchema, ICommentModel>('comment', commentSchema);

@@ -2,27 +2,13 @@ import {Document, model, PassportLocalModel, Schema, Types} from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
 import ObjectId = Types.ObjectId;
 import {uniqueValidator} from "../shared/Helpers";
-import {ITag} from "./TagModel";
+import { IUser } from "../../shared/ModelInterfaces";
 
-interface IUserSchema extends Document {
+interface IUserSchema extends Document, IUser {
     _id: string,
-    username: string,
-    fullname: string,
-    password: string,
-    gender: string,
-    major: string,
-    level: string,
-    avatarPath: string,
-    tags: ITag[],
-    friendUsernames: string[],
-    savedPostIds: string[],
-    hiddenPostIds: string[]
 }
 
-export interface IUser extends IUserSchema {
-}
-
-interface IUserModel extends PassportLocalModel<IUser> {
+interface IUserModel extends PassportLocalModel<IUserSchema> {
 }
 
 const userSchema = new Schema({
@@ -57,4 +43,4 @@ const userSchema = new Schema({
 
 userSchema.plugin(passportLocalMongoose);
 
-export const User = model<IUser, IUserModel>('User', userSchema);
+export const User = model<IUserSchema, IUserModel>('User', userSchema);

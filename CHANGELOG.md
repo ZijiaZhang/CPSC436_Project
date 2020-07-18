@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.19.1 [2020-07-17]
+### Updated
+- Modify models
+
 ## 0.19.0 [2020-07-14]
 ### Connect Chat Frontend
 - Connect Chat Frontend to Backend

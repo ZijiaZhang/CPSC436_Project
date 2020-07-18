@@ -1,6 +1,6 @@
 import {IUser} from "../posts_page/components/UserBlock";
 import {MessageStatus} from "../chat_room/components/ChatRoomBubbles";
-import {IChat} from "../../backend/models/ChatModel";
+import {IChat} from "../../shared/ModelInterfaces";
 
 export let user: IUser;
 export let user_info: {[name: string] : IUser} = {};

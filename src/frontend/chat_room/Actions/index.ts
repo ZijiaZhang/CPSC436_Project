@@ -1,7 +1,7 @@
 import {Action, Dispatch} from "redux";
 import {getCurrentUser, user} from "../../shared/globleFunctions";
 import {ISingleMessage, MessageStatus} from "../components/ChatRoomBubbles";
-import {IChat} from "../../../backend/models/ChatModel";
+import { IChat } from "../../../shared/ModelInterfaces";
 
 export enum ChatRoomActions{
     RECEIVE_MESSAGE,

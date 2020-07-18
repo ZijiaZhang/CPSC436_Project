@@ -2,7 +2,8 @@ import express from 'express';
 export const usersRouter = express.Router();
 import passport from 'passport'
 import * as fs from "fs";
-import {IUser, User} from "../../models/UserModel";
+import {User} from "../../models/UserModel";
+import {IUser} from "../../../shared/ModelInterfaces";
 const multer = require('multer');
 
 usersRouter.get('/', (req, res) => {

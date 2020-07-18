@@ -1,6 +1,7 @@
 import express from "express";
 import {checkIsValidObjectId} from "../../shared/Middlewares";
-import {Comment, IComment} from "../../models/CommentModel";
+import {Comment} from "../../models/CommentModel";
+import { IComment } from "../../../shared/ModelInterfaces";
 
 export const commentsRouter = express.Router();
 
