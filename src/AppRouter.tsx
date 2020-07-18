@@ -11,6 +11,9 @@ import NavigationBar from "./frontend/shared/components/NavigationBar";
 import FriendsPanel from "./frontend/shared/components/FriendsPanel";
 import Login from "./frontend/login_register/components/Login";
 import Register from "./frontend/login_register/components/Register"
+import {Provider} from "react-redux";
+import {createStore} from "redux";
+import userReducers from "./frontend/settings/reducers";
 
 
 class AppRouter extends Component {
@@ -29,22 +32,19 @@ class AppRouter extends Component {
 
 const Home = () => {
     return (
-        <div className={'row'}>
-        <NavigationBar/>
-        <div className="central-panel">
-            <Switch>
-                <Route exact path="/" component={PostPage}/>
-                <Route path="/settings" component={Settings} />
-                <Route path="/chatRoom" component={ChatRoom} />
-            </Switch>
-        </div>
-        <FriendsPanel friends={[
-            {avatarPath: './images/dora.png', name:'Will'},
-            {avatarPath: './images/test.png', name:'Gary'},
-            {avatarPath: './images/test2.png', name:'Denise'},
-            {avatarPath: './images/1.ico', name:'Rommel'}
-        ]}/>
-    </div>
+        <Provider store={createStore(userReducers)}>
+            <div className={'row'}>
+                <NavigationBar/>
+                <div className="central-panel">
+                    <Switch>
+                        <Route exact path="/" component={PostPage}/>
+                        <Route path="/settings" component={Settings} />
+                        <Route path="/chatRoom" component={ChatRoom} />
+                    </Switch>
+                </div>
+                <FriendsPanel />
+            </div>
+        </Provider>
     );
 };
 

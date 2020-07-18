@@ -31,6 +31,7 @@ const userSchema = new Schema({
     },
     fullname: {type: String, required: true},
     password: {type: String},
+    department: String,
     gender: String,
     major: String,
     level: String,

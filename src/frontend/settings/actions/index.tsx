@@ -4,3 +4,10 @@ export const loadUserInfo = (user: any) => {
         loadUserInfo: user
     }
 };
+
+export const loadUserFriends = (friendList: any) => {
+    return {
+        type: "LOAD_FRIENDS",
+        loadUserFriends: friendList
+    }
+};

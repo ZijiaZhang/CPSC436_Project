@@ -1,7 +1,7 @@
 export const addPost = (newPost: any) => {
     return {
         type: 'ADD_POST',
-        modification: newPost
+        addPost: newPost
     }
 };
 export const saveInputDraft = (curInput: string) => {
@@ -13,25 +13,31 @@ export const saveInputDraft = (curInput: string) => {
 export const addLike = (index: any) => {
     return {
         type: 'ADD_LIKE',
-        modification: index
+        addLike: index
     }
 };
 export const undoLike = (index: any) => {
     return {
         type: 'UNDO_LIKE',
-        modification: index
+        undoLike: index
     }
 };
 export const addComment = (comment: any) => {
     return {
         type: 'ADD_COMMENT',
-        modification: comment
+        newComment: comment
     }
 };
 export const hidePost = (index: any) => {
     return {
         type: 'HIDE_POST',
-        modification: index
+        hidePost: index
+    }
+};
+export const loadPosts = (postList: any[]) => {
+    return {
+        type: 'LOAD_POST',
+        loadPosts: postList
     }
 };
 export const displayDetail = (detailedMessage: any) => {

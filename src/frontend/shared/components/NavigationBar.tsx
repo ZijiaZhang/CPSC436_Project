@@ -1,14 +1,19 @@
 import * as React from 'react';
 import NavigationItems from "./NavigationItems";
-import {IUserProps} from "../interfaces/IUserProps";
+import {connect} from "react-redux";
+import {loadUserInfo} from "../../settings/actions";
 
-class NavigationBar extends React.Component<{}, IUserProps> {
+interface INavigationBarProps {
+    loadUserInfo: any,
+    userInfo: any
+}
+
+class NavigationBar extends React.Component<INavigationBarProps, {}> {
     sideBar = React.createRef<HTMLDivElement>();
     width: number = 0;
 
-    constructor(props:{}){
+    constructor(props:INavigationBarProps){
         super(props);
-        this.state = {name: '', avatarPath: ''}
     }
 
     toggleButton = () => {
@@ -24,7 +29,7 @@ class NavigationBar extends React.Component<{}, IUserProps> {
             <div className={'sidebar-container'}>
                 <button className="openbtn" onClick={() => this.toggleButton()}>&#9776;</button>
                 <div ref={this.sideBar} className="sidebar">
-                <NavigationItems avatarPath={this.state.avatarPath} name={this.state.name}/>
+                <NavigationItems />
                 </div>
             </div>
         );
@@ -36,13 +41,16 @@ class NavigationBar extends React.Component<{}, IUserProps> {
 				method: 'GET'
 			});
             let data = await response.json();
-            let name = data.fullname;
-            this.setState({name: name, avatarPath: data.avatarPath});
-            console.log(name);
+            this.props.loadUserInfo(data);
 		} catch(e) {
             console.log(e.message);
         }
     }
 }
+const mapStateToProps = (state: { userInfo: any }) => {
+    return {
+        userInfo: state.userInfo,
+    };
+};
 
-export default NavigationBar;
+export default connect(mapStateToProps, {loadUserInfo})(NavigationBar);

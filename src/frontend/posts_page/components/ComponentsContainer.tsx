@@ -3,16 +3,16 @@ import UserBlock, {IUser} from "./UserBlock";
 import PostBlock, {IPost} from "./PostBlock";
 import {connect} from "react-redux";
 import {IComponentsType} from "./HomePage";
+import {getAllUsersInfo} from "../../shared/globleFunctions";
 
 interface IComponentsContainerProps {
-    userList: IUser[],
     postList: IPost[],
     componentsType: IComponentsType,
     registeredUser: IUser,
 }
 
 interface IComponentsContainerState {
-
+    userList: IUser[]
 }
 
 
@@ -20,7 +20,13 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
     constructor(props: IComponentsContainerProps) {
         super(props);
         this.state= {
+            userList: []
         }
+    }
+
+    async componentDidMount() {
+        let userList = await getAllUsersInfo();
+        this.setState({userList: userList});
     }
 
     render() {
@@ -33,7 +39,7 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
                 );
                 break;
             case IComponentsType.users:
-                const userList: IUser[] = this.props.userList.slice().reverse();
+                const userList: IUser[] = this.state.userList.slice().reverse();
                 listComponents = userList.map((user) =>
                     <UserBlock registeredUser={this.props.registeredUser} displayedUser={user} />
                 );
@@ -47,10 +53,9 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
     }
 }
 
-const mapStateToProps = (state: { postList: IPost[], userList: IUser[]} ) => {
+const mapStateToProps = (state: { postList: IPost[]} ) => {
     return {
-        postList: state.postList,
-        userList: state.userList
+        postList: state.postList
     };
 };
 

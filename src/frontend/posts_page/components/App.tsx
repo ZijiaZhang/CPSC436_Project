@@ -1,28 +1,69 @@
 import React from "react";
 import reducers from '../reducers';
 import {createStore} from "redux";
-import {Provider} from "react-redux";
+import {connect, Provider} from "react-redux";
 import HomePage from "./HomePage";
+import {getCurrentUser, getPosts, getUserInfo} from "../../shared/globleFunctions";
+import {RouteComponentProps} from "react-router-dom";
+import {StaticContext} from "react-router";
+import {loadUserInfo} from "../../settings/actions";
 
-const user = {
-    username: 'Denise',
-    fullname: 'Denise',
-    avatarPath: './images/test2.png',
-    gender: "female",
-    department: "Science",
-    major: "HON Computer Science",
-    level: "Bachelor",
-    tags: ['music', 'reading'],
-    friends: ['Gary', 'Will'],
-};
-const PostPage = () => {
-    return (
-    <div>
-        <Provider store={createStore(reducers)}>
-            <HomePage user={user} />
-        </Provider>
-    </div>
-  );
+type LocationState = {
+    from: Location;
 };
 
-export default PostPage;
+interface IPostsPageProps extends RouteComponentProps<{}, StaticContext, LocationState> {
+    loadUserInfo: any
+}
+
+interface IPostsPageState {
+    user: any,
+}
+class PostPage extends React.Component<IPostsPageProps, IPostsPageState>{
+
+    constructor(props: IPostsPageProps) {
+        super(props);
+        this.state = {user: undefined};
+    }
+
+    async componentDidMount() {
+        let user_id = new URLSearchParams(this.props.location.search).get("user");
+        if (!user_id){
+            let user = await getCurrentUser();
+            this.setState({user});
+            this.props.loadUserInfo(user);
+            return
+        }
+        try {
+            let user = await getUserInfo(user_id);
+            this.setState({user: user});
+            this.props.loadUserInfo(user);
+        } catch (e) {
+            let user = null;
+            this.setState({user: user});
+        }
+    }
+
+    render() {
+        if (this.state.user) {
+            return (
+                <Provider store={createStore(reducers)}>
+                    <HomePage user={this.state.user} />
+                </Provider>
+            );
+        } else if (this.state.user === null){
+            return (<h1>Error User Not Found</h1>)
+        } else if (this.state.user === undefined){
+            return (<h1>Loading</h1>)
+        }
+
+    }
+}
+
+const mapStateToProps = (state: { userInfo: any}) => {
+    return {
+        userInfo: state.userInfo
+    };
+};
+
+export default connect(mapStateToProps, {loadUserInfo})(PostPage);
