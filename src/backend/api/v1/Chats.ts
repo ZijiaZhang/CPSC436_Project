@@ -6,14 +6,16 @@ import {SocketEvents} from "../../../shared/SocketEvents";
 import { IChat } from '../../../shared/ModelInterfaces';
 export const chatsRouter = express.Router();
 
-
-chatsRouter.get('/', (req, res, next)=> {
+chatsRouter.use((req, res, next)=> {
     if(!req.isAuthenticated()){
         passport.authenticate('basic', { session: false })(req, res, next)
     } else {
         next();
     }
-}, function(req, res) {
+}, );
+
+
+chatsRouter.get('/', function(req, res) {
     const sender_id = req.query.sender_id as string;
     const receiver_id = req.query.receiver_id as string;
     if (!sender_id || !receiver_id) {
@@ -33,13 +35,7 @@ chatsRouter.get('/', (req, res, next)=> {
     }
 });
 
-chatsRouter.post('/', (req, res, next)=> {
-    if(!req.isAuthenticated()){
-        passport.authenticate('basic', { session: false })(req, res, next)
-    } else {
-        next();
-    }
-}, function (req, res) {
+chatsRouter.post('/', function (req, res) {
     if (req.user && (req.user as {username: string}).username === req.body.sender_username){
         return Chat.create({
             senderUsername: req.body.sender_username,
