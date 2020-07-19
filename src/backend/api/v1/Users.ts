@@ -4,7 +4,9 @@ import passport from 'passport'
 import * as fs from "fs";
 import {User} from "../../models/UserModel";
 import {IUser} from "../../../shared/ModelInterfaces";
+import { useEffect } from 'react';
 const multer = require('multer');
+import {applyRecommendation} from '../../shared/Helpers'
 
 usersRouter.get('/', (req, res) => {
     res.send(req.user);
@@ -121,3 +123,13 @@ usersRouter.delete('/deleteAvatar', (req, res, next) => {
         res.send('Deleted')
     });
 });
+
+//recommend user algorithm start
+usersRouter.get('/recommend/:_id', async (req, res, next) => {
+    const userId = req.params._id;
+    const currentUserSchema = await User.find({_id: userId}).exec();
+    const currentUser = currentUserSchema[0];
+    const userList = await User.find({_id: { $ne: userId}}).exec(); 
+    const retUserList = applyRecommendation(currentUser, userList);
+    res.send(retUserList);
+}); 
