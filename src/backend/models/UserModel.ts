@@ -38,7 +38,8 @@ const userSchema = new Schema({
     tags: [ObjectId],
     friendUsernames: [String],
     savedPostIds: [ObjectId],
-    hiddenPostIds: [ObjectId]
+    hiddenPostIds: [ObjectId],
+    score: Number
 });
 
 userSchema.plugin(passportLocalMongoose);
