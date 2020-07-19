@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.21.0 [2020-07-19]
+### Added
+- Add Recommendation algorithm backend
+
 ## 0.20.0 [2020-07-18]
 ### Added
 - Add Tags apis
