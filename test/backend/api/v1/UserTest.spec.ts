@@ -1,24 +1,25 @@
 import chai, {expect} from 'chai';
+
 const mongoose = require('mongoose');
 import chaiHttp = require("chai-http");
 import {User} from "../../../../src/backend/models/UserModel";
-import {checkIsValidObjectId} from "../../../../src/backend/shared/Middlewares";
+import {IUser} from '../../../../src/shared/ModelInterfaces';
 
 chai.use(chaiHttp);
 
-describe('User', ()=> {
-    describe("Get all users", ()=> {
-        let app: any;
-        before(async()=> {
-            process.env.DB_CONNECTION_STRING = 'mongodb://localhost:27017/test';
-            await mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
-            mongoose.connection.on('error', ()=> expect.fail("Error connecting to db"));
-            const clear_user = User.deleteMany({});
-            await clear_user.exec();
-            app= require('../../../../src/App').app;            
-        });
+describe('User', () => {
+    let app: any;
+    before(async () => {
+        process.env.DB_CONNECTION_STRING = 'mongodb://localhost:27017/test';
+        await mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
+        mongoose.connection.on('error', () => expect.fail("Error connecting to db"));
+        const clear_user = User.deleteMany({});
+        await clear_user.exec();
+        app = require('../../../../src/App').app;
+    });
 
-        it('get user by id', async ()=>{
+    describe("Get all users", () => {
+        it('get user by id', async () => {
             await chai.request(app)
                 .post('/api/v1/users/register')
                 .set('content-type', 'application/json')
@@ -39,7 +40,7 @@ describe('User', ()=> {
                 })
         });
 
-        it('get all users', async ()=>{
+        it('get all users', async () => {
             await chai.request(app)
                 .post('/api/v1/users/register')
                 .set('content-type', 'application/json')
@@ -60,7 +61,7 @@ describe('User', ()=> {
                 })
         });
 
-        it('get user by _id', async ()=>{
+        it('get user by _id', async () => {
             return chai.request(app)
                 .get('/api/v1/users/testUser')
                 .auth('testUser', 'testPass')
@@ -74,7 +75,7 @@ describe('User', ()=> {
                 })
         });
 
-        it('should not get user by invalid _id', async ()=>{
+        it('should not get user by invalid _id', async () => {
             return chai.request(app)
                 .get('/api/v1/users/ids/randomId')
                 .then((res) => {
@@ -84,7 +85,8 @@ describe('User', ()=> {
                 })
         });
 
-        it('should not get user by id if not authorized', async ()=>{
+
+        it('should not get user by id if not authorized', async () => {
             await chai.request(app)
                 .post('/api/v1/users/register')
                 .set('content-type', 'application/json')
@@ -103,75 +105,95 @@ describe('User', ()=> {
                 })
         });
 
-        it('register one test user', async() => {
+        it('register one test user', async () => {
             return chai.request(app)
-            .post('/api/v1/users/register').send({username: "test",fullname: "test", password: "test", pwdConfirm: "test"})
-            .then((res) => {
-                expect(res).have.status(200);
-                expect(res.redirects[0].endsWith('/login'));
-            })
+                .post('/api/v1/users/register').send({
+                    username: "test",
+                    fullname: "test",
+                    password: "test",
+                    pwdConfirm: "test"
+                })
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.redirects[0].endsWith('/login'));
+                })
         });
 
-        it('register one test user already exists', async() => {
+        it('register one test user already exists', async () => {
             return chai.request(app)
-            .post('/api/v1/users/register').send({username: "test", fullname: "test", password: "test", pwdConfirm: "test"})
-            .then((res) => {
-                expect(res.redirects[0].endsWith('/register?err=A%20user%20with%20the%20given%20username%20is%20already%20registered'));
-            })
+                .post('/api/v1/users/register').send({
+                    username: "test",
+                    fullname: "test",
+                    password: "test",
+                    pwdConfirm: "test"
+                })
+                .then((res) => {
+                    expect(res.redirects[0].endsWith('/register?err=A%20user%20with%20the%20given%20username%20is%20already%20registered'));
+                })
         });
 
-        it('register one test user no full name given', async() => {
+        it('register one test user no full name given', async () => {
             return chai.request(app)
-            .post('/api/v1/users/register').send({username: "test",fullname: null, password: "test", pwdConfirm: "test"})
-            .then((res) => {
-                expect(res).have.status(200);
-                expect(res.redirects[0].endsWith('/register?err=No%20fullname%20was%20given'));
-            })
+                .post('/api/v1/users/register').send({
+                    username: "test",
+                    fullname: null,
+                    password: "test",
+                    pwdConfirm: "test"
+                })
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.redirects[0].endsWith('/register?err=No%20fullname%20was%20given'));
+                })
         });
 
-        it('register one test user Password Confirm Password not match', async() => {
+        it('register one test user Password Confirm Password not match', async () => {
             return chai.request(app)
-            .post('/api/v1/users/register').send({username: "test",fullname: "test", password: "test", pwdConfirm: "32132"})
-            .then((res) => {
-                expect(res.redirects[0].endsWith('/register?err=Password%20and%20confirm%20password%20do%20not%20match'));
-            })
+                .post('/api/v1/users/register').send({
+                    username: "test",
+                    fullname: "test",
+                    password: "test",
+                    pwdConfirm: "32132"
+                })
+                .then((res) => {
+                    expect(res.redirects[0].endsWith('/register?err=Password%20and%20confirm%20password%20do%20not%20match'));
+                })
         });
 
-        it('login test user', async() => {
+        it('login test user', async () => {
             return chai.request(app)
-            .post('/api/v1/users/login').send({username: "test", password: "test"})
-            .then((res) => {
-                expect(res).have.status(200);
-                expect(res.redirects[0].endsWith('/'));
-            })
+                .post('/api/v1/users/login').send({username: "test", password: "test"})
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.redirects[0].endsWith('/'));
+                })
         });
 
-        it('login test user wrong password', async() => {
+        it('login test user wrong password', async () => {
             return chai.request(app)
-            .post('/api/v1/users/login').send({username: "test", password: "weewrewrewre"})
-            .then((res) => {
-                expect(res.redirects[0].endsWith('/login?err=Password%20or%20username%20is%20incorrect'));
-            })
+                .post('/api/v1/users/login').send({username: "test", password: "weewrewrewre"})
+                .then((res) => {
+                    expect(res.redirects[0].endsWith('/login?err=Password%20or%20username%20is%20incorrect'));
+                })
         });
 
-        it('get test user', async() => {
+        it('get test user', async () => {
             return chai.request(app)
-            .get('/api/v1/users')
-            .then((res) => {
-                expect(res).have.status(200);
-            })
+                .get('/api/v1/users')
+                .then((res) => {
+                    expect(res).have.status(200);
+                })
         });
 
-        it('logout test user', async() => {
+        it('logout test user', async () => {
             return chai.request(app)
-            .get('/api/v1/users/logout')
-            .then((res) => {
-                expect(res).have.status(200);
-                expect(res.redirects[0].endsWith('/login'));
-            })
+                .get('/api/v1/users/logout')
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.redirects[0].endsWith('/login'));
+                })
         });
 
-        it('update user', async() => {
+        it('update user', async () => {
             return chai.request(app)
                 .patch('/api/v1/users/test').send({fullname: 'newFullname'})
                 .then((res) => {
@@ -180,7 +202,7 @@ describe('User', ()=> {
                 })
         });
 
-        it('update user with wrong username', async() => {
+        it('update user with wrong username', async () => {
             return chai.request(app)
                 .patch('/api/v1/users/randomUsername').send({fullname: 'newFullname'})
                 .then((res) => {
@@ -188,16 +210,16 @@ describe('User', ()=> {
                 })
         });
 
-        it('update user with year', async() => {
+        it('update user with year', async () => {
             return chai.request(app)
                 .patch('/api/v1/users/test').send({level: 'master'})
                 .then((res) => {
                     expect(res).have.status(200);
-                    expect(res.body).to.include({username: "test", fullname: 'newFullname',  level: 'master'})
+                    expect(res.body).to.include({username: "test", fullname: 'newFullname', level: 'master'})
                 })
         });
 
-        it('delete image that DNE', async() => {
+        it('delete image that DNE', async () => {
             return chai.request(app)
                 .delete('/api/v1/users/deleteAvatar').send({oldPath: './notAImage.png'})
                 .then((res) => {
@@ -205,5 +227,66 @@ describe('User', ()=> {
                     expect(res.text).equal('DELETE FAILED! Old profile photo not found! ');
                 })
         });
-    })
+
+        describe("user search", () => {
+            before(async () => {
+                type MockUserSchema = IUser & { password: string };
+                await User.deleteMany({}).exec();
+                await User.create({username: "test1", fullname: "test1"} as MockUserSchema);
+                await User.create({username: "test2", fullname: "test2"} as MockUserSchema);
+                await User.create({username: "abc", fullname: "def"} as MockUserSchema);
+            });
+
+            it('search user with a word', async () => {
+                return chai.request(app)
+                    .get('/api/v1/users/all')
+                    .query({content: "test"})
+                    .set('content-type', 'application/json')
+                    .then((res) => {
+                        const users: IUser[] = res.body;
+                        expect(res).have.status(200);
+                        expect(users.length).to.equal(2);
+                        expect(users).satisfy((users: IUser[]) => {
+                            return users.some(user => user.username === "test1" && user.fullname === "test1");
+                        });
+                        expect(users).satisfy((users: IUser[]) => {
+                            return users.some(user => user.username === "test2" && user.fullname === "test2");
+                        });
+                    });
+            });
+
+            it('search user with a letter', async () => {
+                return chai.request(app)
+                    .get('/api/v1/users/all')
+                    .query({content: "e"})
+                    .set('content-type', 'application/json')
+                    .then((res) => {
+                        const users: IUser[] = res.body;
+                        expect(res).have.status(200);
+                        expect(users.length).to.equal(3);
+                        expect(users).satisfy((users: IUser[]) => {
+                            return users.some(user => user.username === "test1" && user.fullname === "test1");
+                        });
+                        expect(users).satisfy((users: IUser[]) => {
+                            return users.some(user => user.username === "test2" && user.fullname === "test2");
+                        });
+                        expect(users).satisfy((users: IUser[]) => {
+                            return users.some(user => user.username === "abc" && user.fullname === "def");
+                        });
+                    });
+            });
+
+            it('search user with no result', async () => {
+                return chai.request(app)
+                    .get('/api/v1/users/all')
+                    .query({content: "cheesecake"})
+                    .set('content-type', 'application/json')
+                    .then((res) => {
+                        const users: IUser[] = res.body;
+                        expect(res).have.status(200);
+                        expect(users.length).to.equal(0);
+                    });
+            });
+        })
+    });
 });

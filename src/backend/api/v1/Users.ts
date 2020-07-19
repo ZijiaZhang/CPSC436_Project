@@ -5,6 +5,7 @@ import * as fs from "fs";
 import {User} from "../../models/UserModel";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {checkIsValidObjectId} from "../../shared/Middlewares";
+import {FilterQuery} from "mongoose";
 const multer = require('multer');
 import {applyRecommendation} from '../../shared/Helpers'
 import path from "path";
@@ -14,7 +15,13 @@ usersRouter.get('/', (req, res) => {
 });
 
 usersRouter.get('/all', (req, res) => {
-    const userList = User.find({});
+    const conditions: FilterQuery<IUser> = {};
+    if (Object.keys(req.query).length > 0) {
+        const content = req.query.content as string;
+        // case insensitive search with option "i"
+        conditions.$or = [{fullname: {"$regex": content, "$options": "i"}}, {username: {"$regex": content, "$options": "i"}}]
+    }
+    const userList = User.find(conditions);
     userList.exec()
         .then((user: IUser[]) => {
             res.json(user);
