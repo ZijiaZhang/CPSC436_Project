@@ -1,5 +1,9 @@
 import { IUser } from "../../shared/ModelInterfaces";
 
+interface UserDictionary {
+    [userId: string]: {user: IUser, score: number};
+}
+
 export function uniqueValidator(uniqueProperties: any, model: any): Promise<boolean> {
     return new Promise((resolve, reject) => {
         model.findOne(uniqueProperties, (err: Error, existingModelInstance: any) => {
@@ -12,26 +16,27 @@ export function uniqueValidator(uniqueProperties: any, model: any): Promise<bool
 
 // given current user, and list of all users, sort all users from high to low, based on recommended score
 export function applyRecommendation(currentUser: IUser, userList: IUser[]) {
-    let retList: any = [];
-    for (let i = 0; i < userList.length; i ++) {
-        calculateRecommendScore(currentUser, userList[i]);
-        retList = userList.sort((a,b) => (a.score > b.score ? -1:1));
-    }
-    // console.log(retList);
-    return retList;
+    const scoresByUserId = userList.reduce(
+        ((acc, comparedUser) => {
+            acc[comparedUser._id] = {user: comparedUser, score: calculateRecommendScore(currentUser, comparedUser)};
+            return acc;
+        }), {} as UserDictionary);
+    return Object.entries(scoresByUserId).sort((a, b) => a[1].score > b[1].score ? -1:1).map(val => val[1].user);
 }
 
 // calculate recommend score, based on major and interest tag, if current user and compared user have same major
 // add 10 points, if share one same interest tag, add 5 points, score field 
-export function calculateRecommendScore(currentUser: IUser, comparedUser: IUser) {
+export function calculateRecommendScore(currentUser: IUser, comparedUser: IUser): number{
     let commonTagNum = findCommonTagsNum(currentUser, comparedUser);
+    let resultScore = 0;
     if (currentUser.major && comparedUser.major) {
         if (currentUser.major.toLowerCase() === comparedUser.major.toLowerCase()) {
-            comparedUser.score = 10 + commonTagNum * 5;
+            resultScore += 10 + commonTagNum * 5;
         } else {
-            comparedUser.score = commonTagNum * 5;
+            resultScore += commonTagNum * 5;
         }
    }
+    return resultScore;
 }
  
 // find number of common tag of two users

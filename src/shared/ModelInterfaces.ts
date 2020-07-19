@@ -16,8 +16,7 @@ export interface IUser {
     tags: ITag[],
     friendUsernames: string[],
     savedPostIds: string[],
-    hiddenPostIds: string[],
-    score: Number
+    hiddenPostIds: string[]
 }
 
 export interface IPost {

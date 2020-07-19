@@ -23,7 +23,6 @@ const userOne: IUser = {
     major: "Computer Science",
     level: "Bachelor",
     tags: [music, basketball, math],
-    score: 0
 };
 
 const userTwo: IUser = {
@@ -40,7 +39,6 @@ const userTwo: IUser = {
     major: "Computer Science",
     level: "Bachelor",
     tags: [music, basketball, math, game],
-    score: 0
 };
 
 const userThree: IUser = {
@@ -57,7 +55,6 @@ const userThree: IUser = {
     major: "Math",
     level: "Bachelor",
     tags: [music, reading],
-    score: 0
 };
 
 const userFour: IUser = {
@@ -74,7 +71,6 @@ const userFour: IUser = {
     major: "Computer Science",
     level: "Bachelor",
     tags: [music, reading, game, coding],
-    score: 0
 };
 
 const userFive: IUser = {
@@ -91,7 +87,6 @@ const userFive: IUser = {
     major: "Computer Science",
     level: "Bachelor",
     tags: [ ],
-    score: 0
 };
 
 describe('test Helper function for recommend algorithm', () => {
@@ -105,10 +100,10 @@ describe('test Helper function for recommend algorithm', () => {
     });
     
     it('test calculateRecommendScore', ()=> {
-        calculateRecommendScore(userOne, userTwo);
-        calculateRecommendScore(userTwo, userThree);
-        expect(userTwo.score).to.be.equal(25);
-        expect(userThree.score).to.be.equal(5);
+        const result1 = calculateRecommendScore(userOne, userTwo);
+        const result2 = calculateRecommendScore(userTwo, userThree);
+        expect(result1).to.be.equal(25);
+        expect(result2).to.be.equal(5);
     })
 
     it('test apply recommended algorithm', ()=> {
