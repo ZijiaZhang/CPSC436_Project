@@ -1,6 +1,7 @@
 import express from "express";
 import {Group, IGroup} from "../../models/GroupModel";
-import {IUser, User} from "../../models/UserModel";
+import {User} from "../../models/UserModel";
+import {IUser} from "../../../shared/ModelInterfaces";
 import passport from "passport";
 
 export const groupsRouter = express.Router();
