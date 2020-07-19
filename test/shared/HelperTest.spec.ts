@@ -107,10 +107,13 @@ describe('test Helper function for recommend algorithm', () => {
     })
 
     it('test apply recommended algorithm', ()=> {
-        const result = applyRecommendation(userFour, [userOne,userTwo,userThree]);
-        console.log(result);
-        expect(result[0].username).to.be.equal('Gary');
-        expect(result[1].username).to.be.equal('Will');
-        expect(result[2].username).to.be.equal('Alice');
+        const result1 = applyRecommendation(userFour, [userOne,userTwo,userThree]);
+        expect(result1[0].username).to.be.equal('Gary');
+        expect(result1[1].username).to.be.equal('Will');
+        expect(result1[2].username).to.be.equal('Alice');
+        const result2 = applyRecommendation(userThree, [userOne,userTwo,userFour]);
+        expect(result2[0].username).to.be.equal('Denise');
+        expect(result2[1].username).to.be.equal('Gary');
+        expect(result2[2].username).to.be.equal('Will');
     })
 });
