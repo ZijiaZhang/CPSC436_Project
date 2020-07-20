@@ -6,6 +6,7 @@ import { IUser } from "../../shared/ModelInterfaces";
 
 interface IUserSchema extends Document, IUser {
     _id: string,
+    password: string,
 }
 
 interface IUserModel extends PassportLocalModel<IUserSchema> {
@@ -31,6 +32,7 @@ const userSchema = new Schema({
     },
     fullname: {type: String, required: true},
     password: {type: String},
+    department: String,
     gender: String,
     major: String,
     level: String,
@@ -38,7 +40,8 @@ const userSchema = new Schema({
     tags: [ObjectId],
     friendUsernames: [String],
     savedPostIds: [ObjectId],
-    hiddenPostIds: [ObjectId]
+    hiddenPostIds: [ObjectId],
+    blackListUserIds: [ObjectId]
 });
 
 userSchema.plugin(passportLocalMongoose);

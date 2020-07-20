@@ -1,7 +1,7 @@
 export const addPost = (newPost: any) => {
     return {
         type: 'ADD_POST',
-        modification: newPost
+        addPost: newPost
     }
 };
 export const saveInputDraft = (curInput: string) => {
@@ -10,33 +10,41 @@ export const saveInputDraft = (curInput: string) => {
         saveInputDraft: curInput
     }
 };
-export const addLike = (index: any) => {
+export const updateLike = (likes: number, id: string) => {
     return {
-        type: 'ADD_LIKE',
-        modification: index
+        type: 'UPDATE_LIKE',
+        updateLike: likes,
+        updateId: id
     }
 };
-export const undoLike = (index: any) => {
-    return {
-        type: 'UNDO_LIKE',
-        modification: index
-    }
-};
-export const addComment = (comment: any) => {
+export const addComment = (comment: any, id: string) => {
     return {
         type: 'ADD_COMMENT',
-        modification: comment
+        newComment: comment,
+        updateId: id
     }
 };
-export const hidePost = (index: any) => {
+export const loadPosts = (postList: any[]) => {
     return {
-        type: 'HIDE_POST',
-        modification: index
+        type: 'LOAD_POST',
+        loadPosts: postList
     }
 };
-export const displayDetail = (detailedMessage: any) => {
+export const deletePost = (id: string) => {
     return {
-        type: 'DETAILED_MESSAGE',
-        displayDetail: detailedMessage
+        type: "DELETE_POST",
+        deletePost: id
+    }
+};
+export const loadSavedPosts = (savedPosts: any) => {
+    return {
+        type: "LOAD_SAVED_POSTS",
+        loadSavedPosts: savedPosts
+    }
+};
+export const loadHiddenPosts = (hiddenPosts: any) => {
+    return {
+        type: "LOAD_HIDDEN_POSTS",
+        loadHiddenPosts: hiddenPosts
     }
 };

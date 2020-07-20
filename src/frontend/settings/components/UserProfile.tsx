@@ -1,18 +1,22 @@
 import React from "react";
-import {IUser} from "../../posts_page/components/UserBlock";
 import {TagContainer} from "./TagContainer";
-import {IPost} from "../../posts_page/components/PostBlock";
 import ProfilePostBlock from "./ProfilePostBlock";
 import ProfileFriendBlock from "./ProfileFriendBlock";
 import SettingsForm from "./SettingsForm";
 import {connect} from "react-redux";
-import {loadUserInfo} from "../actions";
+import {loadUserFriends, loadUserInfo} from "../actions";
 import SettingsProfilePhoto from "./SettingsProfilePhoto";
+import {getManyUsersInfo, getPostsByUserId, getUserInfo} from "../../shared/globleFunctions";
+import {ITag, IUser} from "../../../shared/ModelInterfaces";
 
 interface IUserProfileProps {
     userInfo: IUser,
-    loadUserInfo: any
+    loadUserInfo: any,
+    curUser: IUser,
+    loadUserFriends: any,
+    userFriends: any
 }
+
 
 interface IUserProfileState {
     infoEditorOpened: boolean,
@@ -25,78 +29,9 @@ interface IUserProfileState {
     avatarPath: string,
     major: string,
     level: string,
-    tags: string[],
-    data: any,
+    tags: ITag[],
+    postList: any[]
 }
-
-const samplePostList: IPost[] = [{
-    id: '2',
-    time: "2019/10/11 22:22",
-    name: "Denise",
-    detail: "False modesty is as bad as false pride. Know exactly what you are " +
-        "capable of at any moment, and act accordingly. Any other path is folly—and could be deadly in battle.",
-    avatarPath: './images/test2.png',
-    image: '',
-    numLikes: 20,
-    comments: [],
-    type: 'post',
-    visibility: 'public',
-    tags: [],
-    liked: false,
-    hidden: false,
-},
-    {
-        id: '3',
-        time: "2019/12/1 4:10",
-        name: "Denise",
-        detail: "They say truth is the first causality of war.",
-        avatarPath: './images/test2.png',
-        image: './images/nobu!.png',
-        numLikes: 18,
-        comments: [],
-        type: 'post',
-        visibility: 'public',
-        tags: [],
-        liked: false,
-        hidden: false,
-    },];
-
-const sampleFriendList =[
-    {
-        username: 'Will',
-        fullname: 'Will',
-        avatarPath: './images/dora.png',
-        gender: "male",
-        department: "Science",
-        major: "Computer Science",
-        level: "Bachelor",
-        tags: ['music', 'basketball', 'math'],
-        friends: ['Denise'],
-    },
-    {
-        username: 'Gary',
-        fullname: 'Gary',
-        avatarPath: './images/test.png',
-        gender: "male",
-        department: "Computer Science",
-        major: "Computer Science",
-        level: "Bachelor",
-        tags: ['music', 'basketball', 'math', 'games'],
-        friends: ['Rommel', 'Denise', 'Will'],
-
-    },
-    {
-        username: 'Rommel',
-        fullname: 'Rommel',
-        avatarPath: './images/1.ico',
-        gender: "male",
-        department: "Science",
-        major: "CMJ Computer Science And Math",
-        level: "Bachelor",
-        tags: ['math', 'coding', 'games'],
-        friends: ['Gary', 'Denise'],
-    }
-];
 
 class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     constructor(props: IUserProfileProps) {
@@ -113,7 +48,7 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             major: this.props.userInfo.major,
             level: this.props.userInfo.level,
             tags: this.props.userInfo.tags,
-            data: {}
+            postList: []
         }
     }
 
@@ -153,16 +88,11 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
 
     async componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
-        try {
-            let response = await fetch('http://localhost:3000/api/v1/users', {
-                method: 'GET'
-            });
-            let data = await response.json();
-            this.setState({data: data});
-        } catch(e) {
-            console.log(e.message);
-        }
-        this.props.loadUserInfo(this.state.data);
+        this.props.loadUserInfo(this.props.curUser);
+        let friendInfoList: IUser[] = await getManyUsersInfo(this.props.userInfo.friendUsernames);
+        this.props.loadUserFriends(friendInfoList);
+        let postList = await getPostsByUserId(this.props.userInfo._id);
+        this.setState({postList: postList});
     }
 
     startEditProfile = () => {
@@ -190,7 +120,9 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     };
 
     handleClickOutside = (event: any) => {
-        if (!event.target.matches('#profile-interaction-button-with-drop-down') && !event.target.matches('.profile-drop-down-button')) {
+        if (!event.target.matches('#profile-interaction-button-with-drop-down')
+            && !event.target.matches('.profile-drop-down-button')
+            && this.state.dropDown) {
             this.setState({dropDown: false})
         }
     };
@@ -200,10 +132,11 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     };
 
     render() {
-        const posts = samplePostList.map(post =>
+        const postList = this.state.postList.slice(0, this.state.postList.length);
+        const posts = postList.reverse().slice(0,4).map(post =>
             <ProfilePostBlock post={post} />
         );
-        const friends = sampleFriendList.map(friend =>
+        const friends = this.props.userFriends.map((friend: any) =>
             <ProfileFriendBlock friend={friend} />
         );
         return (
@@ -266,10 +199,11 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     }
 }
 
-const mapStateToProps = (state: { userInfo: any }) => {
+const mapStateToProps = (state: { userInfo: any, userFriends: any }) => {
     return {
         userInfo: state.userInfo,
+        userFriends: state.userFriends
     };
 };
 
-export default connect(mapStateToProps, {loadUserInfo})(UserProfile);
+export default connect(mapStateToProps, {loadUserInfo, loadUserFriends})(UserProfile);

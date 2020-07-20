@@ -7,7 +7,6 @@ export interface IUser {
     _id: string,
     username: string,
     fullname: string,
-    password: string,
     gender: string,
     major: string,
     level: string,
@@ -16,7 +15,8 @@ export interface IUser {
     tags: ITag[],
     friendUsernames: string[],
     savedPostIds: string[],
-    hiddenPostIds: string[]
+    hiddenPostIds: string[],
+    blackListUserIds: string[]
 }
 
 export interface IPost {

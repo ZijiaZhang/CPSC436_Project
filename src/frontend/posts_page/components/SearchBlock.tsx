@@ -1,10 +1,11 @@
 import React from "react";
-import {IUser} from "./UserBlock";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface ISearchBlockProps {
     user: IUser,
     getPosts: any,
     getUsers: any,
+    getPersonal: any
 }
 
 interface ISearchBlockState {
@@ -28,7 +29,7 @@ class SearchBlock extends React.Component<ISearchBlockProps, ISearchBlockState> 
                     <button className="search-submit-button">Search</button>
                 </div>
                 <div className="search-block-nav-buttons">
-                    <button className="nav-button-to-some-page">
+                    <button className="nav-button-to-some-page" onClick={this.props.getPersonal}>
                         <img src={this.props.user.avatarPath} alt="img not found" height="30px" width="30px" />
                         <span>{this.props.user.fullname}</span>
                     </button>

@@ -2,6 +2,13 @@
 
 All changes will be logged here
 
+## 0.22.0 [2020-07-19]
+### updated
+- Link posts page frontend to backend
+- Add friend function implemented
+### added
+- personal page under posts page
+
 ## 0.21.0 [2020-07-19]
 ### Added
 - Add Recommendation algorithm backend

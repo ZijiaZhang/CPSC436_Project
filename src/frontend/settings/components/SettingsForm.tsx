@@ -1,9 +1,9 @@
 import * as React from "react";
-import {IUser} from "../../posts_page/components/UserBlock";
 import Modal from "react-modal";
 import {connect} from "react-redux";
 import {loadUserInfo} from "../actions";
 import CreatableSelect from 'react-select/creatable';
+import {ITag, IUser} from "../../../shared/ModelInterfaces";
 
 export interface ISettingsFormProps {
     opened: boolean,
@@ -14,7 +14,7 @@ export interface ISettingsFormProps {
     department: string,
     major: string,
     level: string,
-    tags: string[],
+    tags: ITag[],
     userInfoOnChange: any,
     interestsOnChange: any,
 }

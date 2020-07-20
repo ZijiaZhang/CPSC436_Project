@@ -6,7 +6,8 @@ import {getInitialMessages, receiveNewMessage} from "../Actions";
 import * as io from "socket.io-client";
 import {SocketEvents} from "../../../shared/SocketEvents";
 import {convert_to_ISingeleMessage} from "../../shared/globleFunctions";
-import {IUser} from "../../posts_page/components/UserBlock";
+import {IUser} from "../../../shared/ModelInterfaces";
+
 
 
 interface IChatRoomChatAreaProps{

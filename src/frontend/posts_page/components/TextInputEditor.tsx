@@ -1,12 +1,12 @@
 import React from "react";
-import {IPost} from "./PostBlock";
 import {connect} from "react-redux";
 import {addPost, saveInputDraft} from "../actions";
 import VisibilitySetting from "./VisibilitySetting";
 import CreatableSelect from 'react-select/creatable';
 import TextEditorSetting from "./TextEditorSetting";
 import Modal from "react-modal";
-import {IUser} from "./UserBlock";
+import {IPost} from "./PostBlock";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface ITextareaProps {
     addPost: any,
@@ -40,7 +40,8 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
         this.setState({message: event.target.value});
     };
 
-    sendPost = () => {
+    sendPost = async (event: any) => {
+        event.preventDefault();
         if (this.state.message.trim() !== '') {
             let d = new Date();
             let time = d.getHours() + ':' + d.getMinutes();
@@ -49,10 +50,30 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             for (let index in this.state.selectedTags) {
                 tags.push(this.state.selectedTags[index].value);
             }
-            let newPost: IPost = {id: this.props.postList.length.toString(), time: date + ' ' + time, name: this.props.user.fullname, detail: this.state.message,
-                avatarPath: this.props.user.avatarPath, image: '', numLikes: 0, comments: [], type: 'post',
-                visibility: this.state.visibility, tags: tags, liked: false, hidden: false};
-            this.props.addPost(newPost);
+            let newPost = {time: date + ' ' + time, userId: this.props.user._id, detail: this.state.message,
+                type: 'post', visibility: this.state.visibility, tags: tags, uploadedFiles: [], likedUserIds: []};
+            let response = await fetch('/api/v1/posts', {method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newPost)});
+            let responseData = await response.json();
+            console.log(responseData);
+            this.props.addPost({
+                id: responseData._id,
+                time: responseData.time,
+                name: this.props.user.fullname,
+                detail: responseData.detail,
+                avatarPath: this.props.user.avatarPath,
+                image: '',
+                likedUserIds: [],
+                comments: [],
+                type: responseData.type,
+                visibility: responseData.visibility,
+                tags: [],
+                hidden: false
+            });
             this.setState({message: ''});
             this.setState({editing: !this.state.editing})
         }

@@ -2,6 +2,7 @@ import * as React from "react";
 import Modal from "react-modal";
 import {connect} from "react-redux";
 import {loadUserInfo} from "../actions";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface ISettingsProfilePhotoProps {
     opened: boolean,
@@ -9,7 +10,7 @@ interface ISettingsProfilePhotoProps {
     userAvatarOnChange: any,
     avatarPath: string,
     loadUserInfo: any,
-    userInfo: any,
+    userInfo: IUser,
 }
 
 interface ISettingsProfilePhotoState {
@@ -57,16 +58,6 @@ class SettingsProfilePhoto extends React.Component<ISettingsProfilePhotoProps, I
         });
         let responsePatchData = await responsePatch.json();
         console.log(responsePatchData);
-        let responseDelete = await fetch('http://localhost:3000/api/v1/users/deleteAvatar', {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({oldPath: this.props.userInfo.avatarPath})
-        });
-        let responseDeleteData = await responseDelete.text();
-        console.log(responseDeleteData);
         this.props.loadUserInfo(responsePatchData);
         this.cancelEdit();
     };

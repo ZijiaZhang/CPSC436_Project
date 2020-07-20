@@ -1,10 +1,16 @@
 import * as React from 'react';
 import FriendsPanelItem from "./FriendsPanelItem";
-import {IUserProps} from "../interfaces/IUserProps";
+import {connect} from "react-redux";
+import {getCurrentUser, getManyUsersInfo} from "../globleFunctions";
+import {loadUserFriends, loadUserInfo} from "../../settings/actions";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 
 export interface IFriendsPanelProps {
-    friends: IUserProps[]
+    userInfo: IUser,
+    loadUserFriends: any,
+    userFriends: IUser[],
+    loadUserInfo: any
 }
 
 class FriendsPanel extends React.Component<IFriendsPanelProps, {}> {
@@ -19,6 +25,13 @@ class FriendsPanel extends React.Component<IFriendsPanelProps, {}> {
         }
     };
 
+    async componentDidMount() {
+        const curUser = await getCurrentUser();
+        this.props.loadUserInfo(curUser);
+        const userFriendList = await getManyUsersInfo(this.props.userInfo.friendUsernames);
+        this.props.loadUserFriends(userFriendList);
+    }
+
     render() {
         return (
             <div>
@@ -26,13 +39,20 @@ class FriendsPanel extends React.Component<IFriendsPanelProps, {}> {
                 <div ref={this.rightCollapse} className="right_collapse">
                 <ul className="myFriend">
                     <p> Friends</p>
-                    {this.props.friends.map((friend) => <FriendsPanelItem key={friend.name} avatarPath={friend.avatarPath} name={friend.name}/>)}
+                    {this.props.userFriends.map((friend) => <FriendsPanelItem key={friend.username} avatarPath={friend.avatarPath} name={friend.fullname}/>)}
                 </ul>
                 </div>
             </div>
             
         );
     }
-}
 
-export default FriendsPanel;
+}
+const mapStateToProps = (state: { userInfo: any, userFriends: any }) => {
+    return {
+        userInfo: state.userInfo,
+        userFriends: state.userFriends
+    };
+};
+
+export default connect(mapStateToProps, {loadUserFriends, loadUserInfo})(FriendsPanel);

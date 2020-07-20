@@ -2,6 +2,7 @@ import chai, {expect} from 'chai';
 const mongoose = require('mongoose');
 import chaiHttp = require("chai-http");
 import {User} from "../../../../src/backend/models/UserModel";
+import {checkIsValidObjectId} from "../../../../src/backend/shared/Middlewares";
 
 chai.use(chaiHttp);
 
@@ -33,6 +34,51 @@ describe('User', ()=> {
                 .then((res) => {
                     expect(res).have.status(200);
                     expect(res.body.username).equals('testUser');
+                }).catch((err) => {
+                    expect.fail('should not throw error' + err);
+                })
+        });
+
+        it('get all users', async ()=>{
+            await chai.request(app)
+                .post('/api/v1/users/register')
+                .set('content-type', 'application/json')
+                .send({
+                    username: 'testUser2',
+                    password: 'testPass2',
+                    fullname: 'fullname2',
+                    pwdConfirm: 'testPass2'
+                });
+            return chai.request(app)
+                .get('/api/v1/users/all')
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.body[0].username).equals('testUser');
+                    expect(res.body[1].username).equals('testUser2');
+                }).catch((err) => {
+                    expect.fail('should not throw error' + err);
+                })
+        });
+
+        it('get user by _id', async ()=>{
+            return chai.request(app)
+                .get('/api/v1/users/testUser')
+                .auth('testUser', 'testPass')
+                .then((res) => {
+                    return chai.request(app).get('/api/v1/users/ids/' + res.body._id)
+                }).then((res) => {
+                    expect(res).have.status(200);
+                    expect(res.body.username).equals('testUser');
+                }).catch((err) => {
+                    expect.fail('should not throw error' + err);
+                })
+        });
+
+        it('should not get user by invalid _id', async ()=>{
+            return chai.request(app)
+                .get('/api/v1/users/ids/randomId')
+                .then((res) => {
+                    expect(res).have.status(500);
                 }).catch((err) => {
                     expect.fail('should not throw error' + err);
                 })
@@ -115,7 +161,6 @@ describe('User', ()=> {
                 expect(res).have.status(200);
             })
         });
-
 
         it('logout test user', async() => {
             return chai.request(app)

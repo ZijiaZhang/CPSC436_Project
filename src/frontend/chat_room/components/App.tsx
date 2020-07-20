@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 import {RouteComponentProps} from "react-router-dom";
 import {StaticContext} from "react-router";
 import {getCurrentUser, getUserInfo} from "../../shared/globleFunctions";
-import {IUser} from "../../posts_page/components/UserBlock";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 type LocationState = {
     from: Location;

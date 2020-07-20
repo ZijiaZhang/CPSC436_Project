@@ -1,9 +1,8 @@
 import React from "react";
 import CommentBlock from "./CommentBlock";
-import {Comment} from "./PostBlock";
 
 interface ICommentsContainerProps {
-    comments: Comment[]
+    comments: any[]
 }
 
 interface ICommentsContainerState {
