@@ -64,8 +64,9 @@ export async function getManyUsersInfo(userIDList: string[]) {
     return returnList;
 }
 
-export async function getAllUsersInfo() {
-    let response = await fetch("/api/v1/users/all", {method: 'GET'});
+export async function getAllUsersInfo(user: IUser) {
+    let id = user._id;
+    let response = await fetch("/api/v1/users/recommend/" + id, {method: 'GET'});
     return await response.json();
 }
 

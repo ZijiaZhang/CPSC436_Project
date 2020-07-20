@@ -2,6 +2,9 @@
 
 All changes will be logged here
 
+## 0.22.1 [2020-07-19]
+- Apply recommend algorithm
+
 ## 0.22.0 [2020-07-19]
 ### updated
 - Link posts page frontend to backend
