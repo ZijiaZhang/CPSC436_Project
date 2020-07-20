@@ -28,8 +28,8 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
     }
 
     async componentDidMount() {
-        let userList = await getAllUsersInfo();
-        this.setState({userList: userList});
+        let userList = await getAllUsersInfo(this.props.registeredUser);
+        this.setState({userList: userList.reverse()});
     }
 
     render() {
