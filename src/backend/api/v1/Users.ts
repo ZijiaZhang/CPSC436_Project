@@ -17,7 +17,12 @@ usersRouter.get('/', (req, res) => {
 usersRouter.get('/all', (req, res) => {
     const userList = User.find({});
     userList.exec()
-        .then((users: IUser[]) => res.send(users));
+        .then((user: IUser[]) => {
+            res.json(user);
+        })
+        .catch(() => {
+            res.status(500).json({message: `Failed to get all users from database`});
+        })
 });
 
 usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), (req, res, next) => {
@@ -57,7 +62,6 @@ usersRouter.post('/register', (req, res) => {
     });
 });
 
-
 usersRouter.get('/logout', (req, res, next) => {
     req.logout();
     if (req.session) {
@@ -66,7 +70,6 @@ usersRouter.get('/logout', (req, res, next) => {
         });
     }
 });
-
 
 usersRouter.get('/:username',  (req, res, next)=> {
     if(!req.isAuthenticated()){
@@ -93,11 +96,7 @@ usersRouter.get('/ids/:userId', checkIsValidObjectId, (req, res, next) => {
     const query = User.findById(userId);
     return query.exec()
         .then((user: IUser | null) => {
-            if (user === null) {
-                res.status(400).json({message: `Cannot find user with id ${userId}`});
-            } else {
-                res.json(user);
-            }
+            res.json(user);
         })
         .catch((err: Error) => {
             console.error(err);
@@ -133,12 +132,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 usersRouter.post('/uploadAvatar', upload.single('file'), (req, res, next) => {
-    res.send("./images/" + req.file.filename);
-});
-
-usersRouter.delete('/deleteAvatar', (req, res, next) => {
     fs.unlink('./public' + req.body.oldPath.substring(1, req.body.oldPath.length), (err) => {
-        res.send('Deleted')
+        res.send("./images/" + req.file.filename);
     });
 });
 
