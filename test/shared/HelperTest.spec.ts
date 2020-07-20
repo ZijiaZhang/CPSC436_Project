@@ -11,7 +11,7 @@ const game: ITag = {_id: "6", name: "game"};
 
 const userOne: IUser = {
     _id: "1",
-    password: "xxx",
+    blackListUserIds: [],
     friendUsernames: [],
     savedPostIds: [],
     hiddenPostIds: [],
@@ -27,7 +27,7 @@ const userOne: IUser = {
 
 const userTwo: IUser = {
     _id: "2",
-    password: "xxx",
+    blackListUserIds: [],
     friendUsernames: [],
     savedPostIds: [],
     hiddenPostIds: [],
@@ -43,7 +43,7 @@ const userTwo: IUser = {
 
 const userThree: IUser = {
     _id: "3",
-    password: "xxx",
+    blackListUserIds: [],
     friendUsernames: [],
     savedPostIds: [],
     hiddenPostIds: [],
@@ -59,7 +59,7 @@ const userThree: IUser = {
 
 const userFour: IUser = {
     _id: "4",
-    password: "xxx",
+    blackListUserIds: [],
     friendUsernames: [],
     savedPostIds: [],
     hiddenPostIds: [],
@@ -75,7 +75,7 @@ const userFour: IUser = {
 
 const userFive: IUser = {
     _id: "5",
-    password: "xxx",
+    blackListUserIds: [],
     friendUsernames: [],
     savedPostIds: [],
     hiddenPostIds: [],
