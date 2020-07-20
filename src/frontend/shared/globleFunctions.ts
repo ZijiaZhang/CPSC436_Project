@@ -21,7 +21,8 @@ export async function getCurrentUser() {
         major: temp_user.major,
         username: temp_user.username,
         savedPostIds: temp_user.savedPostIds,
-        hiddenPostIds: temp_user.hiddenPostIds
+        hiddenPostIds: temp_user.hiddenPostIds,
+        blackListUserIds: temp_user.blackListUserIds
     };
     return user
 }
@@ -44,7 +45,8 @@ export async function getUserInfo(user_id: string) {
         major: user.major,
         username: user.username,
         savedPostIds: user.savedPostIds,
-        hiddenPostIds: user.hiddenPostIds
+        hiddenPostIds: user.hiddenPostIds,
+        blackListUserIds: user.blackListUserIds
     };
     return user_info[user_id];
 }
@@ -144,7 +146,8 @@ export async function getUserById(userId: string) {
             major: user.major,
             username: user.username,
             savedPostIds: user.savedPostIds,
-            hiddenPostIds: user.hiddenPostIds
+            hiddenPostIds: user.hiddenPostIds,
+            blackListUserIds: user.blackListUserIds
         };
         return user_info[user.username];
     }

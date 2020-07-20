@@ -4,13 +4,12 @@ import ComponentsContainer from "./ComponentsContainer";
 import SearchBlock from "./SearchBlock";
 import {getPosts, getPostsByIds} from "../../shared/globleFunctions";
 import {connect} from "react-redux";
-import {loadPosts, loadSavedPosts} from "../actions";
+import {loadPosts} from "../actions";
 import {IUser} from "../../../shared/ModelInterfaces";
 
 interface IHomePageProps {
     user: IUser,
-    loadPosts: any,
-    loadSavedPosts: any
+    loadPosts: any
 }
 
 interface IHomePageState {
@@ -34,7 +33,6 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
     async componentDidMount() {
         let postList: any[] = await getPosts();
         this.props.loadPosts(postList);
-        this.props.loadSavedPosts(await getPostsByIds(this.props.user.savedPostIds))
     }
 
     getPosts = () => {
@@ -68,4 +66,4 @@ const mapStateToProps = (state: {postList: any }) => {
         postList: state.postList
     };
 };
-export default connect(mapStateToProps, {loadPosts, loadSavedPosts})(HomePage);
+export default connect(mapStateToProps, {loadPosts})(HomePage);

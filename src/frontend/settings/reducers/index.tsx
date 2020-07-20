@@ -3,6 +3,7 @@ import {IUser} from "../../../shared/ModelInterfaces";
 
 let postList: any[] = [];
 let savedPostList: any[] = [];
+let hiddenPostList: any[] = [];
 export let loginUser: IUser = {
     _id: "",
     username: '',
@@ -15,7 +16,8 @@ export let loginUser: IUser = {
     tags: [],
     friendUsernames: [],
     savedPostIds: [],
-    hiddenPostIds: []
+    hiddenPostIds: [],
+    blackListUserIds: []
 };
 
 export let userFriendList: IUser[] = [];
@@ -74,12 +76,19 @@ const savedPostsReducer = (savedPosts = savedPostList.slice(), action: any) => {
     }
     return savedPosts;
 };
-
+const hiddenPostsReducer = (hiddenPosts = hiddenPostList.slice(), action: any) => {
+    if (action.type === "LOAD_HIDDEN_POSTS") {
+        hiddenPosts = action.loadHiddenPosts;
+        return action.loadHiddenPosts;
+    }
+    return hiddenPosts;
+};
 
 export default combineReducers({
     postList: postListReducer,
     inputDraft: inputDraftReducer,
     userInfo: userInfoReducer,
     userFriends: userFriendsReducer,
-    savedPosts: savedPostsReducer
+    savedPosts: savedPostsReducer,
+    hiddenPosts: hiddenPostsReducer
 });

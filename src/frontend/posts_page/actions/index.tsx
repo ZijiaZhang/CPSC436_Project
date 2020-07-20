@@ -42,3 +42,9 @@ export const loadSavedPosts = (savedPosts: any) => {
         loadSavedPosts: savedPosts
     }
 };
+export const loadHiddenPosts = (hiddenPosts: any) => {
+    return {
+        type: "LOAD_HIDDEN_POSTS",
+        loadHiddenPosts: hiddenPosts
+    }
+};

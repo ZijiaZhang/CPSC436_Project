@@ -48,7 +48,7 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
                 );
                 break;
             case IComponentsType.personal:
-                listComponents = <PersonalPage user={this.props.registeredUser} savedPosts={this.props.savedPosts}/>;
+                listComponents = <PersonalPage />;
                 break;
         }
 

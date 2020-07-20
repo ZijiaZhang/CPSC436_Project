@@ -2,20 +2,21 @@ import React from "react";
 import {IUserProps} from "../../shared/interfaces/IUserProps";
 import Dropdown from "react-bootstrap/Dropdown";
 import {connect} from "react-redux";
-import {updateLike, deletePost, loadSavedPosts} from "../actions";
+import {updateLike, deletePost, loadSavedPosts, loadHiddenPosts} from "../actions";
 import CommentsContainer from "./CommentsContainer";
 import CommentInputBar from "./CommentInputBar";
-import {getPostsByIds, getPostsByUserId} from "../../shared/globleFunctions";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {loadUserInfo} from "../../settings/actions";
+import {getPostsByIds} from "../../shared/globleFunctions";
 
 export interface IPostBlockProps {
     post: any,
     updateLike: any,
     userInfo: IUser,
     deletePost: any,
+    loadUserInfo: any,
     loadSavedPosts: any,
-    loadUserInfo: any
+    loadHiddenPosts: any
 }
 
 export interface IPost extends IUserProps{
@@ -88,8 +89,8 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
           body: JSON.stringify(update)
       });
       let responseData = await response.json();
-      this.props.loadSavedPosts(await getPostsByIds(responseData.savedPostIds));
       this.props.loadUserInfo(responseData);
+      this.props.loadSavedPosts(await getPostsByIds(responseData.savedPostIds))
   };
 
   hidePost = async () => {
@@ -101,7 +102,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
       } else {
           update.hiddenPostIds.push(this.props.post.id);
       }
-      await fetch('/api/v1/users/' + this.props.userInfo.username, {
+      let response = await fetch('/api/v1/users/' + this.props.userInfo.username, {
           method: 'PATCH',
           headers: {
               'Accept': 'application/json',
@@ -109,6 +110,9 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
           },
           body: JSON.stringify(update)
       });
+      let responseData = await response.json();
+      this.props.loadUserInfo(responseData);
+      this.props.loadHiddenPosts(await getPostsByIds(responseData.hiddenPostIds));
       this.setState({postHidden: !this.state.postHidden});
   };
 
@@ -193,4 +197,4 @@ const mapStateToProps = (state: { postList: any, userInfo: any}) => {
     };
 };
 
-export default connect(mapStateToProps, {updateLike, deletePost, loadSavedPosts, loadUserInfo})(PostBlock);
+export default connect(mapStateToProps, {updateLike, deletePost, loadUserInfo, loadSavedPosts, loadHiddenPosts})(PostBlock);
