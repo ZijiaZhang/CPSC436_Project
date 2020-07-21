@@ -31,7 +31,7 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
 
     render() {
         return <div>
-            {this.props.messages.map((message, index) =>
+            {this.props.messages.map((message: ISingleMessage, index: number) =>
                 <ChatRoomBubbles key={index} message={message.message} status={message.status} sender={message.sender}/>)}
         </div>;
     }
