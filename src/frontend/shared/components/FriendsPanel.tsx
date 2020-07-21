@@ -39,7 +39,8 @@ class FriendsPanel extends React.Component<IFriendsPanelProps, {}> {
                 <div ref={this.rightCollapse} className="right_collapse">
                 <ul className="myFriend">
                     <p> Friends</p>
-                    {this.props.userFriends.map((friend) => <FriendsPanelItem key={friend.username} avatarPath={friend.avatarPath} name={friend.fullname}/>)}
+                    {this.props.userFriends.map((friend) =>
+                        <FriendsPanelItem key={friend.username} avatarPath={friend.avatarPath} name={friend.fullname} username={friend.username}/>)}
                 </ul>
                 </div>
             </div>
