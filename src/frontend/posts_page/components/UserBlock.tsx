@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {loadUserFriends, loadUserInfo} from "../../settings/actions";
 import {getManyUsersInfo} from "../../shared/globleFunctions";
 import {IUser} from "../../../shared/ModelInterfaces";
+import {Link} from "react-router-dom";
 
 interface IUserBlockProps {
     displayedUser: IUser,
@@ -83,8 +84,8 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
                 </div>
                 <div className="user-block-interactions">
                     {friendRelatedButton}
-                    <button className="user-block-message-button">
-                        <span className={'fa fa-comments-o'}/> Send Message</button>
+                    <Link to={{pathname: "/chatRoom", search: "?user=" +this.props.displayedUser.username}}> <button className="user-block-message-button">
+                        <span className={'fa fa-comments-o'}/> Send Message</button> </Link>
                 </div>
             </div>
         );
