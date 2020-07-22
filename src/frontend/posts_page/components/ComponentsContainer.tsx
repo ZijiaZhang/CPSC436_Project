@@ -6,30 +6,25 @@ import {IComponentsType} from "./HomePage";
 import {getAllUsersInfo} from "../../shared/globleFunctions";
 import {IPost, IUser} from "../../../shared/ModelInterfaces";
 import PersonalPage from "./PersonalPage";
+import {loadRecommendedUsers} from "../actions";
 
 interface IComponentsContainerProps {
     postList: IPost[],
     componentsType: IComponentsType,
     registeredUser: IUser,
-    savedPosts: any;
+    savedPosts: any,
+    recommendedUsers: IUser[],
+    loadRecommendedUsers: any
 }
 
-interface IComponentsContainerState {
-    userList: IUser[]
-}
-
-
-class ComponentsContainer extends React.Component<IComponentsContainerProps, IComponentsContainerState> {
+class ComponentsContainer extends React.Component<IComponentsContainerProps, {}> {
     constructor(props: IComponentsContainerProps) {
         super(props);
-        this.state= {
-            userList: []
-        }
     }
 
     async componentDidMount() {
         let userList = await getAllUsersInfo(this.props.registeredUser);
-        this.setState({userList: userList.reverse()});
+        this.props.loadRecommendedUsers(userList);
     }
 
     render() {
@@ -42,9 +37,10 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
                 );
                 break;
             case IComponentsType.users:
-                const userList: IUser[] = this.state.userList.slice().reverse();
+                const userList: IUser[] = this.props.recommendedUsers.slice().reverse();
                 listComponents = userList.map((user) =>
-                    <UserBlock displayedUser={user} />
+                    user.username === this.props.registeredUser.username ? "" :
+                        <UserBlock displayedUser={user} />
                 );
                 break;
             case IComponentsType.personal:
@@ -60,11 +56,12 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
     }
 }
 
-const mapStateToProps = (state: { postList: IPost[], savedPosts: any[]} ) => {
+const mapStateToProps = (state: { postList: IPost[], savedPosts: any[], recommendedUsers: any} ) => {
     return {
         postList: state.postList,
-        savedPosts: state.savedPosts
+        savedPosts: state.savedPosts,
+        recommendedUsers: state.recommendedUsers
     };
 };
 
-export default connect(mapStateToProps)(ComponentsContainer);
+export default connect(mapStateToProps, {loadRecommendedUsers})(ComponentsContainer);

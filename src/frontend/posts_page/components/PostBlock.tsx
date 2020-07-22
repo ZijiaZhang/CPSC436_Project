@@ -7,7 +7,7 @@ import CommentsContainer from "./CommentsContainer";
 import CommentInputBar from "./CommentInputBar";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {loadUserInfo} from "../../settings/actions";
-import {getPostsByIds} from "../../shared/globleFunctions";
+import {getPostsByIds, updateUserInfo} from "../../shared/globleFunctions";
 
 export interface IPostBlockProps {
     post: any,
@@ -80,15 +80,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
       } else {
           update.savedPostIds.push(this.props.post.id);
       }
-      let response = await fetch('/api/v1/users/' + this.props.userInfo.username, {
-          method: 'PATCH',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(update)
-      });
-      let responseData = await response.json();
+      let responseData = await updateUserInfo(this.props.userInfo.username, update);
       this.props.loadUserInfo(responseData);
       this.props.loadSavedPosts(await getPostsByIds(responseData.savedPostIds))
   };
@@ -102,15 +94,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
       } else {
           update.hiddenPostIds.push(this.props.post.id);
       }
-      let response = await fetch('/api/v1/users/' + this.props.userInfo.username, {
-          method: 'PATCH',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(update)
-      });
-      let responseData = await response.json();
+      let responseData = await updateUserInfo(this.props.userInfo.username, update);
       this.props.loadUserInfo(responseData);
       this.props.loadHiddenPosts(await getPostsByIds(responseData.hiddenPostIds));
       this.setState({postHidden: !this.state.postHidden});

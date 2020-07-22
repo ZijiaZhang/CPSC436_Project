@@ -4,15 +4,14 @@ import passport from 'passport'
 import * as fs from "fs";
 import {User} from "../../models/UserModel";
 import {IUser} from "../../../shared/ModelInterfaces";
-import { useEffect } from 'react';
 import {checkIsValidObjectId} from "../../shared/Middlewares";
 const multer = require('multer');
 import {applyRecommendation} from '../../shared/Helpers'
+import path from "path";
 
 usersRouter.get('/', (req, res) => {
     res.send(req.user);
 });
-
 
 usersRouter.get('/all', (req, res) => {
     const userList = User.find({});
@@ -125,16 +124,22 @@ usersRouter.patch('/:username', (req, res, next) => {
 const storage = multer.diskStorage({
     destination: './public/images',
     filename(req: any, file: any, cb: any) {
-        cb(null, `${file.originalname}`);
+        let num = 1;
+        if (fs.existsSync(path.join('./public/images', file.originalname))) {
+            while(fs.existsSync(path.join('./public/images', '(' + num + ')' + file.originalname))) {
+                num++;
+            }
+            cb(null, '(' + num + ')' + file.originalname)
+        }else{
+            cb(null, file.originalname)
+        }
     },
 });
 
 const upload = multer({ storage });
 
 usersRouter.post('/uploadAvatar', upload.single('file'), (req, res, next) => {
-    fs.unlink('./public' + req.body.oldPath.substring(1, req.body.oldPath.length), (err) => {
-        res.send("./images/" + req.file.filename);
-    });
+    res.send("./images/" + req.file.filename);
 });
 
 //recommend user algorithm start
@@ -145,4 +150,14 @@ usersRouter.get('/recommend/:_id', async (req, res, next) => {
     const userList = await User.find({_id: { $ne: userId}}).exec(); 
     const retUserList = applyRecommendation(currentUser, userList);
     res.send(retUserList);
-}); 
+});
+
+usersRouter.delete('deleteAvatar', (req, res, next) => {
+    fs.unlink('./public' + req.body.oldPath.substring(1, req.body.oldPath.length), (err) => {
+        if (err) {
+            res.send('DELETE FAILED! Old profile photo not found! ');
+        } else {
+            res.send('DELETE DONE!');
+        }
+    });
+});

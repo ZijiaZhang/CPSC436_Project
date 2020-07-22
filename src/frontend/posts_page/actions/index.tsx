@@ -48,3 +48,16 @@ export const loadHiddenPosts = (hiddenPosts: any) => {
         loadHiddenPosts: hiddenPosts
     }
 };
+export const loadRecommendedUsers = (recommendedUsers: any) => {
+    return {
+        type: "LOAD_REC_USERS",
+        loadRecommendedUsers: recommendedUsers
+    }
+};
+export const AddFriendRecUser = (username: string, friends: any) => {
+    return {
+        type: "FRIEND_REC_USER",
+        recUsername: username,
+        newFriendList: friends,
+    }
+};

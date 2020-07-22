@@ -27,7 +27,7 @@
     margin: 10px auto;
     background: white;
     box-shadow: 5px 3px 5px 3px lightgray;
-    width: 50%;
+    width: 780px;
     padding: 6px 3px 6px 4px;
 }
 .post-user-name{
@@ -285,7 +285,7 @@
 }
 .search-block{
     background:#0e2473;
-    height: 80px;
+    height: 40px;
     font-weight: bold;
     font-family: Arial, sans-serif;
 }
@@ -318,57 +318,45 @@
 .nav-button-to-some-page:hover{
     background: royalblue !important;
 }
-.search-block-search-filters{
-    background: white;
-    display: block;
-}
-.search-filter-buttons{
-    margin: 10px 20px;
-    background: white;
-    border: none;
-    position: relative;
-    left: 30%;
-    font-size: 12pt;
-    font-weight: normal;
-    border-bottom: 2px solid white;
-}
-.search-filter-buttons:hover{
-    border-bottom: 2px solid royalblue;
-}
 .user-block-user-info{
     display: inline-block;
     margin: 5px;
 }
 .user-block-avatar{
     display: inline-block;
-    height: 100px;
+    height: 80px;
     border-radius: 50px;
     margin: 20px;
     box-shadow: 1px 1px 1px 1px lightgray;
-    width: 100px;
+    width: 80px;
+    vertical-align: top;
 }
 .user-block-user-detail{
     display: inline-block;
+    position: relative;
+    top: 20px;
+    width: 120px;
 }
 .user-block-name{
     font-weight: bold;
-    font-size: 14pt;
+    font-size: 12pt;
     color: royalblue;
     margin: 5px;
     position: relative;
     top: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
-.user-block-department{
+.user-block-mutual-friends{
+    font-size: 10pt;
+    color: dimgray;
     margin: 5px;
     position: relative;
-    top: 15px;
-    color: gray;
-}
-.user-block-major{
-    margin: 5px;
-    position: relative;
-    top: 40px;
-    font-size: 11pt;
+    top: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .user-block-interactions{
     display: inline-block;
@@ -379,4 +367,22 @@
 }
 .user-block-button{
 
+}
+.user-block-friends-button{
+    margin-right: 10px;
+    border-radius: 3px;
+    background: lightskyblue;
+    border-color: skyblue;
+}
+.user-block-stranger-button{
+    margin-right: 10px;
+    border-radius: 3px;
+    background: lightskyblue;
+    border-color: skyblue;
+}
+.user-block-message-button{
+    margin-right: 10px;
+    border-radius: 3px;
+    background: lightskyblue;
+    border-color: skyblue;
 }

@@ -36,13 +36,6 @@ class SearchBlock extends React.Component<ISearchBlockProps, ISearchBlockState> 
                     <button className="nav-button-to-some-page" onClick={this.props.getPosts}>Home</button>
                     <button className="nav-button-to-some-page" onClick={this.props.getUsers}>Friends</button>
                 </div>
-                <div className="search-block-search-filters">
-                    <button className="search-filter-buttons">All</button>
-                    <button className="search-filter-buttons">Posts</button>
-                    <button className="search-filter-buttons">People</button>
-                    <button className="search-filter-buttons">Tags</button>
-                    <button className="search-filter-buttons">Articles</button>
-                </div>
             </div>
         );
     }

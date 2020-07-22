@@ -156,8 +156,7 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                         <button className="profile-interaction-button" onClick={this.startEditProfile}>
                             <span className={'fa fa-edit'}/> Edit Profile</button>
                         <button className="profile-interaction-button" id="profile-interaction-button-with-drop-down" onClick={this.showDropDown}>
-                            More
-                            <span className={'fa fa-sort-down'} id="profile-button-more-icon"/>
+                            More <span className={'fa fa-sort-down'} id="profile-button-more-icon"/>
                             <div className="profile-interaction-drop-down-buttons" style={this.state.dropDown ? {display: 'block'} : {display: 'none'}}>
                                 <a className="profile-drop-down-button" onClick={this.viewAllPosts} >
                                     <span className={'glyphicon glyphicon-list-alt'} /> View All Posts</a>

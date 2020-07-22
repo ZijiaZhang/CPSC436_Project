@@ -2,8 +2,6 @@ import {MessageStatus} from "../chat_room/components/ChatRoomBubbles";
 import {IChat, IUser} from "../../shared/ModelInterfaces";
 
 export let user: IUser;
-export let user_info: {[name: string] : IUser} = {};
-export let post_info: {[id: string] : any} = {};
 
 export async function getCurrentUser() {
     let user_res = await fetch('/api/v1/users');
@@ -28,38 +26,15 @@ export async function getCurrentUser() {
 }
 
 export async function getUserInfo(user_id: string) {
-    if (user_id in user_info) {
-        return user_info[user_id];
-    }
     let user_res = await fetch('/api/v1/users/' + user_id);
-    let user = await user_res.json();
-    user_info[user_id] = {
-        _id: user._id,
-        fullname: user.fullname,
-        tags: user.tags,
-        avatarPath: user.avatarPath,
-        department: user.department,
-        friendUsernames: user.friendUsernames,
-        gender: user.gender,
-        level: user.level,
-        major: user.major,
-        username: user.username,
-        savedPostIds: user.savedPostIds,
-        hiddenPostIds: user.hiddenPostIds,
-        blackListUserIds: user.blackListUserIds
-    };
-    return user_info[user_id];
+    return await user_res.json();
 }
 
 export async function getManyUsersInfo(userIDList: string[]) {
     let returnList = [];
     for (let userID of userIDList) {
-        if (userID in user_info) {
-            returnList.push(Object.create(user_info[userID]));
-        } else {
-            let userInfo = await getUserInfo(userID);
-            returnList.push(userInfo);
-        }
+        let userInfo = await getUserInfo(userID);
+        returnList.push(userInfo);
     }
     return returnList;
 }
@@ -67,6 +42,18 @@ export async function getManyUsersInfo(userIDList: string[]) {
 export async function getAllUsersInfo(user: IUser) {
     let id = user._id;
     let response = await fetch("/api/v1/users/recommend/" + id, {method: 'GET'});
+    return await response.json();
+}
+
+export async function updateUserInfo(username: string, updatedInfo: any) {
+    let response = await fetch('http://localhost:3000/api/v1/users/' + username, {
+        method: 'PATCH',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedInfo)
+    });
     return await response.json();
 }
 
@@ -103,55 +90,31 @@ export async function getPostsByUserId(userId: string) {
 async function mapDataToPost(responseData: any[]) {
     let postList = [];
     for (let post of responseData) {
-        if (post._id in post_info) {
-            postList.push(post_info[post._id]);
-        } else {
-            let user = await getUserById(post.userId);
-            let comments = await getCommentsByPost(post._id);
-            post_info[post._id] = {
-                id: post._id,
-                userId: user._id,
-                time: post.time,
-                name: user.fullname,
-                detail: post.detail,
-                avatarPath: user.avatarPath,
-                image: '',
-                likedUserIds: post.likedUserIds,
-                comments: comments,
-                type: post.type,
-                visibility: post.visibility,
-                tags: [],
-                hidden: false
-            };
-            postList.push(post_info[post._id]);
-        }
+        let user = await getUserById(post.userId);
+        let comments = await getCommentsByPost(post._id);
+        const newPost = {
+            id: post._id,
+            userId: user._id,
+            time: post.time,
+            name: user.fullname,
+            detail: post.detail,
+            avatarPath: user.avatarPath,
+            image: '',
+            likedUserIds: post.likedUserIds,
+            comments: comments,
+            type: post.type,
+            visibility: post.visibility,
+            tags: [],
+            hidden: false
+        };
+        postList.push(newPost);
     }
     return postList;
 }
 
 export async function getUserById(userId: string) {
     let user_res = await fetch('/api/v1/users/ids/' + userId);
-    let user = await user_res.json();
-    if (user.username in user_info) {
-        return user_info[user.username];
-    } else {
-        user_info[user.username] = {
-            _id: user._id,
-            fullname: user.fullname,
-            tags: user.tags,
-            avatarPath: user.avatarPath,
-            department: user.department,
-            friendUsernames: user.friendUsernames,
-            gender: user.gender,
-            level: user.level,
-            major: user.major,
-            username: user.username,
-            savedPostIds: user.savedPostIds,
-            hiddenPostIds: user.hiddenPostIds,
-            blackListUserIds: user.blackListUserIds
-        };
-        return user_info[user.username];
-    }
+    return await user_res.json();
 }
 export async function getCommentsByPost(postId: string) {
     let comment_res = await fetch('/api/v1/comments/' + postId);

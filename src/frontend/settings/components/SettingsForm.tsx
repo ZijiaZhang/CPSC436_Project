@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {loadUserInfo} from "../actions";
 import CreatableSelect from 'react-select/creatable';
 import {ITag, IUser} from "../../../shared/ModelInterfaces";
+import {updateUserInfo} from "../../shared/globleFunctions";
 
 export interface ISettingsFormProps {
     opened: boolean,
@@ -48,10 +49,6 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
         }
     }
 
-    componentDidMount(){
-
-    }
-
     saveEdit = async (event: any) => {
         event.preventDefault();
         const updatedUser = {
@@ -62,16 +59,7 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
             level: this.props.level,
             tags: this.props.tags,
         };
-        let response = await fetch('http://localhost:3000/api/v1/users/' + this.props.userInfo.username, {
-            method: 'PATCH',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updatedUser)
-        });
-        let data = await response.json();
-        console.log(data);
+        let data = await updateUserInfo(this.props.userInfo.username, updatedUser);
         this.props.loadUserInfo(data);
         this.cancelEdit();
     };

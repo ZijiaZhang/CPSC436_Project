@@ -4,6 +4,7 @@ import {IUser} from "../../../shared/ModelInterfaces";
 let postList: any[] = [];
 let savedPostList: any[] = [];
 let hiddenPostList: any[] = [];
+let recommendedUsers: any[] = [];
 export let loginUser: IUser = {
     _id: "",
     username: '',
@@ -51,7 +52,7 @@ const postListReducer = (posts = postList.slice(), action: any) => {
             return action.loadPosts;
         case 'ADD_POST':
             postList.push(action.addPost);
-            return posts.slice().concat(action.addPost);
+            return postList.slice();
         case 'UPDATE_LIKE':
             let updateLike = posts.findIndex(post => post.id === action.updateId);
             console.log(updateLike);
@@ -83,6 +84,17 @@ const hiddenPostsReducer = (hiddenPosts = hiddenPostList.slice(), action: any) =
     }
     return hiddenPosts;
 };
+const recommendedUsersReducer = (userList = recommendedUsers.slice(), action: any) => {
+    if (action.type === "LOAD_REC_USERS") {
+        recommendedUsers = action.loadRecommendedUsers;
+        return action.loadRecommendedUsers;
+    } else if(action.type === "FRIEND_REC_USER") {
+        let updateUser = userList.findIndex(user => user.username === action.recUsername);
+        userList[updateUser].friendUsernames = action.newFriendList;
+        return userList.slice();
+    }
+    return userList;
+};
 
 export default combineReducers({
     postList: postListReducer,
@@ -90,5 +102,6 @@ export default combineReducers({
     userInfo: userInfoReducer,
     userFriends: userFriendsReducer,
     savedPosts: savedPostsReducer,
-    hiddenPosts: hiddenPostsReducer
+    hiddenPosts: hiddenPostsReducer,
+    recommendedUsers: recommendedUsersReducer
 });
