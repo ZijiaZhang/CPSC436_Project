@@ -64,9 +64,14 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
     private async update_user() {
         let user_id = new URLSearchParams(this.props.location.search).get("user");
         if (!user_id) {
-            let user = await getCurrentUser();
-            this.setState({user});
-            return
+            try {
+                let user = await getCurrentUser();
+                this.setState({user});
+                return
+            } catch (e) {
+                this.setState({user: null});
+                return;
+            }
         }
         try {
             let user = await getUserInfo(user_id);

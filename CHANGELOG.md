@@ -2,6 +2,9 @@
 
 All changes will be logged here
 
+## 0.22.2 [2020-07-21]
+- Fix Chat room format issue
+
 ## 0.22.1 [2020-07-19]
 - Apply recommend algorithm
 
