@@ -19,6 +19,8 @@ function handle_message(messages: ISingleMessage[] = [],
         case ChatRoomActions.RECEIVE_MESSAGE:
             console.log(action);
             return update(messages, {$push: [action.message]});
+        case ChatRoomActions.SEND_MESSAGE_ERROR:
+            return update(messages, {$push: [{message: action.message, status:MessageStatus.NOT_SENT, sender: action.sender}]});
         default:
             return messages
     }

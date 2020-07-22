@@ -28,12 +28,16 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
     constructor(props: RouteComponentProps<{}, StaticContext, LocationState>) {
         super(props);
         this.state = {user: undefined};
-
     }
 
     ref = createRef<ChatRoomInputBox>();
     render () {
         console.log('render');
+        let curr_user_id = new URLSearchParams(this.props.location.search).get("user");
+        if(curr_user_id && curr_user_id !== this.state.user?.username){
+            this.update_user();
+            return (<h1>Loading</h1>);
+        }
         if (this.state.user) {
             return (
                 <Provider store={chatRoomStore}>
@@ -54,11 +58,20 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
     }
 
     async componentDidMount() {
+        await this.update_user();
+    }
+
+    private async update_user() {
         let user_id = new URLSearchParams(this.props.location.search).get("user");
-        if (!user_id){
-            let user = await getCurrentUser();
-            this.setState({user});
-            return
+        if (!user_id) {
+            try {
+                let user = await getCurrentUser();
+                this.setState({user});
+                return
+            } catch (e) {
+                this.setState({user: null});
+                return;
+            }
         }
         try {
             let user = await getUserInfo(user_id);
@@ -70,7 +83,6 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
 
         }
     }
-
 }
 
 export default ChatRoom;

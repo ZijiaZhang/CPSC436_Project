@@ -46,13 +46,16 @@
   float: right;
 }
 
+.conversation-bubble.unsent{
+  background: red;
+}
+
 .unsent{
   text-align: right;
-  background: red;
   float: right;
 }
 
-.unsent::before{
+.conversation-bubble.unsent::before{
   border-top: 12.5px solid red;
   border-top-width: 25px;
 }
@@ -78,8 +81,4 @@
 
 .chat-room-title{
   text-align: center;
-}
-
-.conversation-avatar{
-  height: 2em;
 }

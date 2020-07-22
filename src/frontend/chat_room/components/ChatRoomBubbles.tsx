@@ -1,5 +1,6 @@
 import * as React from "react";
 import {IUserProps} from "../../shared/interfaces/IUserProps";
+import {IUser} from "../../../shared/ModelInterfaces";
 export enum MessageStatus{
     RECEIVED,
     SENT,
@@ -9,15 +10,15 @@ export enum MessageStatus{
 export interface ISingleMessage {
     message: string;
     status: MessageStatus;
-    sender: any;
+    sender: IUser;
 }
 
 export class ChatRoomBubbles extends React.Component<ISingleMessage, {}> {
     render() {
         return <div className={'conversation-bubble-wrap'}>
             <div className={['received', 'sent', 'unsent'][this.props.status]}>
-            <p className = 'conversation-bubble'>{this.props.message}</p>
-            <img className='conversation-avatar' src={this.props.sender} alt={this.props.sender}/>
+                <img className={'conversation-avatar ' + ['received', 'sent', 'unsent'][this.props.status]} src={this.props.sender.avatarPath} alt={this.props.sender.fullname}/>
+                <p className = {'conversation-bubble ' + ['received', 'sent', 'unsent'][this.props.status]} >{this.props.message}</p>
             </div>
         </div>;
     }

@@ -1,5 +1,5 @@
 import {Action, Dispatch} from "redux";
-import {getCurrentUser, user} from "../../shared/globleFunctions";
+import {getCurrentUser, getUserInfo, user} from "../../shared/globleFunctions";
 import {ISingleMessage, MessageStatus} from "../components/ChatRoomBubbles";
 import { IChat } from "../../../shared/ModelInterfaces";
 
@@ -72,7 +72,7 @@ export const getInitialMessages = (receiver: string| null) => {
             return;
         }
         let user_id = user.username;
-
+        let receive_user = await getUserInfo(receiver);
         let sent_messages = await getMessages(user_id, receiver);
         sent_messages = sent_messages.map((m: IChat) => {
             return {
@@ -88,7 +88,7 @@ export const getInitialMessages = (receiver: string| null) => {
             return {
                 message: m.content,
                 status: MessageStatus.RECEIVED,
-                sender: receiver,
+                sender: receive_user,
                 time: m.time
             }
         });

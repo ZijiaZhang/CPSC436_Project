@@ -1,4 +1,5 @@
 export interface IUserProps {
     avatarPath: string;
-    name: string
+    name: string;
+    username?:string;
 }
