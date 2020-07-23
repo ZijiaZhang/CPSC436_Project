@@ -1,6 +1,6 @@
 {
   "name": "cpsc436-group-project",
-  "version": "0.22.2",
+  "version": "0.22.3",
   "private": true,
   "scripts": {
     "test": "nyc --reporter html --reporter json --reporter text npm run tests && nyc report --reporter=text-lcov > coverage.lcov",

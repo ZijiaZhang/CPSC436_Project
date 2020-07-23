@@ -2,6 +2,9 @@
 
 All changes will be logged here
 
+## 0.22.3 [2020-07-23]
+- Improve recommend algorithm to include department
+
 ## 0.22.2 [2020-07-21]
 - Fix Chat room format issue
 
