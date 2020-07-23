@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {addComment} from "../actions";
 import {IUser} from "../../../shared/ModelInterfaces";
+import {requestAPIJson} from "../../shared/Networks";
 
 interface ICommentInputBarProps{
     addComment: any,
@@ -48,14 +49,13 @@ class CommentInputBar extends React.Component<ICommentInputBarProps, ICommentInp
             let date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
             const newComment = {time: date + ' ' + time, userId: this.props.user._id, detail: this.state.comment,
                 postId: this.props.post.id, visibility: this.state.checked ? 'private' : 'public'};
-            let response = await fetch('/api/v1/comments/', {
-                method: 'POST',
-                headers: {
+            let responseData = await requestAPIJson('/api/v1/comments/',
+                'POST',
+                {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newComment)});
-            let responseData = await response.json();
+                newComment);
             this.props.addComment(
                 {
                     time: responseData.time,

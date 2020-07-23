@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import {connect} from "react-redux";
 import {loadUserInfo} from "../actions";
 import {IUser} from "../../../shared/ModelInterfaces";
+import {requestAPIJson} from "../../shared/Networks";
 import {updateUserInfo} from "../../shared/globleFunctions";
 
 interface ISettingsProfilePhotoProps {
@@ -39,7 +40,7 @@ class SettingsProfilePhoto extends React.Component<ISettingsProfilePhotoProps, I
         event.preventDefault();
         let imageFileData = new FormData();
         imageFileData.append('file', this.state.imageFile);
-        let responsePost = await fetch('http://localhost:3000/api/v1/users/uploadAvatar',
+        let responsePost = await fetch('/api/v1/users/uploadAvatar',
             {
                 method: 'POST',
                 body: imageFileData});

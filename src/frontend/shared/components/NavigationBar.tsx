@@ -2,6 +2,7 @@ import * as React from 'react';
 import NavigationItems from "./NavigationItems";
 import {connect} from "react-redux";
 import {loadUserInfo} from "../../settings/actions";
+import {requestAPIJson} from "../Networks";
 
 interface INavigationBarProps {
     loadUserInfo: any,
@@ -37,10 +38,7 @@ class NavigationBar extends React.Component<INavigationBarProps, {}> {
 
     async componentDidMount() {
 		try {
-			let response = await fetch('http://localhost:3000/api/v1/users', {
-				method: 'GET'
-			});
-            let data = await response.json();
+			let data = await requestAPIJson('/api/v1/users');
             this.props.loadUserInfo(data);
 		} catch(e) {
             console.log(e.message);

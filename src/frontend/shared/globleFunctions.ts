@@ -1,11 +1,11 @@
 import {MessageStatus} from "../chat_room/components/ChatRoomBubbles";
 import {IChat, IUser} from "../../shared/ModelInterfaces";
+import {requestAPIJson} from "./Networks";
 
 export let user: IUser;
 
 export async function getCurrentUser() {
-    let user_res = await fetch('/api/v1/users');
-    let temp_user = await user_res.json();
+    let temp_user = await requestAPIJson('/api/v1/users');
     console.log(temp_user);
     user = {
         _id: temp_user._id,
@@ -26,8 +26,7 @@ export async function getCurrentUser() {
 }
 
 export async function getUserInfo(user_id: string) {
-    let user_res = await fetch('/api/v1/users/' + user_id);
-    return await user_res.json();
+    return await requestAPIJson('/api/v1/users/' + user_id);
 }
 
 export async function getManyUsersInfo(userIDList: string[]) {
@@ -76,16 +75,14 @@ export async function getPosts(query: string = '') {
 export async function getPostsByIds(postIds: string[]) {
     let dataList = [];
     for (let id of postIds) {
-        let response = await fetch('/api/v1/posts/' + id, {method: 'GET'});
-        let responseData = await response.json();
+        let responseData = await requestAPIJson('/api/v1/posts/' + id, );
         dataList.push(responseData);
     }
     return await mapDataToPost(dataList);
 }
 
 export async function getPostsByUserId(userId: string) {
-    let response = await fetch('/api/v1/posts/user/' + userId, {method: 'GET'});
-    let responseData = await response.json();
+    let responseData = await requestAPIJson('/api/v1/posts/user/' + userId);
     return await mapDataToPost(responseData);
 }
 
@@ -118,8 +115,7 @@ export async function getUserById(userId: string) {
     return await user_res.json();
 }
 export async function getCommentsByPost(postId: string) {
-    let comment_res = await fetch('/api/v1/comments/' + postId);
-    let comments = await comment_res.json();
+    let comments = await requestAPIJson('/api/v1/comments/' + postId);
     let commentList = [];
     for (let comment of comments) {
         let user = await getUserById(comment.userId);

@@ -5,6 +5,7 @@ import {loadDisplayedUser, loadUserInfo, addTag} from "../actions";
 import CreatableSelect from 'react-select/creatable';
 import {ITag, IUser} from "../../../shared/ModelInterfaces";
 import {addNewTag, updateUserInfo} from "../../shared/globleFunctions";
+import {requestAPIJson} from "../../shared/Networks";
 
 export interface ISettingsFormProps {
     opened: boolean,

@@ -8,6 +8,7 @@ import Modal from "react-modal";
 import {ITag, IUser} from "../../../shared/ModelInterfaces";
 import {addTag, loadTags} from "../../settings/actions";
 import {addNewTag, getAllTags} from "../../shared/globleFunctions";
+import {requestAPIJson} from "../../shared/Networks";
 
 interface ITextareaProps {
     addPost: any,
@@ -70,13 +71,12 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             }
             let newPost = {time: date + ' ' + time, userId: this.props.user._id, detail: this.state.message,
                 type: 'post', visibility: this.state.visibility, tags: tagList, uploadedFiles: [], likedUserIds: []};
-            let response = await fetch('/api/v1/posts', {method: 'POST',
-                headers: {
+            let responseData = await requestAPIJson('/api/v1/posts',  'POST',
+                {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newPost)});
-            let responseData = await response.json();
+                newPost);
             this.props.addPost({
                 id: responseData._id,
                 time: responseData.time,

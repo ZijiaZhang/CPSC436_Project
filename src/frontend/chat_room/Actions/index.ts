@@ -2,6 +2,7 @@ import {Action, Dispatch} from "redux";
 import {getCurrentUser, getUserInfo, user} from "../../shared/globleFunctions";
 import {ISingleMessage, MessageStatus} from "../components/ChatRoomBubbles";
 import { IChat } from "../../../shared/ModelInterfaces";
+import {requestAPIJson} from "../../shared/Networks";
 
 export enum ChatRoomActions{
     RECEIVE_MESSAGE,
@@ -12,17 +13,16 @@ export enum ChatRoomActions{
 }
 
 function sendMessageAPICall(user_id: string, receiver: string | null, text: string) {
-    return fetch('/api/v1/chats', {
-        method: 'POST',
-        body: JSON.stringify({
+    return requestAPIJson('/api/v1/chats', 'POST',
+        {
+        'Content-Type': 'application/json'
+        },
+        {
             sender_username: user_id,
             receiver_username: receiver ? receiver : user_id,
             content: text
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
+        },
+    );
 }
 
 export const sendMessage = (text: string, receiver: string|null) => {
@@ -34,16 +34,12 @@ export const sendMessage = (text: string, receiver: string|null) => {
         });
 
 
-        sendMessageAPICall(user.username, receiver, text).then((res) => {
-            if (res.status === 200) {
-                dispatch({
-                    type: ChatRoomActions.SEND_MESSAGE,
-                    message: text,
-                    sender: user
-                })
-            } else {
-                throw new Error(JSON.stringify(res.body));
-            }
+        sendMessageAPICall(user.username, receiver, text).then(() => {
+            dispatch({
+                type: ChatRoomActions.SEND_MESSAGE,
+                message: text,
+                sender: user
+            })
         }).catch((err) => {
             console.error(err);
             dispatch({
@@ -57,9 +53,8 @@ export const sendMessage = (text: string, receiver: string|null) => {
 };
 
 
-async function getMessages<T>(user_id: any, recever: any) {
-    let res = await fetch(`/api/v1/chats?sender_id=${user_id}&receiver_id=${recever ? recever : user_id}`);
-    let data = await res.json();
+async function getMessages(user_id: any, recever: any) {
+    let data = await requestAPIJson(`/api/v1/chats?sender_id=${user_id}&receiver_id=${recever ? recever : user_id}`);
     return data.allMessages;
 }
 
