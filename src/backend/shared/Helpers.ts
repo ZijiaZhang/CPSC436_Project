@@ -29,10 +29,13 @@ export function applyRecommendation(currentUser: IUser, userList: IUser[]) {
 export function calculateRecommendScore(currentUser: IUser, comparedUser: IUser): number{
     let commonTagNum = findCommonTagsNum(currentUser, comparedUser);
     let resultScore = 0;
-    if (currentUser.major && comparedUser.major) {
+    if (currentUser.department && currentUser.major && comparedUser.department && comparedUser.major ) {
         if (currentUser.major.toLowerCase() === comparedUser.major.toLowerCase()) {
             resultScore += 10 + commonTagNum * 5;
-        } else {
+        } else if (currentUser.department.toLowerCase() === comparedUser.department.toLowerCase()){
+            resultScore += 5 + commonTagNum * 5;
+        }
+        else {
             resultScore += commonTagNum * 5;
         }
    }
