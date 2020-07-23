@@ -89,21 +89,41 @@ const userFive: IUser = {
     tags: [ ],
 };
 
+const userSix: IUser = {
+    _id: "6",
+    blackListUserIds: [],
+    friendUsernames: [],
+    savedPostIds: [],
+    hiddenPostIds: [],
+    username: 'bad',
+    fullname: 'bad',
+    avatarPath: './images/test.png',
+    gender: "female",
+    department: "Science",
+    major: "Math",
+    level: "Bachelor",
+    tags: [ ],
+};
+
 describe('test Helper function for recommend algorithm', () => {
     it('test findCommonTagsNum', () => {
         const result1 = findCommonTagsNum(userOne, userTwo);
         const result2 = findCommonTagsNum(userOne, userThree);
         const result3 = findCommonTagsNum(userFive, userThree);
+        const result4 = findCommonTagsNum(userFive, userSix);
         expect(result1).to.be.equal(3);
         expect(result2).to.be.equal(1);
         expect(result3).to.be.equal(0);
+        expect(result4).to.be.equal(0);
     });
     
     it('test calculateRecommendScore', ()=> {
         const result1 = calculateRecommendScore(userOne, userTwo);
         const result2 = calculateRecommendScore(userTwo, userThree);
+        const result3 = calculateRecommendScore(userOne, userSix);
         expect(result1).to.be.equal(25);
         expect(result2).to.be.equal(5);
+        expect(result3).to.be.equal(5);
     })
 
     it('test apply recommended algorithm', ()=> {
