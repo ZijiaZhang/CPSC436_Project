@@ -77,11 +77,11 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                 },
                 body: JSON.stringify(newPost)});
             let responseData = await response.json();
-            console.log(responseData);
             this.props.addPost({
                 id: responseData._id,
                 time: responseData.time,
                 name: this.props.user.fullname,
+                userId: responseData.userId,
                 detail: responseData.detail,
                 avatarPath: this.props.user.avatarPath,
                 image: '',

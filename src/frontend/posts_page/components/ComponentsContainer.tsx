@@ -64,7 +64,7 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
                 );
                 break;
             case IComponentsType.users:
-                const userList: IUser[] = this.props.recommendedUsers.slice().reverse();
+                const userList: IUser[] = this.props.recommendedUsers.slice();
                 listComponents = userList.map((user) =>
                     user.username === this.props.userInfo.username ? "" :
                         <UserBlock displayedUser={user} viewProfile={this.viewProfile} setPersonalPageUser={this.setPersonalPageUser}/>

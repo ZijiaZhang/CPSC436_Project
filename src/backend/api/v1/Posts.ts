@@ -89,7 +89,7 @@ postsRouter.delete('/:id', checkIsValidObjectId, (req, res, next) => {
     const {id} = req.params;
     const postQuery = Post.findByIdAndDelete(id);
     const commentQuery = Comment.deleteMany({postId: id});
-    Promise.all([postQuery.exec, commentQuery.exec])
+    Promise.all([postQuery.exec(), commentQuery.exec()])
         .then(() => res.send())
         .catch(() => {
             res.status(500).json({message: `Failed to delete post with id ${id}`});
