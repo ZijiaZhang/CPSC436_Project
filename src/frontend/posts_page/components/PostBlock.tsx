@@ -7,7 +7,7 @@ import CommentsContainer from "./CommentsContainer";
 import CommentInputBar from "./CommentInputBar";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {loadUserInfo} from "../../settings/actions";
-import {getPostsByIds} from "../../shared/globleFunctions";
+import {getPostsByIds, updateUserInfo} from "../../shared/globleFunctions";
 
 export interface IPostBlockProps {
     post: any,
@@ -16,23 +16,7 @@ export interface IPostBlockProps {
     deletePost: any,
     loadUserInfo: any,
     loadSavedPosts: any,
-    loadHiddenPosts: any
-}
-
-export interface IPost extends IUserProps{
-  id: string,
-  time: string,
-  name: string,
-  detail: string,
-  avatarPath: string,
-  image: string,
-  numLikes: number,
-  comments: any[],
-  type: string,
-  visibility: string,
-  tags: string[],
-  liked: boolean,
-  hidden: boolean
+    loadHiddenPosts: any,
 }
 
 interface IPostBlockState {
@@ -80,15 +64,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
       } else {
           update.savedPostIds.push(this.props.post.id);
       }
-      let response = await fetch('/api/v1/users/' + this.props.userInfo.username, {
-          method: 'PATCH',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(update)
-      });
-      let responseData = await response.json();
+      let responseData = await updateUserInfo(this.props.userInfo.username, update);
       this.props.loadUserInfo(responseData);
       this.props.loadSavedPosts(await getPostsByIds(responseData.savedPostIds))
   };
@@ -102,15 +78,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
       } else {
           update.hiddenPostIds.push(this.props.post.id);
       }
-      let response = await fetch('/api/v1/users/' + this.props.userInfo.username, {
-          method: 'PATCH',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(update)
-      });
-      let responseData = await response.json();
+      let responseData = await updateUserInfo(this.props.userInfo.username, update);
       this.props.loadUserInfo(responseData);
       this.props.loadHiddenPosts(await getPostsByIds(responseData.hiddenPostIds));
       this.setState({postHidden: !this.state.postHidden});
@@ -135,15 +103,12 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
       background: 'white',
       borderColor: 'white'
     };
-    const deleteButton = this.props.post.userId === this.props.userInfo._id ?
-        <Dropdown.Item className="profile-drop-down-button" onClick={this.deletePost}>
-            <span className={'glyphicon glyphicon-remove'} /> Delete Post</Dropdown.Item> : "";
     return(<div className="post-block" key={this.props.post.id}>
-        <div className="hidden-post" style={this.props.post.hidden ? {display: 'block'} : {display: 'none'}}>
+        <div className="hidden-post" style={this.state.postHidden ? {display: 'block'} : {display: 'none'}}>
             <span className="hidden-post-title">Post hidden</span>
             <button className="undo-hide-post" onClick={this.hidePost}>Undo</button>
         </div>
-        <div style={this.props.post.hidden ? {display: 'none'} : {display: 'block'}}>
+        <div style={this.state.postHidden ? {display: 'none'} : {display: 'block'}}>
             <div className="profile-photo-block">
                 <img src={this.props.post.avatarPath} alt="ProfilePhoto" className="post-profile-photo"/>
             </div>
@@ -157,12 +122,16 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item className="profile-drop-down-button" onClick={this.savePost}>
-                                <span className={'fa fa-bookmark-o'} /> Save Post</Dropdown.Item>
+                                <span className={'fa fa-bookmark-o'} />
+                                {this.props.userInfo.savedPostIds.includes(this.props.post.id) ? " Un-Save Post" : " Save Post"}
+                            </Dropdown.Item>
                             <Dropdown.Item className="profile-drop-down-button" onClick={this.hidePost}>
-                                <span className={'fa fa-times-rectangle-o'} /> Hide Post</Dropdown.Item>
-                            <Dropdown.Item className="profile-drop-down-button">
-                                <span className={'fa fa-exclamation-triangle'} /> Report Post</Dropdown.Item>
-                            {deleteButton}
+                                <span className={'fa fa-times-rectangle-o'} />
+                                {this.props.userInfo.hiddenPostIds.includes(this.props.post.id) ? " Un-Hide Post" : " Hide Post"}
+                            </Dropdown.Item>
+                            {this.props.post.userId === this.props.userInfo._id ?
+                                <Dropdown.Item className="profile-drop-down-button" onClick={this.deletePost}>
+                                    <span className={'glyphicon glyphicon-remove'} /> Delete Post</Dropdown.Item> : ""}
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>

@@ -37,7 +37,10 @@ const userSchema = new Schema({
     major: String,
     level: String,
     avatarPath: String,
-    tags: [ObjectId],
+    tags: [{
+            _id: ObjectId,
+            name: String
+        }],
     friendUsernames: [String],
     savedPostIds: [ObjectId],
     hiddenPostIds: [ObjectId],

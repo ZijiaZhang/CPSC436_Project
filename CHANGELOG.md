@@ -2,6 +2,19 @@
 
 All changes will be logged here
 
+## 0.23.0 [2020-07-23]
+### Added Features
+- Blacklist
+- Save posts and hide posts
+- Delete posts
+- View others' posts or profile
+- Tags
+### Updated
+- Add friend function
+- Some buttons and links
+- Most of the displayed buttons/links are functional
+- Fixed some bugs
+
 ## 0.22.3 [2020-07-23]
 - Improve recommend algorithm to include department
 

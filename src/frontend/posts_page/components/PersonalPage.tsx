@@ -7,16 +7,17 @@ import {connect} from "react-redux";
 import {loadHiddenPosts, loadSavedPosts} from "../actions";
 
 interface IPersonalPageProps {
-    userInfo: IUser,
     loadSavedPosts: any,
     loadHiddenPosts: any,
     hiddenPosts: any[],
-    savedPosts: any[]
+    savedPosts: any[],
+    userDisplayInfo: IUser
 }
 
 interface IPersonalPageState {
     viewOption: string,
-    personalPostList: any[]
+    personalPostList: any[],
+
 }
 
 class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageState> {
@@ -29,16 +30,16 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
     }
 
     async componentDidMount() {
-        this.setState({personalPostList: await getPostsByUserId(this.props.userInfo._id)});
-        this.props.loadSavedPosts(await getPostsByIds(this.props.userInfo.savedPostIds));
-        this.props.loadHiddenPosts(await getPostsByIds(this.props.userInfo.hiddenPostIds));
+        this.setState({personalPostList: await getPostsByUserId(this.props.userDisplayInfo._id)});
+        this.props.loadSavedPosts(await getPostsByIds(this.props.userDisplayInfo.savedPostIds));
+        this.props.loadHiddenPosts(await getPostsByIds(this.props.userDisplayInfo.hiddenPostIds));
     }
 
     viewPersonalPosts = async () => {
         if(this.state.viewOption !== 'personal') {
             this.setState({
                 viewOption: 'personal',
-                personalPostList: await getPostsByUserId(this.props.userInfo._id)
+                personalPostList: await getPostsByUserId(this.props.userDisplayInfo._id)
             });
         }
     };
@@ -69,40 +70,64 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
                 break;
         }
         return postList.map((post) =>
-            <PostBlock post={post} />
+            <PostBlock post={post}  />
         );
+    };
+
+    getNumOfPosts = () => {
+        switch (this.state.viewOption) {
+            case 'personal':
+                return this.state.personalPostList.length.toString();
+            case 'saved':
+                return this.props.savedPosts.length.toString();
+            case 'hidden':
+                return this.props.hiddenPosts.length.toString();
+        }
     };
 
     render() {
         const savedPosts = this.getDisplayedPosts();
+        const numPosts = this.getNumOfPosts();
         let dropDownStyle: CSSProperties = {
-            color: 'royalblue',
-            background: 'none',
+            marginRight: '12px',
+            float: 'right',
+            display: 'inline-block',
+            fontSize: '12pt',
+            position: "relative",
+            top: "30px"
+        };
+        const buttonStyle: CSSProperties = {
+            color: 'black',
+            background: 'lightskyblue',
+            boxShadow: "2px 2px 2px 2px lightgray",
             border: 'none',
-            paddingRight: '24px'
+            marginRight: '24px',
         };
         return (
             <div>
                 <div className="post-block">
                     <div className="personal-posts-navigation-block">
-                        <Dropdown>
-                            <Dropdown.Toggle className="settings-user-block-message-button" style={dropDownStyle} variant="success" id="dropdown-basic">
-                                <span className={"glyphicon glyphicon-option-horizontal"} /> View Options
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item className="profile-drop-down-button" onClick={this.viewPersonalPosts}>
-                                    <span className={'glyphicon glyphicon-user'}/> Personal Posts</Dropdown.Item>
-                                <Dropdown.Item className="profile-drop-down-button" onClick={this.viewSavedPosts}>
-                                    <span className={'fa fa-comments-o'}/> Saved Posts</Dropdown.Item>
-                                <Dropdown.Item className="profile-drop-down-button" onClick={this.viewHiddenPosts}>
-                                    <span className={'fa fa-share-square-o'}/> Hidden Posts</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                    <div className="personal-posts-info-block">
+                        <img src={this.props.userDisplayInfo.avatarPath ? this.props.userDisplayInfo.avatarPath : './images/photoP.png'} alt={'Image Not Found'}
+                             className="personal-posts-info-avatar"/>
+                        <div className="personal-posts-info-detail">
+                            <p className="personal-posts-info-name">{this.props.userDisplayInfo.fullname}</p>
+                            <p className="personal-posts-info-number">{numPosts} {this.state.viewOption === "personal" ? "" : this.state.viewOption + " "}posts</p>
+                        </div>
                     </div>
-                    <div className="personal-posts-management-block">
-                        <p>Management</p>
-                        <button>Recent Notifications</button>
-                        <button>Manage Posts</button>
+                    <Dropdown style={dropDownStyle}>
+                        <Dropdown.Toggle className="settings-user-block-message-button" style={buttonStyle} variant="success" id="dropdown-basic">
+                            <span className={"glyphicon glyphicon-option-horizontal"} /> View Posts
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item className="profile-drop-down-button" onClick={this.viewPersonalPosts}>
+                                <span className={'glyphicon glyphicon-user'}/> Personal Posts</Dropdown.Item>
+                            <Dropdown.Item className="profile-drop-down-button" onClick={this.viewSavedPosts}>
+                                <span className={'fa fa-comments-o'}/> Saved Posts</Dropdown.Item>
+                            <Dropdown.Item className="profile-drop-down-button" onClick={this.viewHiddenPosts}>
+                                <span className={'fa fa-share-square-o'}/> Hidden Posts</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     </div>
                 </div>
                 {savedPosts}
@@ -111,9 +136,8 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
     }
 }
 
-const mapStateToProps = (state: { userInfo: any, hiddenPosts: any[], savedPosts: any[] }) => {
+const mapStateToProps = (state: {hiddenPosts: any[], savedPosts: any[] }) => {
     return {
-        userInfo: state.userInfo,
         hiddenPosts: state.hiddenPosts,
         savedPosts: state.savedPosts
     };

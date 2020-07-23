@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import {connect} from "react-redux";
 import {loadUserInfo} from "../actions";
 import {IUser} from "../../../shared/ModelInterfaces";
+import {updateUserInfo} from "../../shared/globleFunctions";
 
 interface ISettingsProfilePhotoProps {
     opened: boolean,
@@ -38,30 +39,26 @@ class SettingsProfilePhoto extends React.Component<ISettingsProfilePhotoProps, I
         event.preventDefault();
         let imageFileData = new FormData();
         imageFileData.append('file', this.state.imageFile);
-        console.log(this.state.imageFile);
         let responsePost = await fetch('http://localhost:3000/api/v1/users/uploadAvatar',
             {
                 method: 'POST',
                 body: imageFileData});
         let responsePostData = await responsePost.text();
-        console.log(responsePostData);
         const updatedInfo = {
             avatarPath: responsePostData,
         };
-        let responsePatch = await fetch('http://localhost:3000/api/v1/users/' + this.props.userInfo.username, {
-            method: 'PATCH',
+        let responsePatchData = await updateUserInfo(this.props.userInfo.username, updatedInfo);
+        await fetch('http://localhost:3000/api/v1/users/deleteAvatar', {
+            method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(updatedInfo)
+            body: JSON.stringify({oldPath: this.props.userInfo.avatarPath})
         });
-        let responsePatchData = await responsePatch.json();
-        console.log(responsePatchData);
         this.props.loadUserInfo(responsePatchData);
         this.cancelEdit();
     };
-
 
     cancelEdit = () => {
         this.setState({editing: !this.state.editing});

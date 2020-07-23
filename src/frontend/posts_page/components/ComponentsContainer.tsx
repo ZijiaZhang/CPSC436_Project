@@ -4,67 +4,99 @@ import PostBlock from "./PostBlock";
 import {connect} from "react-redux";
 import {IComponentsType} from "./HomePage";
 import {getAllUsersInfo} from "../../shared/globleFunctions";
-import {IPost, IUser} from "../../../shared/ModelInterfaces";
+import {IUser} from "../../../shared/ModelInterfaces";
 import PersonalPage from "./PersonalPage";
+import {loadRecommendedUsers} from "../actions";
+import Modal from "react-modal";
+import UserProfile from "../../settings/components/UserProfile";
 
 interface IComponentsContainerProps {
-    postList: IPost[],
+    postList: any[],
     componentsType: IComponentsType,
-    registeredUser: IUser,
-    savedPosts: any;
+    userInfo: IUser,
+    savedPosts: any,
+    registeredUser: IUser
+    recommendedUsers: IUser[],
+    loadRecommendedUsers: any,
+    getOthersPosts: any
 }
 
 interface IComponentsContainerState {
-    userList: IUser[]
+    profileView: boolean,
+    viewPageUser: any
 }
-
 
 class ComponentsContainer extends React.Component<IComponentsContainerProps, IComponentsContainerState> {
     constructor(props: IComponentsContainerProps) {
         super(props);
-        this.state= {
-            userList: []
+        this.state = {
+            profileView: false,
+            viewPageUser: undefined
         }
     }
 
     async componentDidMount() {
         let userList = await getAllUsersInfo(this.props.registeredUser);
-        this.setState({userList: userList.reverse()});
+        this.props.loadRecommendedUsers(userList);
     }
+
+    viewProfile = () => {
+        this.setState({profileView: !this.state.profileView})
+    };
+
+    setPersonalPageUser = (user: IUser) => {
+        this.setState({viewPageUser: user});
+        this.props.getOthersPosts();
+    };
 
     render() {
         let listComponents: any;
         switch (this.props.componentsType) {
             case IComponentsType.posts:
-                const postList: IPost[] = this.props.postList.slice().reverse();
-                listComponents = postList.map((post) =>
+                let postList: any[] = [];
+                for (let post of this.props.postList) {
+                    if (!this.props.userInfo.hiddenPostIds.includes(post.id)) {
+                        postList.push(post);
+                    }
+                }
+                listComponents = postList.reverse().map((post) =>
                     <PostBlock post={post} />
                 );
                 break;
             case IComponentsType.users:
-                const userList: IUser[] = this.state.userList.slice().reverse();
+                const userList: IUser[] = this.props.recommendedUsers.slice();
                 listComponents = userList.map((user) =>
-                    <UserBlock displayedUser={user} />
+                    user.username === this.props.userInfo.username ? "" :
+                        <UserBlock displayedUser={user} viewProfile={this.viewProfile} setPersonalPageUser={this.setPersonalPageUser}/>
                 );
                 break;
             case IComponentsType.personal:
-                listComponents = <PersonalPage />;
+                listComponents = <PersonalPage userDisplayInfo={this.props.userInfo}/>;
                 break;
+            case IComponentsType.others:
+                listComponents = <PersonalPage userDisplayInfo={this.state.viewPageUser}/>;
         }
-
         return (
             <div id="all-components">
                 {listComponents}
+                <Modal isOpen={this.state.profileView} className="post-page-profile-view">
+                    <button onClick={this.viewProfile} className="post-page-profile-view-close-button">
+                        <span className={'glyphicon glyphicon-remove'} />
+                    </button>
+                    <UserProfile curUser={this.props.userInfo} isSettingsPage={false} />
+                </Modal>
             </div>
         );
     }
 }
 
-const mapStateToProps = (state: { postList: IPost[], savedPosts: any[]} ) => {
+const mapStateToProps = (state: { postList: any[], savedPosts: any[], recommendedUsers: any, userInfo: any} ) => {
     return {
         postList: state.postList,
-        savedPosts: state.savedPosts
+        savedPosts: state.savedPosts,
+        recommendedUsers: state.recommendedUsers,
+        userInfo: state.userInfo
     };
 };
 
-export default connect(mapStateToProps)(ComponentsContainer);
+export default connect(mapStateToProps, {loadRecommendedUsers})(ComponentsContainer);

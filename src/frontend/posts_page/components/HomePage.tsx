@@ -19,7 +19,8 @@ interface IHomePageState {
 export enum IComponentsType {
     posts = 'posts',
     users = 'users',
-    personal = 'personal'
+    personal = 'personal',
+    others = 'others'
 }
 
 class HomePage extends React.Component<IHomePageProps, IHomePageState> {
@@ -47,13 +48,21 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
         this.setState({componentsType: IComponentsType.personal})
     };
 
+    getOthersPosts = () => {
+        this.setState({componentsType: IComponentsType.others})
+    };
+
     render() {
         return (
             <div id="post-blog-page">
                 <SearchBlock user={this.props.user} getPosts={this.getPosts} getUsers={this.getUsers} getPersonal={this.getPersonal}/>
                 <div className="home-page-body">
-                    <InputBlock user={this.props.user} />
-                    <ComponentsContainer registeredUser={this.props.user} componentsType={this.state.componentsType} />
+                    {this.state.componentsType === IComponentsType.personal || this.state.componentsType === IComponentsType.posts ?
+                        <InputBlock user={this.props.user} />
+                        :
+                        ""
+                    }
+                    <ComponentsContainer registeredUser={this.props.user} componentsType={this.state.componentsType} getOthersPosts={this.getOthersPosts} />
                 </div>
             </div>
         );

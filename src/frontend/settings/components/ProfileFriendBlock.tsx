@@ -1,47 +1,61 @@
-import React, {CSSProperties} from "react";
-import Dropdown from "react-bootstrap/Dropdown";
+import React from "react";
 import {IUser} from "../../../shared/ModelInterfaces";
+import {connect} from "react-redux";
+import {loadDisplayedFriends, loadDisplayedUser} from "../actions";
+import {Link} from "react-router-dom";
+import {getManyUsersInfo} from "../../shared/globleFunctions";
 
 interface IProfileFriendBlockProps{
-    friend: IUser
+    friend: IUser,
+    displayedUser: IUser,
+    displayedFriends: IUser[]
+    loadDisplayedFriends: any,
+    loadDisplayedUser: any,
+    isSettingsPage: boolean,
+    updatePostList: any
 }
 
 class ProfileFriendBlock extends React.Component<IProfileFriendBlockProps, {}>{
 
+    constructor(props: IProfileFriendBlockProps) {
+        super(props);
+    }
+
+    gotoUserProfile = async () => {
+        this.props.loadDisplayedUser(this.props.friend);
+        let friendInfoList: IUser[] = await getManyUsersInfo(this.props.friend.friendUsernames);
+        this.props.loadDisplayedFriends(friendInfoList);
+        await this.props.updatePostList();
+    };
+
     render() {
-        let dropDownStyle: CSSProperties = {
-            color: 'royalblue',
-            background: 'none',
-            border: 'none',
-            width: '15px',
-            paddingRight: '24px'
-        };
         return (
-            <div>
-                <div className="settings-user-block">
-                    <div className="settings-user-block-user-info">
-                        <img className="settings-user-block-avatar" src={this.props.friend.avatarPath} alt="img not found"/>
-                        <p className="settings-user-block-name">{this.props.friend.fullname}</p>
+            <div className="settings-user-block" key={this.props.friend._id}>
+                {this.props.isSettingsPage ?
+                    <Link to={"/settings"} onClick={this.gotoUserProfile}>
+                        <div className="settings-user-block-user-info">
+                            <img className="settings-user-block-avatar" src={this.props.friend.avatarPath} alt="img not found"/>
+                            <p className="settings-user-block-name">{this.props.friend.fullname}</p>
+                        </div>
+                    </Link>
+                    :
+                    <div>
+                        <div className="settings-user-block-user-info">
+                            <img className="settings-user-block-avatar" src={this.props.friend.avatarPath} alt="img not found"/>
+                            <p className="settings-user-block-name">{this.props.friend.fullname}</p>
+                        </div>
                     </div>
-                    <div className="settings-user-block-interactions">
-                        <Dropdown>
-                            <Dropdown.Toggle className="settings-user-block-message-button" style={dropDownStyle} variant="success" id="dropdown-basic">
-                                <span className={"glyphicon glyphicon-option-horizontal"} />
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item className="profile-drop-down-button">
-                                    <span className={'glyphicon glyphicon-user'}/> Add Friend</Dropdown.Item>
-                                <Dropdown.Item className="profile-drop-down-button">
-                                    <span className={'fa fa-comments-o'}/> Send Message</Dropdown.Item>
-                                <Dropdown.Item className="profile-drop-down-button">
-                                    <span className={'fa fa-share-square-o'}/> See Profile</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </div>
-                </div>
+                }
             </div>
         );
     }
 }
 
-export default ProfileFriendBlock;
+const mapStateToProps = (state: {displayedUser: any, displayedFriends: any }) => {
+    return {
+        displayedUser: state.displayedUser,
+        displayedFriends: state.displayedFriends
+    };
+};
+
+export default connect(mapStateToProps, {loadDisplayedFriends, loadDisplayedUser})(ProfileFriendBlock);

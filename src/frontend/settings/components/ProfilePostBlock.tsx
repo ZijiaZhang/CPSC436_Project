@@ -1,8 +1,9 @@
 import React from "react";
-import {IPost} from "../../posts_page/components/PostBlock";
+import {IUser} from "../../../shared/ModelInterfaces";
 
 interface IProfilePostBlockProps{
-    post: IPost
+    post: any,
+    user: IUser
 }
 
 class ProfilePostBlock extends React.Component<IProfilePostBlockProps, {}> {
@@ -10,10 +11,10 @@ class ProfilePostBlock extends React.Component<IProfilePostBlockProps, {}> {
         return (
             <div className="settings-post-block">
                 <div className="settings-profile-photo-block">
-                    <img src={this.props.post.avatarPath} alt="ProfilePhoto" className="settings-profile-photo"/>
+                    <img src={this.props.user.avatarPath ? this.props.user.avatarPath : './images/photoP.png'} alt="ProfilePhoto" className="settings-profile-photo"/>
                 </div>
                 <div className="settings-post-detail-block">
-                    <p className="settings-post-user-name">{this.props.post.name}</p>
+                    <p className="settings-post-user-name">{this.props.user.fullname}</p>
                     <div className="settings-post-detail">
                         {this.props.post.detail}
                     </div>

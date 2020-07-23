@@ -1,10 +1,12 @@
 import {combineReducers} from "redux";
-import {IUser} from "../../../shared/ModelInterfaces";
+import {ITag, IUser} from "../../../shared/ModelInterfaces";
 
 let postList: any[] = [];
 let savedPostList: any[] = [];
 let hiddenPostList: any[] = [];
-export let loginUser: IUser = {
+let recommendedUsers: any[] = [];
+let tagList: ITag[] = [];
+let displayedUser: IUser = {
     _id: "",
     username: '',
     fullname: '',
@@ -20,7 +22,23 @@ export let loginUser: IUser = {
     blackListUserIds: []
 };
 
-export let userFriendList: IUser[] = [];
+let loginUser: IUser = {
+    _id: "",
+    username: '',
+    fullname: '',
+    avatarPath: '',
+    gender: "",
+    department: "",
+    major: "",
+    level: "",
+    tags: [],
+    friendUsernames: [],
+    savedPostIds: [],
+    hiddenPostIds: [],
+    blackListUserIds: []
+};
+let displayedFriendList: IUser[] = [];
+let userFriendList: IUser[] = [];
 
 export const userInfoReducer = (curUser: IUser = Object.create(loginUser), action: any) => {
     if (action.type === 'LOAD_INFO') {
@@ -51,7 +69,7 @@ const postListReducer = (posts = postList.slice(), action: any) => {
             return action.loadPosts;
         case 'ADD_POST':
             postList.push(action.addPost);
-            return posts.slice().concat(action.addPost);
+            return postList.slice();
         case 'UPDATE_LIKE':
             let updateLike = posts.findIndex(post => post.id === action.updateId);
             console.log(updateLike);
@@ -83,6 +101,44 @@ const hiddenPostsReducer = (hiddenPosts = hiddenPostList.slice(), action: any) =
     }
     return hiddenPosts;
 };
+const recommendedUsersReducer = (userList = recommendedUsers.slice(), action: any) => {
+    if (action.type === "LOAD_REC_USERS") {
+        recommendedUsers = action.loadRecommendedUsers;
+        return action.loadRecommendedUsers;
+    } else if(action.type === "FRIEND_REC_USER") {
+        let updateUser = userList.findIndex(user => user.username === action.recUsername);
+        userList[updateUser].friendUsernames = action.newFriendList;
+        return userList.slice();
+    }
+    return userList;
+};
+
+const displayedUserReducer = (userDisplay = displayedUser, action: any) => {
+    if(action.type === "LOAD_DISPLAYED_USER") {
+        displayedUser = Object.create(action.displayedUser);
+        return action.displayedUser;
+    }
+    return userDisplay;
+};
+
+const displayedFriendsReducer = (friendsDisplay = displayedFriendList, action: any) => {
+    if(action.type === "LOAD_DISPLAYED_FRIENDS") {
+        displayedFriendList = action.displayedFriends.slice();
+        return action.displayedFriends;
+    }
+    return friendsDisplay;
+};
+
+const tagListReducer = (tags = tagList, action: any) => {
+    if (action.type === "LOAD_TAGS") {
+        tagList = action.tags.slice();
+        return action.tags
+    } else if (action.type === "ADD_TAG") {
+        tagList.push(action.tag);
+        return tagList;
+    }
+    return tags;
+};
 
 export default combineReducers({
     postList: postListReducer,
@@ -90,5 +146,9 @@ export default combineReducers({
     userInfo: userInfoReducer,
     userFriends: userFriendsReducer,
     savedPosts: savedPostsReducer,
-    hiddenPosts: hiddenPostsReducer
+    hiddenPosts: hiddenPostsReducer,
+    recommendedUsers: recommendedUsersReducer,
+    displayedUser: displayedUserReducer,
+    displayedFriends: displayedFriendsReducer,
+    tagList: tagListReducer
 });

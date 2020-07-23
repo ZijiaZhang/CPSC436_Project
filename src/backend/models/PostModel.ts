@@ -19,7 +19,10 @@ const postSchema: Schema = new Schema({
     }],
     type: String,
     visibility: String,
-    tags: [ObjectId],
+    tags: [{
+            _id: ObjectId,
+            name: String
+        }],
     likedUserIds: [ObjectId]
 });
 
