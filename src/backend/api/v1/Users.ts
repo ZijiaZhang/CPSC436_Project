@@ -97,9 +97,8 @@ usersRouter.get('/ids/:userId', checkIsValidObjectId, (req, res, next) => {
         .then((user: IUser | null) => {
             res.json(user);
         })
-        .catch((err: Error) => {
-            console.error(err);
-            res.status(500).json({message: 'Failed getting post.'})
+        .catch(() => {
+            res.status(500).json({message: 'Failed getting user.'})
         });
 });
 
@@ -152,12 +151,12 @@ usersRouter.get('/recommend/:_id', async (req, res, next) => {
     res.send(retUserList);
 });
 
-usersRouter.delete('deleteAvatar', (req, res, next) => {
+usersRouter.delete('/deleteAvatar', (req, res, next) => {
     fs.unlink('./public' + req.body.oldPath.substring(1, req.body.oldPath.length), (err) => {
         if (err) {
-            res.send('DELETE FAILED! Old profile photo not found! ');
+            res.status(400).send('DELETE FAILED! Old profile photo not found! ');
         } else {
-            res.send('DELETE DONE!');
+            res.status(200).send('DELETE DONE!');
         }
     });
 });

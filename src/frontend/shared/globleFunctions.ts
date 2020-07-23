@@ -46,7 +46,7 @@ export async function getAllUsersInfo(user: IUser) {
 }
 
 export async function updateUserInfo(username: string, updatedInfo: any) {
-    let response = await fetch('http://localhost:3000/api/v1/users/' + username, {
+    let response = await fetch('/api/v1/users/' + username, {
         method: 'PATCH',
         headers: {
             'Accept': 'application/json',
@@ -98,14 +98,13 @@ async function mapDataToPost(responseData: any[]) {
             time: post.time,
             name: user.fullname,
             detail: post.detail,
-            avatarPath: user.avatarPath,
+            avatarPath: user.avatarPath ? user.avatarPath : './images/photoP.png',
             image: '',
             likedUserIds: post.likedUserIds,
             comments: comments,
             type: post.type,
             visibility: post.visibility,
-            tags: [],
-            hidden: false
+            tags: post.tags,
         };
         postList.push(newPost);
     }
@@ -133,4 +132,20 @@ export async function getCommentsByPost(postId: string) {
         })
     }
     return commentList;
+}
+
+export async function getAllTags() {
+    let response = await fetch('/api/v1/tags', {method: 'GET'});
+    return await response.json();
+}
+export async function addNewTag(tagName: string) {
+    let response = await fetch('/api/v1/tags', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({name: tagName})
+    });
+    return await response.json();
 }

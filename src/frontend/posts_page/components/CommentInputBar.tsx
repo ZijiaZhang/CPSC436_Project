@@ -1,12 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
 import {addComment} from "../actions";
-import {IPost} from "./PostBlock";
 import {IUser} from "../../../shared/ModelInterfaces";
 
 interface ICommentInputBarProps{
     addComment: any,
-    post: IPost,
+    post: any,
     user: IUser
 }
 interface ICommentInputBarState{
@@ -81,7 +80,6 @@ class CommentInputBar extends React.Component<ICommentInputBarProps, ICommentInp
                 <div className="comment-block-left-side-buttons">
                     <button className="comment-modification-button">Emoji</button>
                     <button className="comment-modification-button">@</button>
-                    <button className="comment-modification-button">Photo</button>
                 </div>
                 <div className="comment-block-right-side-buttons">
                 <span className="comment-modification-button">

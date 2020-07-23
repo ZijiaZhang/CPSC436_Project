@@ -4,17 +4,25 @@ import ProfilePostBlock from "./ProfilePostBlock";
 import ProfileFriendBlock from "./ProfileFriendBlock";
 import SettingsForm from "./SettingsForm";
 import {connect} from "react-redux";
-import {loadUserFriends, loadUserInfo} from "../actions";
+import {loadDisplayedFriends, loadDisplayedUser, loadTags, loadUserFriends, loadUserInfo} from "../actions";
 import SettingsProfilePhoto from "./SettingsProfilePhoto";
-import {getManyUsersInfo, getPostsByUserId, getUserInfo} from "../../shared/globleFunctions";
+import {getAllTags, getManyUsersInfo, getPostsByUserId, updateUserInfo} from "../../shared/globleFunctions";
 import {ITag, IUser} from "../../../shared/ModelInterfaces";
+import {Link} from "react-router-dom";
 
 interface IUserProfileProps {
     userInfo: IUser,
     loadUserInfo: any,
     curUser: IUser,
     loadUserFriends: any,
-    userFriends: any
+    userFriends: any,
+    displayedUser: IUser,
+    displayedFriends: any,
+    loadDisplayedUser: any,
+    loadDisplayedFriends: any,
+    postList: any[]
+    isSettingsPage: boolean,
+    loadTags: any
 }
 
 
@@ -29,8 +37,8 @@ interface IUserProfileState {
     avatarPath: string,
     major: string,
     level: string,
-    tags: ITag[],
-    postList: any[]
+    tags: any[],
+    posts: any[]
 }
 
 class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
@@ -48,7 +56,7 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             major: this.props.userInfo.major,
             level: this.props.userInfo.level,
             tags: this.props.userInfo.tags,
-            postList: []
+            posts: []
         }
     }
 
@@ -79,21 +87,32 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     };
 
     interestsOnChange = (newValue: any) => {
-        let tagList = [];
-        for (let tag of newValue) {
-            tagList.push(tag.value);
-        }
-        this.setState({tags: tagList});
+        console.log(newValue);
+        this.setState({tags: newValue});
     };
 
     async componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.loadUserInfo(this.props.curUser);
-        let friendInfoList: IUser[] = await getManyUsersInfo(this.props.userInfo.friendUsernames);
+        const friendInfoList: IUser[] = await getManyUsersInfo(this.props.curUser.friendUsernames);
         this.props.loadUserFriends(friendInfoList);
-        let postList = await getPostsByUserId(this.props.userInfo._id);
-        this.setState({postList: postList});
+        if(this.props.isSettingsPage) {
+            this.props.loadDisplayedUser(this.props.curUser);
+            this.props.loadDisplayedFriends(friendInfoList);
+        }
+        const postList = await getPostsByUserId(this.props.displayedUser._id);
+        this.setState({posts: postList});
+        const tags = await getAllTags();
+        this.props.loadTags(tags);
     }
+
+    convertTagsToOptions = () => {
+        let options = [];
+        for (let tag of this.props.userInfo.tags) {
+            options.push({value: tag.name, label: tag.name})
+        }
+        return options;
+    };
 
     startEditProfile = () => {
         this.setState({
@@ -103,7 +122,7 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             avatarPath: this.props.userInfo.avatarPath,
             major: this.props.userInfo.major,
             level: this.props.userInfo.level,
-            tags: this.props.userInfo.tags,
+            tags: this.convertTagsToOptions(),
         });
         this.setState({infoEditorOpened: !this.state.infoEditorOpened});
     };
@@ -127,52 +146,135 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
         }
     };
 
-    viewAllPosts = () => {
-        console.log('view all posts')
+    updatePostList = async () => {
+        const postList = await getPostsByUserId(this.props.displayedUser._id);
+        this.setState({posts: postList});
+        return postList;
+    };
+
+    addFriend = async () => {
+        if (!this.props.userInfo.friendUsernames.includes(this.props.displayedUser.username)
+            && !this.props.displayedUser.friendUsernames.includes(this.props.userInfo.username)
+            && !this.props.userInfo.blackListUserIds.includes(this.props.displayedUser._id)
+            && !this.props.displayedUser.blackListUserIds.includes(this.props.userInfo._id)) {
+            let userFriends = this.props.userInfo.friendUsernames.slice();
+            let friendFriends = this.props.displayedUser.friendUsernames.slice();
+            userFriends.push(this.props.displayedUser.username);
+            friendFriends.push(this.props.userInfo.username);
+            await this.updateUserInfo(userFriends, friendFriends);
+        }
+    };
+
+    updateUserInfo = async (userFriends: string[], friendFriends: string[]) => {
+        let updatedUser = {
+            friendUsernames: userFriends
+        };
+        let updatedFriend = {
+            friendUsernames: friendFriends
+        };
+        let responseUserData = await updateUserInfo(this.props.userInfo.username, updatedUser);
+        let responseFriendData = await updateUserInfo(this.props.displayedUser.username, updatedFriend);
+        let friendsInfo = await getManyUsersInfo(responseUserData.friendUsernames);
+        this.props.loadUserInfo(responseUserData);
+        this.props.loadUserFriends(friendsInfo);
+        this.props.loadDisplayedUser(responseFriendData);
+        this.setState({dropDown: false});
+    };
+
+    deleteFriend = async () => {
+        if (this.props.userInfo.friendUsernames.includes(this.props.displayedUser.username)
+            && this.props.displayedUser.friendUsernames.includes(this.props.userInfo.username)) {
+            let userIndex = this.props.userInfo.friendUsernames.indexOf(this.props.displayedUser.username);
+            let friendIndex = this.props.displayedUser.friendUsernames.indexOf(this.props.userInfo.username);
+            let userFriends = this.props.userInfo.friendUsernames.slice();
+            let friendFriends = this.props.displayedUser.friendUsernames.slice();
+            userFriends.splice(userIndex, 1);
+            friendFriends.splice(friendIndex, 1);
+            await this.updateUserInfo(userFriends, friendFriends);
+        }
+    };
+
+    updateBlacklist = async () => {
+        let newBlacklist: any[];
+        if (this.props.userInfo.blackListUserIds.includes(this.props.displayedUser._id)) {
+            let userBlacklistIndex = this.props.userInfo.blackListUserIds.indexOf(this.props.displayedUser._id);
+            newBlacklist = this.props.userInfo.blackListUserIds.slice();
+            newBlacklist.splice(userBlacklistIndex, 1);
+        } else {
+            newBlacklist = this.props.userInfo.blackListUserIds.slice().concat(this.props.displayedUser._id);
+            if (this.props.userInfo.friendUsernames.includes(this.props.displayedUser.username)) {
+                await this.deleteFriend();
+            }
+        }
+        const update = {
+            blackListUserIds: newBlacklist
+        };
+        let responseUserData = await updateUserInfo(this.props.userInfo.username, update);
+        this.props.loadUserInfo(responseUserData);
     };
 
     render() {
-        const postList = this.state.postList.slice(0, this.state.postList.length);
+        const postList = this.state.posts.slice();
         const posts = postList.reverse().slice(0,4).map(post =>
-            <ProfilePostBlock post={post} />
+            <ProfilePostBlock post={post} user={this.props.displayedUser}/>
         );
-        const friends = this.props.userFriends.map((friend: any) =>
-            <ProfileFriendBlock friend={friend} />
+        const friends = this.props.displayedFriends.map((friend: any) =>
+            <ProfileFriendBlock friend={friend} isSettingsPage={this.props.isSettingsPage} updatePostList={this.updatePostList}/>
         );
         return (
             <div className="user-profile-page">
                 <div className="user-profile-page-avatar-block">
-                    <img className="user-avatar" src={this.props.userInfo.avatarPath ? this.props.userInfo.avatarPath : './images/photoP.png' } alt="image not found" />
+                    <img className="user-avatar" src={this.props.displayedUser.avatarPath ? this.props.displayedUser.avatarPath : './images/photoP.png' } alt="image not found" />
                     <button className="profile-change-profile-photo" onClick={this.startEditAvatar}>
                         <p className={'fa fa-camera'} id="upload-profile-photo-icon" />
                         <p className="upload-profile-photo-title">Upload Picture</p>
                     </button>
                 </div>
                 <div className="profile-listed-detail-left-block">
-                    <p className="profile-detail-user-name">{this.props.userInfo.fullname}</p>
-                    <p className="profile-detail-user-department">{this.props.userInfo.fullname}, in {this.props.userInfo.level} of {this.props.userInfo.department} program</p>
-                    <p className="profile-detail-user-major">Major in {this.props.userInfo.major}</p>
+                    <p className="profile-detail-user-name">{this.props.displayedUser.fullname}</p>
+                    <p className="profile-detail-user-department">{this.props.displayedUser.fullname}, in {this.props.displayedUser.level} of {this.props.displayedUser.department} program</p>
+                    <p className="profile-detail-user-major">Major in {this.props.displayedUser.major}</p>
                     <div className="profile-interaction-button-list">
-                        <button className="profile-interaction-button" onClick={this.startEditProfile}>
-                            <span className={'fa fa-edit'}/> Edit Profile</button>
-                        <button className="profile-interaction-button" id="profile-interaction-button-with-drop-down" onClick={this.showDropDown}>
-                            More <span className={'fa fa-sort-down'} id="profile-button-more-icon"/>
-                            <div className="profile-interaction-drop-down-buttons" style={this.state.dropDown ? {display: 'block'} : {display: 'none'}}>
-                                <a className="profile-drop-down-button" onClick={this.viewAllPosts} >
-                                    <span className={'glyphicon glyphicon-list-alt'} /> View All Posts</a>
-                                <a className="profile-drop-down-button">
-                                    <span className={'glyphicon glyphicon-user'}/> View All Friends</a>
-                                <a className="profile-drop-down-button">
-                                    <span className={'fa fa-comments-o'}/> Send Message</a>
+                        {this.props.userInfo.username === this.props.displayedUser.username ?
+                            <button className="profile-interaction-button" onClick={this.startEditProfile}>
+                                <span className={'fa fa-edit'}/> Edit Profile</button>
+                            :
+                            <div>
+                                {this.props.userInfo.friendUsernames.includes(this.props.displayedUser.username) ?
+                                    <button className="profile-interaction-button">
+                                        <span className={'fa fa-edit'}/> Friend</button>
+                                    :
+                                    <button className="profile-interaction-button" onClick={this.addFriend}>
+                                        <span className={'fa fa-edit'}/> Add Friend</button>
+                                }
+                                <button className="profile-interaction-button" id="profile-interaction-button-with-drop-down" onClick={this.showDropDown}>
+                                    More <span className={'fa fa-sort-down'} id="profile-button-more-icon"/>
+                                    <div className="profile-interaction-drop-down-buttons" style={this.state.dropDown ? {display: 'block'} : {display: 'none'}}>
+                                        <a className="profile-drop-down-button" onClick={this.deleteFriend} >
+                                            <span className={'glyphicon glyphicon-list-alt'} /> Delete Friend</a>
+                                        {this.props.userInfo.blackListUserIds.includes(this.props.displayedUser._id) ?
+                                            <a className="profile-drop-down-button" onClick={this.updateBlacklist}>
+                                                <span className={'glyphicon glyphicon-user'}/> Remove From Blacklist</a>
+                                            :
+                                            <a className="profile-drop-down-button" onClick={this.updateBlacklist}>
+                                                <span className={'glyphicon glyphicon-user'}/> Add To Blacklist</a>
+                                        }
+                                        <Link to={{pathname: "/chatRoom", search: "?user=" +this.props.displayedUser.username}}>
+                                            <button className="user-block-message-button">
+                                                <span className={'fa fa-comments-o'}/> Send Message
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </button>
                             </div>
-                        </button>
+                        }
                     </div>
                 </div>
                 <div className="profile-listed-detail-right-block">
                     <div className="profile-detail-user-interests">
                         <p className="user-interests-block-title">Interests</p>
                         <div className="user-interests-block-content">
-                            <TagContainer tags={this.props.userInfo.tags} />
+                            <TagContainer tags={this.props.displayedUser.tags} />
                         </div>
                     </div>
                 </div>
@@ -198,11 +300,14 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     }
 }
 
-const mapStateToProps = (state: { userInfo: any, userFriends: any }) => {
+const mapStateToProps = (state: { userInfo: any, userFriends: any, displayedUser: any, displayedFriends: any, postList: any }) => {
     return {
         userInfo: state.userInfo,
-        userFriends: state.userFriends
+        userFriends: state.userFriends,
+        displayedUser: state.displayedUser,
+        displayedFriends: state.displayedFriends,
+        postList: state.postList,
     };
 };
 
-export default connect(mapStateToProps, {loadUserInfo, loadUserFriends})(UserProfile);
+export default connect(mapStateToProps, {loadUserInfo, loadUserFriends, loadDisplayedUser, loadDisplayedFriends, loadTags})(UserProfile);

@@ -1,10 +1,10 @@
 import * as React from "react";
 import Modal from "react-modal";
 import {connect} from "react-redux";
-import {loadUserInfo} from "../actions";
+import {loadDisplayedUser, loadUserInfo, addTag} from "../actions";
 import CreatableSelect from 'react-select/creatable';
 import {ITag, IUser} from "../../../shared/ModelInterfaces";
-import {updateUserInfo} from "../../shared/globleFunctions";
+import {addNewTag, updateUserInfo} from "../../shared/globleFunctions";
 
 export interface ISettingsFormProps {
     opened: boolean,
@@ -15,9 +15,12 @@ export interface ISettingsFormProps {
     department: string,
     major: string,
     level: string,
-    tags: ITag[],
+    tags: any[],
     userInfoOnChange: any,
     interestsOnChange: any,
+    loadDisplayedUser: any,
+    tagList: ITag[],
+    addTag: any
 }
 
 export interface ISettingsFormState {
@@ -51,16 +54,32 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
 
     saveEdit = async (event: any) => {
         event.preventDefault();
+        let tagList = [];
+        if (this.props.tags !== null) {
+            for (let nextTag of this.props.tags) {
+                let matchTag = this.props.tagList.find(tag => tag.name === nextTag.value);
+                console.log(matchTag);
+                if (matchTag === undefined) {
+                    let newTag = await addNewTag(nextTag.value);
+                    this.props.addTag(newTag);
+                    tagList.push(newTag);
+                    console.log(newTag);
+                } else {
+                    tagList.push(matchTag);
+                }
+            }
+        }
         const updatedUser = {
             fullname: this.props.name,
             gender: this.props.gender,
             department: this.props.department,
             major: this.props.major,
             level: this.props.level,
-            tags: this.props.tags,
+            tags: tagList,
         };
         let data = await updateUserInfo(this.props.userInfo.username, updatedUser);
         this.props.loadUserInfo(data);
+        this.props.loadDisplayedUser(data);
         this.cancelEdit();
     };
 
@@ -68,13 +87,16 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
         this.setState({editing: !this.state.editing});
     };
 
+    convertTagsToOptions = () => {
+        let options = [];
+        for (let tag of this.props.tagList) {
+            options.push({value: tag.name, label: tag.name})
+        }
+        return options;
+    };
 
     render() {
-        const options = [
-            { value: 'Course Staff', label: 'Course Staff' },
-            { value: 'Campus Event', label: 'Campus Event' },
-            { value: 'Entertainment', label: 'Entertainment' },
-        ];
+        const options = this.convertTagsToOptions();
         return <Modal className="user-profile-editor" isOpen={this.props.opened != this.state.editing}>
             <form className={'settings-form'}>
                 <div className={'settings-item'}>
@@ -108,7 +130,8 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
                 </div>
                 <div className={'settings-item height-md'}>
                     <label className={'settings-item-label'}>Interests</label>
-                    <CreatableSelect isMulti={true} options={options} onChange={this.props.interestsOnChange} className="settings-tag-container" />
+                    <CreatableSelect isMulti={true} options={options} onChange={this.props.interestsOnChange}
+                                     className="settings-tag-container" value={this.props.tags} />
                 </div>
                 <div className="profile-settings-buttons-block">
                     <button className="profile-settings-button" onClick={this.saveEdit}>
@@ -122,10 +145,11 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
         </Modal>;
     }
 }
-const mapStateToProps = (state: { userInfo: any }) => {
+const mapStateToProps = (state: { userInfo: any, tagList: any }) => {
     return {
         userInfo: state.userInfo,
+        tagList: state.tagList
     };
 };
 
-export default connect(mapStateToProps, {loadUserInfo})(SettingsForm);
+export default connect(mapStateToProps, {loadUserInfo, loadDisplayedUser, addTag})(SettingsForm);

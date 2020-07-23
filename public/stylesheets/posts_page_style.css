@@ -53,6 +53,7 @@
 }
 .post-profile-photo{
     height: 50px;
+    width: 50px;
     border-radius: 50px;
 }
 .interaction-buttons{
@@ -217,6 +218,7 @@
 }
 .comment-modification-button{
     margin: 4px;
+    border-radius: 2px;
 }
 .comment-private-checkbox{
     margin-left: 5px;
@@ -385,4 +387,54 @@
     border-radius: 3px;
     background: lightskyblue;
     border-color: skyblue;
+}
+.post-page-profile-view{
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    border: 1px solid #ccc;
+    background: #f8f8f8; !important;
+    overflow: auto;
+    WebkitOverflowScrolling: touch;
+    borderRadius: 4px;
+    outline: none;
+    padding: 20px;
+    margin: auto;
+}
+.post-page-profile-view-close-button{
+    float: right;
+    height: 40px;
+    width: 40px;
+    border-radius: 2px;
+    font-size: 15pt;
+    color: black;
+
+}
+.personal-posts-info-block{
+    display: inline-block;
+}
+.personal-posts-info-avatar{
+    display: inline-block;
+    height: 80px;
+    width: 80px;
+    margin: 10px;
+    border-radius: 40px;
+    vertical-align: top;
+}
+.personal-posts-info-name{
+    font-size: 14pt;
+    vertical-align: top;
+    margin: 15px 10px;
+    font-weight: bold;
+    color: royalblue;
+}
+.personal-posts-info-number{
+    margin-left: 10px;
+    font-size: 12pt;
+    color: dimgray;
+}
+.personal-posts-info-detail{
+    display: inline-block;
 }

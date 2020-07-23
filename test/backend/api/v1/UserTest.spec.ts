@@ -196,5 +196,14 @@ describe('User', ()=> {
                     expect(res.body).to.include({username: "test", fullname: 'newFullname',  level: 'master'})
                 })
         });
+
+        it('delete image that DNE', async() => {
+            return chai.request(app)
+                .delete('/api/v1/users/deleteAvatar').send({oldPath: './notAImage.png'})
+                .then((res) => {
+                    expect(res).have.status(400);
+                    expect(res.text).equal('DELETE FAILED! Old profile photo not found! ');
+                })
+        });
     })
 });

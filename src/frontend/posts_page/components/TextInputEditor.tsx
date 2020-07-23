@@ -5,16 +5,20 @@ import VisibilitySetting from "./VisibilitySetting";
 import CreatableSelect from 'react-select/creatable';
 import TextEditorSetting from "./TextEditorSetting";
 import Modal from "react-modal";
-import {IPost} from "./PostBlock";
-import {IUser} from "../../../shared/ModelInterfaces";
+import {ITag, IUser} from "../../../shared/ModelInterfaces";
+import {addTag, loadTags} from "../../settings/actions";
+import {addNewTag, getAllTags} from "../../shared/globleFunctions";
 
 interface ITextareaProps {
     addPost: any,
     saveInputDraft: any,
     inputDraft: string,
     opened: boolean,
-    postList: IPost[],
-    user: IUser
+    postList: any[],
+    user: IUser,
+    tagList: ITag[],
+    loadTags: any,
+    addTag: any
 }
 
 interface ITextareaState {
@@ -36,6 +40,11 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
         };
     }
 
+    async componentDidMount() {
+        const tags = await getAllTags();
+        this.props.loadTags(tags);
+    }
+
     inputOnChange = (event: any) => {
         this.setState({message: event.target.value});
     };
@@ -46,12 +55,21 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             let d = new Date();
             let time = d.getHours() + ':' + d.getMinutes();
             let date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
-            let tags = [];
-            for (let index in this.state.selectedTags) {
-                tags.push(this.state.selectedTags[index].value);
+            let tagList = [];
+            if (this.state.selectedTags !== null) {
+                for (let nextTag of this.state.selectedTags) {
+                    let matchTag = this.props.tagList.find(tag => tag.name === nextTag.value);
+                    if (matchTag === undefined) {
+                        let newTag = await addNewTag(nextTag.value);
+                        this.props.addTag(newTag);
+                        tagList.push(newTag);
+                    } else {
+                        tagList.push(matchTag);
+                    }
+                }
             }
             let newPost = {time: date + ' ' + time, userId: this.props.user._id, detail: this.state.message,
-                type: 'post', visibility: this.state.visibility, tags: tags, uploadedFiles: [], likedUserIds: []};
+                type: 'post', visibility: this.state.visibility, tags: tagList, uploadedFiles: [], likedUserIds: []};
             let response = await fetch('/api/v1/posts', {method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -71,8 +89,7 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                 comments: [],
                 type: responseData.type,
                 visibility: responseData.visibility,
-                tags: [],
-                hidden: false
+                tags: responseData.tags
             });
             this.setState({message: ''});
             this.setState({editing: !this.state.editing})
@@ -103,12 +120,16 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
         this.setState({selectedTags: newValue});
     };
 
+    convertTagsToOptions = () => {
+        let options = [];
+        for (let tag of this.props.tagList) {
+            options.push({value: tag.name, label: tag.name})
+        }
+        return options;
+    };
+
     render() {
-        const options = [
-            { value: 'Course Staff', label: 'Course Staff' },
-            { value: 'Campus Event', label: 'Campus Event' },
-            { value: 'Entertainment', label: 'Entertainment' },
-        ];
+        const options = this.convertTagsToOptions();
         return (
             <Modal className="main-text-input-editor" isOpen = {this.state.editing != this.props.opened}>
                 <button id="text-editor-close-on-x" onClick={this.cancelEdit}>
@@ -135,11 +156,12 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
     }
 }
 
-const mapStateToProps = (state: { postList: any; inputDraft: any; }) => {
+const mapStateToProps = (state: { postList: any; inputDraft: any; tagList: any}) => {
     return {
         postList: state.postList,
-        inputDraft: state.inputDraft
+        inputDraft: state.inputDraft,
+        tagList: state.tagList
     };
 };
 
-export default connect(mapStateToProps, {addPost, saveInputDraft})(TextInputEditor);
+export default connect(mapStateToProps, {addPost, saveInputDraft, loadTags, addTag})(TextInputEditor);

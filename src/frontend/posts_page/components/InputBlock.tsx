@@ -38,7 +38,7 @@ class InputBlock extends React.Component<IInputBlockProps, IInputBlockState> {
         ];
         return(<div className="post-block">
             <div id="new-post-editor">
-                <img src={this.props.user.avatarPath} alt="ProfilePhoto" className="post-profile-photo" id="input-bar-user-avatar"/>
+                <img src={this.props.user.avatarPath ? this.props.user.avatarPath : './images/photoP.png'} alt="ProfilePhoto" className="post-profile-photo" id="input-bar-user-avatar"/>
                 <input id="text-area" type="submit" value="Type your message here" onClick={this.startEditor} />
             </div>
             <TextInputEditor user={this.props.user} opened={this.state.editing}/>

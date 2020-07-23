@@ -40,7 +40,7 @@ class Settings extends React.Component<RouteComponentProps<{}, StaticContext, Lo
         if (this.state.user) {
             return (
                 <div className={'height-lg'}>
-                    <UserProfile curUser={this.state.user}/>
+                    <UserProfile curUser={this.state.user} isSettingsPage={true}/>
                 </div>
             );
         } else if (this.state.user === null){

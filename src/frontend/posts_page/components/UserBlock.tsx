@@ -1,6 +1,6 @@
 import React, {CSSProperties} from "react";
 import {connect} from "react-redux";
-import {loadUserFriends, loadUserInfo} from "../../settings/actions";
+import {loadUserFriends, loadUserInfo, loadDisplayedUser, loadDisplayedFriends} from "../../settings/actions";
 import {getManyUsersInfo, updateUserInfo} from "../../shared/globleFunctions";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {Link} from "react-router-dom";
@@ -13,12 +13,14 @@ interface IUserBlockProps {
     userInfo: IUser,
     userFriends: any,
     loadUserFriends: any,
-    AddFriendRecUser: any
-}
-interface IUserBlockState {
+    AddFriendRecUser: any,
+    loadDisplayedUser: any,
+    loadDisplayedFriends: any,
+    viewProfile: any,
+    setPersonalPageUser: any
 }
 
-class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
+class UserBlock extends React.Component<IUserBlockProps, {}> {
 
     constructor(props: IUserBlockProps) {
         super(props);
@@ -98,6 +100,17 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
         return numMutual;
     };
 
+    gotoUserProfile = async () => {
+        this.props.loadDisplayedUser(this.props.displayedUser);
+        let friendInfoList: IUser[] = await getManyUsersInfo(this.props.displayedUser.friendUsernames);
+        this.props.loadDisplayedFriends(friendInfoList);
+        this.props.viewProfile();
+    };
+
+    gotoUserPosts = () => {
+        this.props.setPersonalPageUser(this.props.displayedUser);
+    };
+
     render() {
         const dropDownButtonStyle: CSSProperties = {
             background: "lightskyblue",
@@ -115,7 +128,7 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
         return (
             <div className="post-block" key={this.props.displayedUser._id}>
                 <div className="user-block-user-info">
-                    <img className="user-block-avatar" src={this.props.displayedUser.avatarPath} alt="img not found"/>
+                    <img className="user-block-avatar" src={this.props.displayedUser.avatarPath ? this.props.displayedUser.avatarPath : './images/photoP.png'} alt="img not found"/>
                     <div className="user-block-user-detail">
                         {
                             numMutual === 0 ?
@@ -126,7 +139,6 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
                                     <p className="user-block-mutual-friends">{numMutual} mutual friends</p>
                                 </div>
                         }
-
                     </div>
                 </div>
                 <div className="user-block-interactions">
@@ -136,17 +148,20 @@ class UserBlock extends React.Component<IUserBlockProps, IUserBlockState> {
                         :
                         <button className="user-block-stranger-button" onClick={this.addFriend}>
                             <span className={'glyphicon glyphicon-user'} /> Add Friend</button>}
-                    <Link to={{pathname: "/chatRoom", search: "?user=" +this.props.displayedUser.username}}> <button className="user-block-message-button">
-                        <span className={'fa fa-comments-o'}/> Send Message</button> </Link>
+                    <Link to={{pathname: "/chatRoom", search: "?user=" +this.props.displayedUser.username}}>
+                        <button className="user-block-message-button">
+                            <span className={'fa fa-comments-o'}/> Send Message
+                        </button>
+                    </Link>
                     <Dropdown style={dropDownStyle}>
                         <Dropdown.Toggle className="user-block-message-button" style={dropDownButtonStyle} variant="success" id="dropdown-basic">
                             More <span className={'fa fa-sort-down'} id="profile-button-more-icon"/>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item className="profile-drop-down-button">
+                            <Dropdown.Item className="profile-drop-down-button" onClick={this.gotoUserProfile}>
                                 <span className={'fa fa-exclamation-triangle'} /> View Profile</Dropdown.Item>
-                            <Dropdown.Item className="profile-drop-down-button">
-                                <span className={'fa fa-exclamation-triangle'} /> View Posts</Dropdown.Item>
+                            <Dropdown.Item className="profile-drop-down-button" onClick={this.gotoUserPosts}>
+                                <span className={'fa fa-exclamation-triangle'} /> View  Posts</Dropdown.Item>
                             <Dropdown.Item className="profile-drop-down-button" onClick={this.deleteFriend}>
                                 <span className={'fa fa-bookmark-o'} /> Delete Friend</Dropdown.Item>
                             {this.props.userInfo.blackListUserIds.includes(this.props.displayedUser._id) ?
@@ -171,4 +186,4 @@ const mapStateToProps = (state: { userInfo: any, userFriends: any }) => {
     };
 };
 
-export default connect(mapStateToProps, {loadUserInfo, loadUserFriends, AddFriendRecUser})(UserBlock);
+export default connect(mapStateToProps, {loadUserInfo, loadUserFriends, AddFriendRecUser, loadDisplayedUser, loadDisplayedFriends})(UserBlock);

@@ -1,11 +1,12 @@
 import {combineReducers} from "redux";
-import {IUser} from "../../../shared/ModelInterfaces";
+import {ITag, IUser} from "../../../shared/ModelInterfaces";
 
 let postList: any[] = [];
 let savedPostList: any[] = [];
 let hiddenPostList: any[] = [];
 let recommendedUsers: any[] = [];
-export let loginUser: IUser = {
+let tagList: ITag[] = [];
+let displayedUser: IUser = {
     _id: "",
     username: '',
     fullname: '',
@@ -21,7 +22,23 @@ export let loginUser: IUser = {
     blackListUserIds: []
 };
 
-export let userFriendList: IUser[] = [];
+let loginUser: IUser = {
+    _id: "",
+    username: '',
+    fullname: '',
+    avatarPath: '',
+    gender: "",
+    department: "",
+    major: "",
+    level: "",
+    tags: [],
+    friendUsernames: [],
+    savedPostIds: [],
+    hiddenPostIds: [],
+    blackListUserIds: []
+};
+let displayedFriendList: IUser[] = [];
+let userFriendList: IUser[] = [];
 
 export const userInfoReducer = (curUser: IUser = Object.create(loginUser), action: any) => {
     if (action.type === 'LOAD_INFO') {
@@ -96,6 +113,33 @@ const recommendedUsersReducer = (userList = recommendedUsers.slice(), action: an
     return userList;
 };
 
+const displayedUserReducer = (userDisplay = displayedUser, action: any) => {
+    if(action.type === "LOAD_DISPLAYED_USER") {
+        displayedUser = Object.create(action.displayedUser);
+        return action.displayedUser;
+    }
+    return userDisplay;
+};
+
+const displayedFriendsReducer = (friendsDisplay = displayedFriendList, action: any) => {
+    if(action.type === "LOAD_DISPLAYED_FRIENDS") {
+        displayedFriendList = action.displayedFriends.slice();
+        return action.displayedFriends;
+    }
+    return friendsDisplay;
+};
+
+const tagListReducer = (tags = tagList, action: any) => {
+    if (action.type === "LOAD_TAGS") {
+        tagList = action.tags.slice();
+        return action.tags
+    } else if (action.type === "ADD_TAG") {
+        tagList.push(action.tag);
+        return tagList;
+    }
+    return tags;
+};
+
 export default combineReducers({
     postList: postListReducer,
     inputDraft: inputDraftReducer,
@@ -103,5 +147,8 @@ export default combineReducers({
     userFriends: userFriendsReducer,
     savedPosts: savedPostsReducer,
     hiddenPosts: hiddenPostsReducer,
-    recommendedUsers: recommendedUsersReducer
+    recommendedUsers: recommendedUsersReducer,
+    displayedUser: displayedUserReducer,
+    displayedFriends: displayedFriendsReducer,
+    tagList: tagListReducer
 });

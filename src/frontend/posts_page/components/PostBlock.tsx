@@ -16,23 +16,7 @@ export interface IPostBlockProps {
     deletePost: any,
     loadUserInfo: any,
     loadSavedPosts: any,
-    loadHiddenPosts: any
-}
-
-export interface IPost extends IUserProps{
-  id: string,
-  time: string,
-  name: string,
-  detail: string,
-  avatarPath: string,
-  image: string,
-  numLikes: number,
-  comments: any[],
-  type: string,
-  visibility: string,
-  tags: string[],
-  liked: boolean,
-  hidden: boolean
+    loadHiddenPosts: any,
 }
 
 interface IPostBlockState {
@@ -123,11 +107,11 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
         <Dropdown.Item className="profile-drop-down-button" onClick={this.deletePost}>
             <span className={'glyphicon glyphicon-remove'} /> Delete Post</Dropdown.Item> : "";
     return(<div className="post-block" key={this.props.post.id}>
-        <div className="hidden-post" style={this.props.post.hidden ? {display: 'block'} : {display: 'none'}}>
+        <div className="hidden-post" style={this.state.postHidden ? {display: 'block'} : {display: 'none'}}>
             <span className="hidden-post-title">Post hidden</span>
             <button className="undo-hide-post" onClick={this.hidePost}>Undo</button>
         </div>
-        <div style={this.props.post.hidden ? {display: 'none'} : {display: 'block'}}>
+        <div style={this.state.postHidden ? {display: 'none'} : {display: 'block'}}>
             <div className="profile-photo-block">
                 <img src={this.props.post.avatarPath} alt="ProfilePhoto" className="post-profile-photo"/>
             </div>
@@ -141,11 +125,13 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item className="profile-drop-down-button" onClick={this.savePost}>
-                                <span className={'fa fa-bookmark-o'} /> Save Post</Dropdown.Item>
+                                <span className={'fa fa-bookmark-o'} />
+                                {this.props.userInfo.savedPostIds.includes(this.props.post.id) ? " Un-Save Post" : " Save Post"}
+                            </Dropdown.Item>
                             <Dropdown.Item className="profile-drop-down-button" onClick={this.hidePost}>
-                                <span className={'fa fa-times-rectangle-o'} /> Hide Post</Dropdown.Item>
-                            <Dropdown.Item className="profile-drop-down-button">
-                                <span className={'fa fa-exclamation-triangle'} /> Report Post</Dropdown.Item>
+                                <span className={'fa fa-times-rectangle-o'} />
+                                {this.props.userInfo.hiddenPostIds.includes(this.props.post.id) ? " Un-Hide Post" : " Hide Post"}
+                            </Dropdown.Item>
                             {deleteButton}
                         </Dropdown.Menu>
                     </Dropdown>
