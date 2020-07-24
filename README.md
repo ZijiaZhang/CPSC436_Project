@@ -1,5 +1,7 @@
 # CPSC436 Group Project
 
+UBC TANTAN is a full-stack social networking web application, which allows new students to UBC to edit their profiles, share posts, add new friends, and chat with them. It also supports group chats and friend recommendations.
+
 [![Build Status](https://travis-ci.com/ZijiaZhang/CPSC436_Project.svg?branch=master)](https://travis-ci.com/ZijiaZhang/CPSC436_Project)
 [![codecov](https://codecov.io/gh/ZijiaZhang/CPSC436_Project/branch/master/graph/badge.svg)](https://codecov.io/gh/ZijiaZhang/CPSC436_Project)
 
