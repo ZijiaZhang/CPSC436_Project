@@ -8,7 +8,6 @@ import CommentInputBar from "./CommentInputBar";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {loadUserInfo} from "../../settings/actions";
 import {getPostsByIds, updateUserInfo} from "../../shared/globleFunctions";
-import {requestAPIJson} from "../../shared/Networks";
 
 export interface IPostBlockProps {
     post: any,
@@ -21,142 +20,136 @@ export interface IPostBlockProps {
 }
 
 interface IPostBlockState {
-    showComments: boolean,
-    postHidden: boolean
+    showComments: boolean
 }
 
 class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
-  constructor(props: IPostBlockProps) {
-    super(props);
-    this.state = {
-        showComments: false,
-        postHidden: false
+    constructor(props: IPostBlockProps) {
+        super(props);
+        this.state = {
+            showComments: false
+        };
+    }
+
+    markLike = async () => {
+        let update = {
+            likedUserIds: []
+        };
+        const likes = this.props.post.likedUserIds.slice();
+        if(likes.includes(this.props.userInfo._id)) {
+            likes.splice(likes.indexOf(this.props.userInfo._id), 1);
+        } else {
+            likes.push(this.props.userInfo._id);
+        }
+        update.likedUserIds = likes;
+        let response = await fetch('/api/v1/posts/' + this.props.post.id, {method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(update)
+        });
+        let responseData = await response.json();
+        this.props.updateLike(responseData.likedUserIds, responseData._id);
     };
-  }
 
-  markLike = async () => {
-      let update = {
-          likedUserIds: []
-      };
-      const likes = this.props.post.likedUserIds.slice();
-      if(likes.includes(this.props.userInfo._id)) {
-          likes.splice(likes.indexOf(this.props.userInfo._id), 1);
-      } else {
-          likes.push(this.props.userInfo._id);
-      }
-      update.likedUserIds = likes;
-      let responseData = await requestAPIJson('/api/v1/posts/' + this.props.post.id, 'PATCH',
-               {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-              },
-              update
-          );
-      this.props.updateLike(responseData.likedUserIds, responseData._id);
-  };
-
-  savePost = async () => {
-      let update = {
-          savedPostIds: this.props.userInfo.savedPostIds.slice()
-      };
-      if (this.props.userInfo.savedPostIds.includes(this.props.post.id)) {
-          update.savedPostIds.splice(update.savedPostIds.indexOf(this.props.post.id), 1);
-      } else {
-          update.savedPostIds.push(this.props.post.id);
-      }
-      let responseData = await updateUserInfo(this.props.userInfo.username, update);
-      this.props.loadUserInfo(responseData);
-      this.props.loadSavedPosts(await getPostsByIds(responseData.savedPostIds))
-  };
-
-  hidePost = async () => {
-      let update = {
-          hiddenPostIds: this.props.userInfo.hiddenPostIds.slice()
-      };
-      if (this.props.userInfo.hiddenPostIds.includes(this.props.post.id)) {
-          update.hiddenPostIds.splice(update.hiddenPostIds.indexOf(this.props.post.id), 1);
-      } else {
-          update.hiddenPostIds.push(this.props.post.id);
-      }
-      let responseData = await updateUserInfo(this.props.userInfo.username, update);
-      this.props.loadUserInfo(responseData);
-      this.props.loadHiddenPosts(await getPostsByIds(responseData.hiddenPostIds));
-      this.setState({postHidden: !this.state.postHidden});
-  };
-
-  displayComment = () => {
-      this.setState({showComments: !this.state.showComments});
-  };
-
-  deletePost = async () => {
-      try{
-          await requestAPIJson('/api/v1/posts/' + this.props.post.id, 'DELETE');
-          this.props.deletePost(this.props.post.id);
-      } catch (e) {
-          console.log(e);
-      }
-  };
-
-  render() {
-    const dropDownStyle = {
-      color: 'darkgray',
-      background: 'white',
-      borderColor: 'white'
+    savePost = async () => {
+        let update = {
+            savedPostIds: this.props.userInfo.savedPostIds.slice()
+        };
+        if (this.props.userInfo.savedPostIds.includes(this.props.post.id)) {
+            update.savedPostIds.splice(update.savedPostIds.indexOf(this.props.post.id), 1);
+        } else {
+            update.savedPostIds.push(this.props.post.id);
+        }
+        let responseData = await updateUserInfo(this.props.userInfo.username, update);
+        this.props.loadUserInfo(responseData);
+        this.props.loadSavedPosts(await getPostsByIds(responseData.savedPostIds))
     };
-    return(<div className="post-block" key={this.props.post.id}>
-        <div className="hidden-post" style={this.state.postHidden ? {display: 'block'} : {display: 'none'}}>
-            <span className="hidden-post-title">Post hidden</span>
-            <button className="undo-hide-post" onClick={this.hidePost}>Undo</button>
-        </div>
-        <div style={this.state.postHidden ? {display: 'none'} : {display: 'block'}}>
-            <div className="profile-photo-block">
-                <img src={this.props.post.avatarPath} alt="ProfilePhoto" className="post-profile-photo"/>
+
+    hidePost = async () => {
+        let update = {
+            hiddenPostIds: this.props.userInfo.hiddenPostIds.slice()
+        };
+        if (this.props.userInfo.hiddenPostIds.includes(this.props.post.id)) {
+            update.hiddenPostIds.splice(update.hiddenPostIds.indexOf(this.props.post.id), 1);
+        } else {
+            update.hiddenPostIds.push(this.props.post.id);
+        }
+        let responseData = await updateUserInfo(this.props.userInfo.username, update);
+        this.props.loadUserInfo(responseData);
+        this.props.loadHiddenPosts(await getPostsByIds(responseData.hiddenPostIds));
+    };
+
+    displayComment = () => {
+        this.setState({showComments: !this.state.showComments});
+    };
+
+    deletePost = async () => {
+        try{
+            await fetch('/api/v1/posts/' + this.props.post.id, {method: 'DELETE'});
+            this.props.deletePost(this.props.post.id);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    render() {
+        const dropDownStyle = {
+            color: 'darkgray',
+            background: 'white',
+            borderColor: 'white'
+        };
+        return(<div className="post-block" key={this.props.post.id}>
+            <div>
+                <div className="profile-photo-block">
+                    <img src={this.props.post.avatarPath} alt="ProfilePhoto" className="post-profile-photo"/>
+                </div>
+                <div className="post-detail-block">
+                    <p className="post-user-name">{this.props.post.name}</p>
+                    <p className="post-time">{this.props.post.time}</p>
+                    <div className="post-drop-down-block">
+                        <Dropdown>
+                            <Dropdown.Toggle className="post-drop-down-menu" style={dropDownStyle} variant="success" id="dropdown-basic">
+                                v
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item className="profile-drop-down-button" onClick={this.savePost}>
+                                    <span className={'fa fa-bookmark-o'} />
+                                    {this.props.userInfo.savedPostIds.includes(this.props.post.id) ? " Un-Save Post" : " Save Post"}
+                                </Dropdown.Item>
+                                <Dropdown.Item className="profile-drop-down-button" onClick={this.hidePost}>
+                                    <span className={'fa fa-times-rectangle-o'} />
+                                    {this.props.userInfo.hiddenPostIds.includes(this.props.post.id) ? " Un-Hide Post" : " Hide Post"}
+                                </Dropdown.Item>
+                                {this.props.post.userId === this.props.userInfo._id ?
+                                    <Dropdown.Item className="profile-drop-down-button" onClick={this.deletePost}>
+                                        <span className={'glyphicon glyphicon-remove'} /> Delete Post</Dropdown.Item> : ""}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>
+                    <div className="post-detail">
+                        {this.props.post.detail}
+                    </div>
+                    <div className="images">
+                        {this.props.post.image ? <img className="inserted-image" src={this.props.post.image} alt={''}/>: ''}
+                    </div>
+                    <div className="interaction-buttons">
+                        <button className="like-button" onClick={this.markLike}>
+                            <span className={'fa fa-thumbs-o-up'} /> Like {this.props.post.likedUserIds.length}</button>
+                        <button className="comment-button" onClick={this.displayComment}>
+                            <span className={'fa fa-commenting-o'} /> Comment {this.props.post.comments.length}</button>
+                        <button className="share-button">
+                            <span className={'fa fa-share-square-o'} /> Share</button>
+                    </div>
+                    <div style={this.state.showComments ? {display: 'block'} : {display: 'none'}}>
+                        <CommentsContainer comments={this.props.post.comments}/>
+                    </div>
+                    <CommentInputBar post={this.props.post} user={this.props.userInfo} />
+                </div>
             </div>
-            <div className="post-detail-block">
-                <p className="post-user-name">{this.props.post.name}</p>
-                <p className="post-time">{this.props.post.time}</p>
-                <div className="post-drop-down-block">
-                    <Dropdown>
-                        <Dropdown.Toggle className="post-drop-down-menu" style={dropDownStyle} variant="success" id="dropdown-basic">
-                            v
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item className="profile-drop-down-button" onClick={this.savePost}>
-                                <span className={'fa fa-bookmark-o'} />
-                                {this.props.userInfo.savedPostIds.includes(this.props.post.id) ? " Un-Save Post" : " Save Post"}
-                            </Dropdown.Item>
-                            <Dropdown.Item className="profile-drop-down-button" onClick={this.hidePost}>
-                                <span className={'fa fa-times-rectangle-o'} />
-                                {this.props.userInfo.hiddenPostIds.includes(this.props.post.id) ? " Un-Hide Post" : " Hide Post"}
-                            </Dropdown.Item>
-                            {this.props.post.userId === this.props.userInfo._id ?
-                                <Dropdown.Item className="profile-drop-down-button" onClick={this.deletePost}>
-                                    <span className={'glyphicon glyphicon-remove'} /> Delete Post</Dropdown.Item> : ""}
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </div>
-                <div className="post-detail">
-                    {this.props.post.detail}
-                </div>
-                <div className="images">
-                    {this.props.post.image ? <img className="inserted-image" src={this.props.post.image} alt={''}/>: ''}
-                </div>
-                <div className="interaction-buttons">
-                    <button className="like-button" onClick={this.markLike}>
-                        <span className={'fa fa-thumbs-o-up'} /> Like {this.props.post.likedUserIds.length}</button>
-                    <button className="comment-button" onClick={this.displayComment}>
-                        <span className={'fa fa-commenting-o'} /> Comment {this.props.post.comments.length}</button>
-                    <button className="share-button">
-                        <span className={'fa fa-share-square-o'} /> Share</button>
-                </div>
-                <div style={this.state.showComments ? {display: 'block'} : {display: 'none'}}>
-                    <CommentsContainer comments={this.props.post.comments}/>
-                </div>
-                <CommentInputBar post={this.props.post} user={this.props.userInfo} />
-            </div>
-        </div>
-    </div>)
-  }
+        </div>)
+    }
 }
 
 const mapStateToProps = (state: { postList: any, userInfo: any}) => {

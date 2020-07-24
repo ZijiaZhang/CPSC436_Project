@@ -2,7 +2,7 @@
 
 All changes will be logged here
 
-## 0.25.1 [2020-07-23]
+## 0.25.2 [2020-07-23]
 ### Add prod
 - Add prod in the scripts
 
