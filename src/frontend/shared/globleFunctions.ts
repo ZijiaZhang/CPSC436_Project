@@ -41,20 +41,17 @@ export async function getManyUsersInfo(userIDList: string[]) {
 export async function getAllUsersInfo(user: IUser, query: string = '') {
     let id = user._id;
     const url = `/api/v1/users/recommend/${id}` + (query? `?${query}` : '');
-    let response = await fetch(url, {method: 'GET'});
-    return await response.json();
+    return await requestAPIJson(url);
 }
 
 export async function updateUserInfo(username: string, updatedInfo: any) {
-    let response = await fetch('/api/v1/users/' + username, {
-        method: 'PATCH',
-        headers: {
+    return await requestAPIJson('/api/v1/users/' + username,
+       'PATCH',
+        {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedInfo)
-    });
-    return await response.json();
+        updatedInfo);
 }
 
 export async function convert_to_ISingeleMessage(chat: IChat, status: MessageStatus) {
@@ -66,8 +63,7 @@ export async function convert_to_ISingeleMessage(chat: IChat, status: MessageSta
 
 export async function getPosts(query: string = '') {
     const url = '/api/v1/posts' + (query? `?${query}` : '');
-    let response = await fetch(url, {method: 'GET'});
-    let responseData = await response.json();
+    let responseData = await requestAPIJson(url);
     return await mapDataToPost(responseData);
 }
 
@@ -111,9 +107,9 @@ async function mapDataToPost(responseData: any[]) {
 }
 
 export async function getUserById(userId: string) {
-    let user_res = await fetch('/api/v1/users/ids/' + userId);
-    return await user_res.json();
+    return await requestAPIJson('/api/v1/users/ids/' + userId);
 }
+
 export async function getCommentsByPost(postId: string) {
     let comments = await requestAPIJson('/api/v1/comments/' + postId);
     let commentList = [];
@@ -133,17 +129,13 @@ export async function getCommentsByPost(postId: string) {
 }
 
 export async function getAllTags() {
-    let response = await fetch('/api/v1/tags', {method: 'GET'});
-    return await response.json();
+    return await requestAPIJson('/api/v1/tags');
 }
 export async function addNewTag(tagName: string) {
-    let response = await fetch('/api/v1/tags', {
-        method: 'POST',
-        headers: {
+    return await requestAPIJson('/api/v1/tags',
+        'POST',
+        {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({name: tagName})
-    });
-    return await response.json();
+        }, {name: tagName});
 }
