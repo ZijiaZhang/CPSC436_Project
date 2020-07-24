@@ -46,6 +46,6 @@ commentsRouter.delete('/:commentId', checkIsValidObjectId, (req, res, next) => {
     const {commentId} = req.params;
     const query = Comment.findByIdAndDelete(commentId);
     query.exec()
-        .then(() => res.send())
+        .then(() => res.json({message: "Comment Deleted"}))
         .catch(() => res.status(500).json({message: `Failed to delete comment with id ${commentId}`}))
 });
