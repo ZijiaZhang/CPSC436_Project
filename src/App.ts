@@ -10,6 +10,7 @@ import passport from 'passport';
 import {BasicStrategy} from "passport-http";
 import {User} from "./backend/models/UserModel";
 import {SocketStore} from "./backend/SocketStore";
+import {managementMiddleware} from "./backend/shared/Middlewares";
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require("connect-flash");
 
@@ -58,6 +59,9 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
     console.log(`mongoose connected to ${mongoConnectionString} !`);
 });
+
+app.use(managementMiddleware);
+
 
 app.use('/api', apiRouter);
 
