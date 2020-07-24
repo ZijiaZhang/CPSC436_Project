@@ -2,14 +2,15 @@ import React from "react";
 import InputBlock from "./InputBlock";
 import ComponentsContainer from "./ComponentsContainer";
 import SearchBlock from "./SearchBlock";
-import {getPosts, getPostsByIds} from "../../shared/globleFunctions";
+import {getAllUsersInfo, getPosts, getPostsByIds} from "../../shared/globleFunctions";
 import {connect} from "react-redux";
-import {loadPosts} from "../actions";
+import {loadPosts, loadRecommendedUsers} from "../actions";
 import {IUser} from "../../../shared/ModelInterfaces";
 
 interface IHomePageProps {
     user: IUser,
-    loadPosts: any
+    loadPosts: any,
+    loadRecommendedUsers: any
 }
 
 interface IHomePageState {
@@ -52,17 +53,31 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
         this.setState({componentsType: IComponentsType.others})
     };
 
+    searchContent = async (content: string) => {
+        if (!content) return;
+
+        if (this.state.componentsType === IComponentsType.posts) {
+            let postList: any[] = await getPosts(`content=${content}`);
+            this.props.loadPosts(postList);
+        } else if (this.state.componentsType === IComponentsType.users) {
+            let userList = await getAllUsersInfo(this.props.user, `content=${content}`);
+            this.props.loadRecommendedUsers(userList);
+        }
+    };
+
     render() {
         return (
             <div id="post-blog-page">
-                <SearchBlock user={this.props.user} getPosts={this.getPosts} getUsers={this.getUsers} getPersonal={this.getPersonal}/>
+                <SearchBlock user={this.props.user} getPosts={this.getPosts} getUsers={this.getUsers}
+                             getPersonal={this.getPersonal} searchContent={this.searchContent}/>
                 <div className="home-page-body">
                     {this.state.componentsType === IComponentsType.personal || this.state.componentsType === IComponentsType.posts ?
-                        <InputBlock user={this.props.user} />
+                        <InputBlock user={this.props.user}/>
                         :
                         ""
                     }
-                    <ComponentsContainer registeredUser={this.props.user} componentsType={this.state.componentsType} getOthersPosts={this.getOthersPosts} />
+                    <ComponentsContainer registeredUser={this.props.user} componentsType={this.state.componentsType}
+                                         getOthersPosts={this.getOthersPosts}/>
                 </div>
             </div>
         );
@@ -70,9 +85,9 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
 
 }
 
-const mapStateToProps = (state: {postList: any }) => {
+const mapStateToProps = (state: { postList: any }) => {
     return {
         postList: state.postList
     };
 };
-export default connect(mapStateToProps, {loadPosts})(HomePage);
+export default connect(mapStateToProps, {loadPosts, loadRecommendedUsers})(HomePage);

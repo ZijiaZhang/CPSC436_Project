@@ -84,7 +84,7 @@ describe('Posts', () => {
         before(async () => {
             await Post.deleteMany({}).exec();
             await User.deleteMany({}).exec();
-            await User.create({username: "user1", fullname: "user1"} as IUser).then(user => userId = user._id.toString());
+            await User.create({username: "user1", fullname: "user1"} as any).then(user => userId = user._id.toString());
             await Post.create({userId: userId, detail: "abc"} as IPost);
             await Post.create({userId: userId, detail: "b"} as IPost);
             await Post.create({userId: userId, detail: "c"} as IPost);

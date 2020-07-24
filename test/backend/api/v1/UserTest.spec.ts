@@ -229,10 +229,11 @@ describe('User', () => {
         });
 
         describe("user search", () => {
+            let userId: string;
             before(async () => {
                 type MockUserSchema = IUser & { password: string };
                 await User.deleteMany({}).exec();
-                await User.create({username: "test1", fullname: "test1"} as MockUserSchema);
+                await User.create({username: "test1", fullname: "test1"} as MockUserSchema).then(user => userId = user._id.toString());
                 await User.create({username: "test2", fullname: "test2"} as MockUserSchema);
                 await User.create({username: "abc", fullname: "def"} as MockUserSchema);
             });
@@ -249,6 +250,21 @@ describe('User', () => {
                         expect(users).satisfy((users: IUser[]) => {
                             return users.some(user => user.username === "test1" && user.fullname === "test1");
                         });
+                        expect(users).satisfy((users: IUser[]) => {
+                            return users.some(user => user.username === "test2" && user.fullname === "test2");
+                        });
+                    });
+            });
+
+            it('search recommended user with a word', async () => {
+                return chai.request(app)
+                    .get('/api/v1/users/recommend/' + userId)
+                    .query({content: "test"})
+                    .set('content-type', 'application/json')
+                    .then((res) => {
+                        const users: IUser[] = res.body;
+                        expect(res).have.status(200);
+                        expect(users.length).to.equal(1);
                         expect(users).satisfy((users: IUser[]) => {
                             return users.some(user => user.username === "test2" && user.fullname === "test2");
                         });
@@ -276,9 +292,39 @@ describe('User', () => {
                     });
             });
 
+            it('search recommended user with a letter', async () => {
+                return chai.request(app)
+                    .get('/api/v1/users/recommend/' + userId)
+                    .query({content: "e"})
+                    .set('content-type', 'application/json')
+                    .then((res) => {
+                        const users: IUser[] = res.body;
+                        expect(res).have.status(200);
+                        expect(users.length).to.equal(2);
+                        expect(users).satisfy((users: IUser[]) => {
+                            return users.some(user => user.username === "test2" && user.fullname === "test2");
+                        });
+                        expect(users).satisfy((users: IUser[]) => {
+                            return users.some(user => user.username === "abc" && user.fullname === "def");
+                        });
+                    });
+            });
+
             it('search user with no result', async () => {
                 return chai.request(app)
                     .get('/api/v1/users/all')
+                    .query({content: "cheesecake"})
+                    .set('content-type', 'application/json')
+                    .then((res) => {
+                        const users: IUser[] = res.body;
+                        expect(res).have.status(200);
+                        expect(users.length).to.equal(0);
+                    });
+            });
+
+            it('search recommended user with no result', async () => {
+                return chai.request(app)
+                    .get('/api/v1/users/recommend/' + userId)
                     .query({content: "cheesecake"})
                     .set('content-type', 'application/json')
                     .then((res) => {
