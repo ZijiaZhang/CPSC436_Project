@@ -3,6 +3,10 @@
 All changes will be logged here
 
 ## 0.25.1 [2020-07-23]
+### Add prod
+- Add prod in the scripts
+
+## 0.25.1 [2020-07-23]
 ### Fix bug
 - Fix avatar size issue in chat and change order and radius of display
 
