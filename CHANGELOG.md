@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.25.1 [2020-07-23]
+### Fix bug
+- Fix avatar size issue in chat and change order and radius of display
+
 ## 0.25.0 [2020-07-23]
 ### Added Features
 - Add front end error handling

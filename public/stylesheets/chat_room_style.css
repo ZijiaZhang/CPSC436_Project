@@ -59,12 +59,14 @@ img.conversation-avatar-received {
   height: 80px;
   width: 80px;
   float: left;
+  border-radius: 2px;
 }
 
 img.conversation-avatar-sent {
   height: 80px;
   width: 80px;
-  float: right
+  float: right;
+  border-radius: 2px;
 }
 
 .conversation-bubble.unsent::before{
