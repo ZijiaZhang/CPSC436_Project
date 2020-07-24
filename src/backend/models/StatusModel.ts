@@ -14,7 +14,7 @@ const StatusSchema: Schema = new Schema({
     apiName: {type: String, required: true,},
     count: {type: Number, required: true,},
     statusCode: Number,
-    methos: String
+    method: String
 });
 
 export const Status = model<IStatusSchema, IStatusModel>('Status', StatusSchema);
