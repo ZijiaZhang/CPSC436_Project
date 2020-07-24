@@ -55,6 +55,18 @@
   float: right;
 }
 
+img.conversation-avatar-received {
+  height: 80px;
+  width: 80px;
+  float: left;
+}
+
+img.conversation-avatar-sent {
+  height: 80px;
+  width: 80px;
+  float: right
+}
+
 .conversation-bubble.unsent::before{
   border-top: 12.5px solid red;
   border-top-width: 25px;

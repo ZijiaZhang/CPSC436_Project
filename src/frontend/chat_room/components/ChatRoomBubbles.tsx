@@ -17,7 +17,7 @@ export class ChatRoomBubbles extends React.Component<ISingleMessage, {}> {
     render() {
         return <div className={'conversation-bubble-wrap'}>
             <div className={['received', 'sent', 'unsent'][this.props.status]}>
-                <img className={'conversation-avatar ' + ['received', 'sent', 'unsent'][this.props.status]} src={this.props.sender.avatarPath} alt={this.props.sender.fullname}/>
+                <img className={'conversation-avatar-' + ['received', 'sent', 'unsent'][this.props.status]} src={this.props.sender.avatarPath} alt={this.props.sender.fullname}/>
                 <p className = {'conversation-bubble ' + ['received', 'sent', 'unsent'][this.props.status]} >{this.props.message}</p>
             </div>
         </div>;
