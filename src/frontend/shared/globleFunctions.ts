@@ -39,9 +39,10 @@ export async function getManyUsersInfo(userIDList: string[]) {
     return returnList;
 }
 
-export async function getAllUsersInfo(user: IUser) {
+export async function getAllUsersInfo(user: IUser, query: string = '') {
     let id = user._id;
-    let response = await fetch("/api/v1/users/recommend/" + id, {method: 'GET'});
+    const url = `/api/v1/users/recommend/${id}` + (query? `?${query}` : '');
+    let response = await fetch(url, {method: 'GET'});
     return await response.json();
 }
 
@@ -64,8 +65,9 @@ export async function convert_to_ISingeleMessage(chat: IChat, status: MessageSta
         status}
 }
 
-export async function getPosts() {
-    let response = await fetch('/api/v1/posts', {method: 'GET'});
+export async function getPosts(query: string = '') {
+    const url = '/api/v1/posts' + (query? `?${query}` : '');
+    let response = await fetch(url, {method: 'GET'});
     let responseData = await response.json();
     return await mapDataToPost(responseData);
 }

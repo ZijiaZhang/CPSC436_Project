@@ -6,27 +6,31 @@ interface ISearchBlockProps {
     getPosts: any,
     getUsers: any,
     getPersonal: any
+    searchContent: any
 }
 
 interface ISearchBlockState {
-
+    content: string
 }
 
 class SearchBlock extends React.Component<ISearchBlockProps, ISearchBlockState> {
-
     constructor(props: ISearchBlockProps) {
         super(props);
         this.state = {
-
+            content: ''
         }
     }
+
+    changeContent = (e: any) => {
+        this.setState({content: e.target.value});
+    };
 
     render() {
         return (
             <div className="search-block">
                 <div className="search-block-search-bar">
-                    <input type="text" className="search-input-block" placeholder="Search"/>
-                    <button className="search-submit-button">Search</button>
+                    <input type="text" className="search-input-block" placeholder="Search" onChange={this.changeContent}/>
+                    <button className="search-submit-button" onClick={() => this.props.searchContent(this.state.content)}>Search</button>
                 </div>
                 <div className="search-block-nav-buttons">
                     <button className="nav-button-to-some-page" onClick={this.props.getPersonal}>

@@ -1,10 +1,13 @@
 import express from 'express';
+
 export const usersRouter = express.Router();
 import passport from 'passport'
 import * as fs from "fs";
 import {User} from "../../models/UserModel";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {checkIsValidObjectId} from "../../shared/Middlewares";
+import {FilterQuery} from "mongoose";
+
 const multer = require('multer');
 import {applyRecommendation} from '../../shared/Helpers'
 import path from "path";
@@ -14,7 +17,18 @@ usersRouter.get('/', (req, res) => {
 });
 
 usersRouter.get('/all', (req, res) => {
-    const userList = User.find({});
+    const conditions: FilterQuery<IUser> = {};
+    if (Object.keys(req.query).length > 0) {
+        const content = req.query.content as string;
+        // case insensitive search with option "i"
+        conditions.$or = [{fullname: {"$regex": content, "$options": "i"}}, {
+            username: {
+                "$regex": content,
+                "$options": "i"
+            }
+        }]
+    }
+    const userList = User.find(conditions);
     userList.exec()
         .then((user: IUser[]) => {
             res.json(user);
@@ -24,7 +38,10 @@ usersRouter.get('/all', (req, res) => {
         })
 });
 
-usersRouter.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), (req, res, next) => {
+usersRouter.post('/login', passport.authenticate('local', {
+    failureRedirect: '/login',
+    failureFlash: true
+}), (req, res, next) => {
     if (req.session) {
         req.session.save((err: any) => {
             if (err) {
@@ -70,9 +87,9 @@ usersRouter.get('/logout', (req, res, next) => {
     }
 });
 
-usersRouter.get('/:username',  (req, res, next)=> {
-    if(!req.isAuthenticated()){
-        passport.authenticate('basic', { session: false })(req, res, next)
+usersRouter.get('/:username', (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        passport.authenticate('basic', {session: false})(req, res, next)
     } else {
         next();
     }
@@ -111,7 +128,7 @@ usersRouter.patch('/:username', (req, res, next) => {
         .then((user: IUser | null) => {
             if (user === null) {
                 res.status(400).json({message: `Cannot find user with username ${username}`});
-            } else{
+            } else {
                 res.json(user);
             }
         })
@@ -125,17 +142,17 @@ const storage = multer.diskStorage({
     filename(req: any, file: any, cb: any) {
         let num = 1;
         if (fs.existsSync(path.join('./public/images', file.originalname))) {
-            while(fs.existsSync(path.join('./public/images', '(' + num + ')' + file.originalname))) {
+            while (fs.existsSync(path.join('./public/images', '(' + num + ')' + file.originalname))) {
                 num++;
             }
             cb(null, '(' + num + ')' + file.originalname)
-        }else{
+        } else {
             cb(null, file.originalname)
         }
     },
 });
 
-const upload = multer({ storage });
+const upload = multer({storage});
 
 usersRouter.post('/uploadAvatar', upload.single('file'), (req, res, next) => {
     res.send("./images/" + req.file.filename);
@@ -146,7 +163,19 @@ usersRouter.get('/recommend/:_id', async (req, res, next) => {
     const userId = req.params._id;
     const currentUserSchema = await User.find({_id: userId}).exec();
     const currentUser = currentUserSchema[0];
-    const userList = await User.find({_id: { $ne: userId}}).exec(); 
+
+    const conditions: FilterQuery<IUser> = {$and: [{_id: {$ne: userId}}]};
+    if (Object.keys(req.query).length > 0) {
+        const content = req.query.content as string;
+        // case insensitive search with option "i"
+        conditions.$and?.push({
+            $or: [
+                {fullname: {"$regex": content, "$options": "i"}},
+                {username: {"$regex": content, "$options": "i"}}
+                ]});
+    }
+
+    const userList = await User.find(conditions).exec();
     const retUserList = applyRecommendation(currentUser, userList);
     res.send(retUserList);
 });

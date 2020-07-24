@@ -4,6 +4,7 @@ import {Post} from "../../models/PostModel";
 import {Comment} from "../../models/CommentModel";
 import {commentsRouter} from "./Comments";
 import {IPost} from "../../../shared/ModelInterfaces";
+import {FilterQuery} from "mongoose";
 
 export const postsRouter = express.Router();
 
@@ -11,7 +12,13 @@ postsRouter.use('/comments', commentsRouter);
 
 // get all posts
 postsRouter.get('/', (req, res, next) => {
-    const query = Post.find();
+    const conditions: FilterQuery<IPost> = {};
+    if (Object.keys(req.query).length > 0) {
+        const content = req.query.content as string;
+        // case insensitive search with option "i"
+        conditions.detail = {"$regex": content, "$options": "i"};
+    }
+    const query = Post.find(conditions);
     return query.exec()
         .then((posts: IPost[]) => {
             res.json(posts)
