@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.25.0 [2020-07-23]
+### Added Features
+- Add front end error handling
+
 ## 0.24.0 [2020-07-23]
 ### Added Features
 - Search for posts or users

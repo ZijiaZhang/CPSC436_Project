@@ -8,6 +8,7 @@ import CommentInputBar from "./CommentInputBar";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {loadUserInfo} from "../../settings/actions";
 import {getPostsByIds, updateUserInfo} from "../../shared/globleFunctions";
+import {requestAPIJson} from "../../shared/Networks";
 
 export interface IPostBlockProps {
     post: any,
@@ -44,14 +45,13 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
           likes.push(this.props.userInfo._id);
       }
       update.likedUserIds = likes;
-      let response = await fetch('/api/v1/posts/' + this.props.post.id, {method: 'PATCH',
-              headers: {
+      let responseData = await requestAPIJson('/api/v1/posts/' + this.props.post.id, 'PATCH',
+               {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
               },
-              body: JSON.stringify(update)
-          });
-      let responseData = await response.json();
+              update
+          );
       this.props.updateLike(responseData.likedUserIds, responseData._id);
   };
 
@@ -90,7 +90,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
 
   deletePost = async () => {
       try{
-          await fetch('/api/v1/posts/' + this.props.post.id, {method: 'DELETE'});
+          await requestAPIJson('/api/v1/posts/' + this.props.post.id, 'DELETE');
           this.props.deletePost(this.props.post.id);
       } catch (e) {
           console.log(e);

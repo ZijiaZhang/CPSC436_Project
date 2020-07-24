@@ -6,6 +6,7 @@ import {IUser} from "../../../shared/ModelInterfaces";
 import {Link} from "react-router-dom";
 import {AddFriendRecUser} from "../actions";
 import Dropdown from "react-bootstrap/Dropdown";
+import {requestAPIJson} from "../../shared/Networks";
 
 interface IUserBlockProps {
     displayedUser: IUser,
