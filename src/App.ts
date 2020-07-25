@@ -13,12 +13,15 @@ import {SocketStore} from "./backend/SocketStore";
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require("connect-flash");
 
+const port = process.env.PORT || 3000;
+const mongoConnectionString = process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/project';
+
 let sessionMiddleWare = expressSession({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false,
     store: new (require("connect-mongo")(expressSession))({
-        url: "mongodb://localhost:27017/project"
+        url: mongoConnectionString
     })
 });
 
@@ -46,9 +49,6 @@ passport.use(new BasicStrategy(
 ));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-const port = process.env.PORT || 3000;
-const mongoConnectionString = process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/project';
 
 
 // add these to prevent warnings
