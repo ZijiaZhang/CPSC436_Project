@@ -400,7 +400,7 @@
     right: 40px;
     bottom: 40px;
     border: 1px solid #ccc;
-    background: #f8f8f8; !important;
+    background: #f8f8f8 !important;
     overflow: auto;
     WebkitOverflowScrolling: touch;
     borderRadius: 4px;
