@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {applyMiddleware, createStore} from "redux";
+import {requestAPIJson} from "../../shared/Networks";
 
 
 class ServiceStatus extends React.Component<{}, {}> {
@@ -17,6 +18,7 @@ class ServiceStatus extends React.Component<{}, {}> {
     }
 
     async updateData(){
+        let data = await requestAPIJson('/api/v1/status');
 
     }
 }
