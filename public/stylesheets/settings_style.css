@@ -76,6 +76,19 @@ h1 {
     width: 60%;
     padding: 6px 3px 6px 4px;
 }
+
+@media screen and (max-width: 1024px) {
+    .user-profile-page{
+        border-radius: 10px;
+        border: 10px;
+        margin: 10px auto;
+        background: white;
+        box-shadow: 5px 3px 5px 3px lightgray;
+        width: 95%;
+        padding: 6px 3px 6px 4px;
+    }
+}
+
 .user-profile-page-avatar-block{
     display: inline-block;
     margin: 10px;
