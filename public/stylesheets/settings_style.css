@@ -76,6 +76,20 @@ h1 {
     width: 60%;
     padding: 6px 3px 6px 4px;
 }
+
+div.ReactModal__Overlay .user-profile-page {
+    width: 70%;
+}
+
+@media screen and (max-width: 1024px) {
+    .user-profile-page{
+        width: 95%;
+    }
+    div.ReactModal__Overlay .user-profile-page {
+        width: 60%;
+    }
+}
+
 .user-profile-page-avatar-block{
     display: inline-block;
     margin: 10px;
