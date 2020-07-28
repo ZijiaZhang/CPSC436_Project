@@ -19,7 +19,8 @@ let displayedUser: IUser = {
     friendUsernames: [],
     savedPostIds: [],
     hiddenPostIds: [],
-    blackListUserIds: []
+    blackListUserIds: [],
+    groups: [],
 };
 
 let loginUser: IUser = {
@@ -35,7 +36,8 @@ let loginUser: IUser = {
     friendUsernames: [],
     savedPostIds: [],
     hiddenPostIds: [],
-    blackListUserIds: []
+    blackListUserIds: [],
+    groups: []
 };
 let displayedFriendList: IUser[] = [];
 let userFriendList: IUser[] = [];
