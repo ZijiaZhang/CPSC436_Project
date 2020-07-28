@@ -23,6 +23,7 @@ const userOne: IUser = {
     major: "Computer Science",
     level: "Bachelor",
     tags: [music, basketball, math],
+    groups: []
 };
 
 const userTwo: IUser = {
@@ -39,6 +40,7 @@ const userTwo: IUser = {
     major: "Computer Science",
     level: "Bachelor",
     tags: [music, basketball, math, game],
+    groups: []
 };
 
 const userThree: IUser = {
@@ -55,6 +57,7 @@ const userThree: IUser = {
     major: "Math",
     level: "Bachelor",
     tags: [music, reading],
+    groups: []
 };
 
 const userFour: IUser = {
@@ -71,6 +74,7 @@ const userFour: IUser = {
     major: "Computer Science",
     level: "Bachelor",
     tags: [music, reading, game, coding],
+    groups: []
 };
 
 const userFive: IUser = {
@@ -87,6 +91,7 @@ const userFive: IUser = {
     major: "Computer Science",
     level: "Bachelor",
     tags: [ ],
+    groups: []
 };
 
 const userSix: IUser = {
@@ -103,6 +108,7 @@ const userSix: IUser = {
     major: "Math",
     level: "Bachelor",
     tags: [ ],
+    groups: []
 };
 
 describe('test Helper function for recommend algorithm', () => {
