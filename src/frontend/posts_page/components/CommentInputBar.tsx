@@ -89,7 +89,7 @@ class CommentInputBar extends React.Component<ICommentInputBarProps, ICommentInp
                       style={this.state.editing ? {height: '80px'} : {height: '40px'}}/>
             <div style={this.state.editing ? {display: 'block'} : {display: 'none'}}>
                 <div className="comment-block-left-side-buttons">
-                    <button className="comment-modification-button" onClick={this.showDropDown}>Emoji
+                    <button className="comment-modification-button" onClick={this.showDropDown}>&#9786;
                         <div className="profile-interaction-drop-down-buttons" style={this.state.dropDown ? {display: 'block'} : {display: 'none'}}>
                             <EmojiBlock addEmoji={this.addEmoji}/>
                         </div>

@@ -225,10 +225,14 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             <div className="user-profile-page">
                 <div className="user-profile-page-avatar-block">
                     <img className="user-avatar" src={this.props.displayedUser.avatarPath ? this.props.displayedUser.avatarPath : './images/photoP.png' } alt="image not found" />
-                    <button className="profile-change-profile-photo" onClick={this.startEditAvatar}>
-                        <p className={'fa fa-camera'} id="upload-profile-photo-icon" />
-                        <p className="upload-profile-photo-title">Upload Picture</p>
-                    </button>
+                    {this.props.userInfo.username === this.props.displayedUser.username ?
+                        <button className="profile-change-profile-photo" onClick={this.startEditAvatar}>
+                            <p className={'fa fa-camera'} id="upload-profile-photo-icon"/>
+                            <p className="upload-profile-photo-title">Upload Picture</p>
+                        </button>
+                        :
+                        ""
+                    }
                 </div>
                 <div className="profile-listed-detail-left-block">
                     <p className="profile-detail-user-name">{this.props.displayedUser.fullname}</p>
@@ -242,27 +246,25 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                             <div>
                                 {this.props.userInfo.friendUsernames.includes(this.props.displayedUser.username) ?
                                     <button className="profile-interaction-button">
-                                        <span className={'fa fa-edit'}/> Friend</button>
+                                        <span className={'fa fa-check"'}/> Friend</button>
                                     :
                                     <button className="profile-interaction-button" onClick={this.addFriend}>
-                                        <span className={'fa fa-edit'}/> Add Friend</button>
+                                        <span className={'fa fa-user-plus'}/> Add Friend</button>
                                 }
                                 <button className="profile-interaction-button" id="profile-interaction-button-with-drop-down" onClick={this.showDropDown}>
                                     More <span className={'fa fa-sort-down'} id="profile-button-more-icon"/>
                                     <div className="profile-interaction-drop-down-buttons" style={this.state.dropDown ? {display: 'block'} : {display: 'none'}}>
                                         <a className="profile-drop-down-button" onClick={this.deleteFriend} >
-                                            <span className={'glyphicon glyphicon-list-alt'} /> Delete Friend</a>
+                                            <span className={'fa fa-user-times'} /> Delete Friend</a>
                                         {this.props.userInfo.blackListUserIds.includes(this.props.displayedUser._id) ?
                                             <a className="profile-drop-down-button" onClick={this.updateBlacklist}>
-                                                <span className={'glyphicon glyphicon-user'}/> Remove From Blacklist</a>
+                                                <span className={'fa fa-unlock'}/> Remove From Blacklist</a>
                                             :
                                             <a className="profile-drop-down-button" onClick={this.updateBlacklist}>
-                                                <span className={'glyphicon glyphicon-user'}/> Add To Blacklist</a>
+                                                <span className={'fa fa-lock'}/> Add To Blacklist</a>
                                         }
-                                        <Link to={{pathname: "/chatRoom", search: "?user=" +this.props.displayedUser.username}}>
-                                            <button className="user-block-message-button">
-                                                <span className={'fa fa-comments-o'}/> Send Message
-                                            </button>
+                                        <Link className="profile-drop-down-button" to={{pathname: "/chatRoom", search: "?user=" +this.props.displayedUser.username}}>
+                                            <span className={'fa fa-comments-o'}/> Send Message
                                         </Link>
                                     </div>
                                 </button>

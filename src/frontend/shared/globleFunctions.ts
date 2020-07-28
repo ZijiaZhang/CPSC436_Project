@@ -86,10 +86,11 @@ export async function getPostsByUserId(userId: string, loginUser: IUser) {
 async function mapDataToPost(responseData: any[], loginUser: IUser) {
     let postList = [];
     for (let post of responseData) {
-        if(!(post.visibility === 'private' && post.userId !== loginUser._id)) {
+        let isLoginUsersPost = post.userId === loginUser._id;
+        if(!(post.visibility === 'private' && !isLoginUsersPost)) {
             let user = await getUserById(post.userId);
-            if(!(post.visibility='friendsOnly' && !loginUser.friendUsernames.includes(user.username) && post.userId !== loginUser._id)) {
-                let comments = await getCommentsByPost(post._id);
+            if(!(post.visibility='friendsOnly' && !loginUser.friendUsernames.includes(user.username) && !isLoginUsersPost)) {
+                let comments = await getCommentsByPost(post._id, isLoginUsersPost, loginUser._id);
                 const newPost = {
                     id: post._id,
                     userId: user._id,
@@ -115,20 +116,22 @@ export async function getUserById(userId: string) {
     return await requestAPIJson('/api/v1/users/ids/' + userId);
 }
 
-export async function getCommentsByPost(postId: string) {
+export async function getCommentsByPost(postId: string, isLoginUsersPost: boolean, loginUserId: string) {
     let comments = await requestAPIJson('/api/v1/comments/' + postId);
     let commentList = [];
     for (let comment of comments) {
-        let user = await getUserById(comment.userId);
-        commentList.push({
-            userId: comment.userId,
-            postId: postId,
-            time: comment.time,
-            detail: comment.detail,
-            visibility: comment.visibility,
-            name: user.fullname,
-            avatarPath: user.avatarPath
-        })
+        if(!(comment.visibility === 'private' && !isLoginUsersPost && comment.userId !== loginUserId)) {
+            let user = await getUserById(comment.userId);
+            commentList.push({
+                userId: comment.userId,
+                postId: postId,
+                time: comment.time,
+                detail: comment.detail,
+                visibility: comment.visibility,
+                name: user.fullname,
+                avatarPath: user.avatarPath
+            })
+        }
     }
     return commentList;
 }

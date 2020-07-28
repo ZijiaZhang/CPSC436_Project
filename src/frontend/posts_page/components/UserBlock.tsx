@@ -123,7 +123,10 @@ class UserBlock extends React.Component<IUserBlockProps, {}> {
         const dropDownStyle: CSSProperties = {
             display: "inline-block",
             float: "right",
-            marginRight: "10px"
+            marginRight: "10px",
+        };
+        const dropDownMenuStyle: CSSProperties = {
+            width: "200px"
         };
         const numMutual = this.getMutualFriends();
         return (
@@ -148,7 +151,7 @@ class UserBlock extends React.Component<IUserBlockProps, {}> {
                             <span className="fa fa-check" /> Friends</button>
                         :
                         <button className="user-block-stranger-button" onClick={this.addFriend}>
-                            <span className={'glyphicon glyphicon-user'} /> Add Friend</button>}
+                            <span className={'fa fa-user-plus'} /> Add Friend</button>}
                     <Link to={{pathname: "/chatRoom", search: "?user=" +this.props.displayedUser.username}}>
                         <button className="user-block-message-button">
                             <span className={'fa fa-comments-o'}/> Send Message
@@ -158,19 +161,19 @@ class UserBlock extends React.Component<IUserBlockProps, {}> {
                         <Dropdown.Toggle className="user-block-message-button" style={dropDownButtonStyle} variant="success" id="dropdown-basic">
                             More <span className={'fa fa-sort-down'} id="profile-button-more-icon"/>
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
+                        <Dropdown.Menu style={dropDownMenuStyle}>
                             <Dropdown.Item className="profile-drop-down-button" onClick={this.gotoUserProfile}>
-                                <span className={'fa fa-exclamation-triangle'} /> View Profile</Dropdown.Item>
+                                <span className={'fa fa-id-card-o'} /> View Profile</Dropdown.Item>
                             <Dropdown.Item className="profile-drop-down-button" onClick={this.gotoUserPosts}>
-                                <span className={'fa fa-exclamation-triangle'} /> View  Posts</Dropdown.Item>
+                                <span className={'fa fa-navicon'} />  View Posts</Dropdown.Item>
                             <Dropdown.Item className="profile-drop-down-button" onClick={this.deleteFriend}>
-                                <span className={'fa fa-bookmark-o'} /> Delete Friend</Dropdown.Item>
+                                <span className={'fa fa-user-times'} /> Delete Friend</Dropdown.Item>
                             {this.props.userInfo.blackListUserIds.includes(this.props.displayedUser._id) ?
                                 <Dropdown.Item className="profile-drop-down-button" onClick={this.updateBlacklist}>
-                                    <span className={'fa fa-times-rectangle-o'} /> Remove From Blacklist</Dropdown.Item>
+                                    <span className={'fa fa-unlock'} /> Remove From Blacklist</Dropdown.Item>
                                 :
                                 <Dropdown.Item className="profile-drop-down-button" onClick={this.updateBlacklist}>
-                                    <span className={'fa fa-times-rectangle-o'} /> Add To Blacklist</Dropdown.Item>
+                                    <span className={'fa fa-lock'} />  Add To Blacklist</Dropdown.Item>
                             }
                         </Dropdown.Menu>
                     </Dropdown>

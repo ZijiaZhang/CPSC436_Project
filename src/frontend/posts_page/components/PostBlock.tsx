@@ -115,16 +115,16 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <Dropdown.Item className="profile-drop-down-button" onClick={this.savePost}>
-                                    <span className={'fa fa-bookmark-o'} />
+                                    <span className={'fa fa-plus-square'} />
                                     {this.props.userInfo.savedPostIds.includes(this.props.post.id) ? " Un-Save Post" : " Save Post"}
                                 </Dropdown.Item>
                                 <Dropdown.Item className="profile-drop-down-button" onClick={this.hidePost}>
-                                    <span className={'fa fa-times-rectangle-o'} />
+                                    <span className={'fa fa-minus-square'} />
                                     {this.props.userInfo.hiddenPostIds.includes(this.props.post.id) ? " Un-Hide Post" : " Hide Post"}
                                 </Dropdown.Item>
                                 {this.props.post.userId === this.props.userInfo._id ?
                                     <Dropdown.Item className="profile-drop-down-button" onClick={this.deletePost}>
-                                        <span className={'glyphicon glyphicon-remove'} /> Delete Post</Dropdown.Item> : ""}
+                                        <span className={'fa fa-trash'} /> Delete Post</Dropdown.Item> : ""}
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
