@@ -14,6 +14,7 @@ cache:
 install:
   - yarn
 script:
+  - npm run build-webpack
   - npm install codecov -g
   - npm run test
 after_success: codecov -f coverage/*.json

@@ -20,7 +20,8 @@ export async function getCurrentUser() {
         username: temp_user.username,
         savedPostIds: temp_user.savedPostIds,
         hiddenPostIds: temp_user.hiddenPostIds,
-        blackListUserIds: temp_user.blackListUserIds
+        blackListUserIds: temp_user.blackListUserIds,
+        groups: temp_user.groups
     };
     return user
 }
