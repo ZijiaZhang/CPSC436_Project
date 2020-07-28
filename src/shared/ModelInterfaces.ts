@@ -16,6 +16,7 @@ export interface IUser {
     friendUsernames: string[],
     savedPostIds: string[],
     hiddenPostIds: string[],
+    groups: string[],
     blackListUserIds: string[]
 }
 

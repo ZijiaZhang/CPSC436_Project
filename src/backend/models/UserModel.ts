@@ -44,7 +44,8 @@ const userSchema = new Schema({
     friendUsernames: [String],
     savedPostIds: [ObjectId],
     hiddenPostIds: [ObjectId],
-    blackListUserIds: [ObjectId]
+    blackListUserIds: [ObjectId],
+    groups: [String]
 });
 
 userSchema.plugin(passportLocalMongoose);
