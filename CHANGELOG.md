@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.27.0 [2020-07-23]
+### Make full responsive
+- Change CSS only to make it responsive
+
 ## 0.26.0 [2020-07-23]
 ### Add Group chat backend
 - Add group chat backend
