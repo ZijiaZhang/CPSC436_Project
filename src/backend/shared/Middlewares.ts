@@ -25,11 +25,9 @@ export function checkIsValidObjectId(req: any, res: any, next: any) {
 
 export function managementMiddleware(req: Request, res: Response, next: any) {
     res.on('finish', async () => {
-        const api_string = `${req.method} ${req.path} ${res.statusCode}`;
-        const old_stat = await Status.findOne({apiName: req.path, method: req.method, statusCode: res.statusCode}).exec();
+        const old_stat = await Status.findOne({apiName: req.baseUrl || req.path, method: req.method, statusCode: res.statusCode}).exec();
         if (!old_stat){
-
-            await Status.create({apiName: req.path, method: req.method, statusCode: res.statusCode, count: 1});
+            await Status.create({apiName: req.baseUrl || req.path, method: req.method, statusCode: res.statusCode, count: 1});
             return;
         }
         old_stat.count++;

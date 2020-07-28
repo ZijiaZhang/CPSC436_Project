@@ -1,10 +1,7 @@
 import {Document, Model, model, Schema} from "mongoose";
+import {IStatus} from "../../shared/ModelInterfaces";
 
-interface IStatusSchema extends Document {
-    apiName: string,
-    statusCode: number,
-    method: string,
-    count: number
+interface IStatusSchema extends Document, IStatus {
 }
 
 interface IStatusModel extends Model<IStatusSchema> {

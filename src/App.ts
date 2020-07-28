@@ -85,6 +85,10 @@ app.get(/^\/(settings|chatRoom|searchPage)?$/, (req,res) =>{
             res.redirect('/login');
         }
 });
+
+app.get('/status', (req,res) =>{
+        res.sendFile(path.join(__dirname, '..', 'public', 'status.html'));
+});
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(function (req, res)  {
     res.status(404).json({message: 'Requested file not find'})
