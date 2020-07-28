@@ -62,47 +62,51 @@ export async function convert_to_ISingeleMessage(chat: IChat, status: MessageSta
         status}
 }
 
-export async function getPosts(query: string = '') {
+export async function getPosts(query: string = '', loginUser: IUser) {
     const url = '/api/v1/posts' + (query? `?${query}` : '');
     let responseData = await requestAPIJson(url);
-    return await mapDataToPost(responseData);
+    return await mapDataToPost(responseData, loginUser);
 }
 
 
-export async function getPostsByIds(postIds: string[]) {
+export async function getPostsByIds(postIds: string[], loginUser: IUser) {
     let dataList = [];
     for (let id of postIds) {
         let responseData = await requestAPIJson('/api/v1/posts/' + id, );
         dataList.push(responseData);
     }
-    return await mapDataToPost(dataList);
+    return await mapDataToPost(dataList, loginUser);
 }
 
-export async function getPostsByUserId(userId: string) {
+export async function getPostsByUserId(userId: string, loginUser: IUser) {
     let responseData = await requestAPIJson('/api/v1/posts/user/' + userId);
-    return await mapDataToPost(responseData);
+    return await mapDataToPost(responseData, loginUser);
 }
 
-async function mapDataToPost(responseData: any[]) {
+async function mapDataToPost(responseData: any[], loginUser: IUser) {
     let postList = [];
     for (let post of responseData) {
-        let user = await getUserById(post.userId);
-        let comments = await getCommentsByPost(post._id);
-        const newPost = {
-            id: post._id,
-            userId: user._id,
-            time: post.time,
-            name: user.fullname,
-            detail: post.detail,
-            avatarPath: user.avatarPath ? user.avatarPath : './images/photoP.png',
-            image: '',
-            likedUserIds: post.likedUserIds,
-            comments: comments,
-            type: post.type,
-            visibility: post.visibility,
-            tags: post.tags,
-        };
-        postList.push(newPost);
+        if(!(post.visibility === 'private' && post.userId !== loginUser._id)) {
+            let user = await getUserById(post.userId);
+            if(!(post.visibility='friendsOnly' && !loginUser.friendUsernames.includes(user.username) && post.userId !== loginUser._id)) {
+                let comments = await getCommentsByPost(post._id);
+                const newPost = {
+                    id: post._id,
+                    userId: user._id,
+                    time: post.time,
+                    name: user.fullname,
+                    detail: post.detail,
+                    avatarPath: user.avatarPath ? user.avatarPath : './images/photoP.png',
+                    image: post.uploadedFiles,
+                    likedUserIds: post.likedUserIds,
+                    comments: comments,
+                    type: post.type,
+                    visibility: post.visibility,
+                    tags: post.tags,
+                };
+                postList.push(newPost);
+            }
+        }
     }
     return postList;
 }

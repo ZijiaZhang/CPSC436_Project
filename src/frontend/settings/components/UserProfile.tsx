@@ -100,7 +100,7 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             this.props.loadDisplayedUser(this.props.curUser);
             this.props.loadDisplayedFriends(friendInfoList);
         }
-        const postList = await getPostsByUserId(this.props.displayedUser._id);
+        const postList = await getPostsByUserId(this.props.displayedUser._id, this.props.curUser);
         this.setState({posts: postList});
         const tags = await getAllTags();
         this.props.loadTags(tags);
@@ -147,7 +147,7 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     };
 
     updatePostList = async () => {
-        const postList = await getPostsByUserId(this.props.displayedUser._id);
+        const postList = await getPostsByUserId(this.props.displayedUser._id, this.props.curUser);
         this.setState({posts: postList});
         return postList;
     };

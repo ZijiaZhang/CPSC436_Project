@@ -11,7 +11,8 @@ interface IPersonalPageProps {
     loadHiddenPosts: any,
     hiddenPosts: any[],
     savedPosts: any[],
-    userDisplayInfo: IUser
+    userDisplayInfo: IUser,
+    userInfo: any
 }
 
 interface IPersonalPageState {
@@ -30,16 +31,16 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
     }
 
     async componentDidMount() {
-        this.setState({personalPostList: await getPostsByUserId(this.props.userDisplayInfo._id)});
-        this.props.loadSavedPosts(await getPostsByIds(this.props.userDisplayInfo.savedPostIds));
-        this.props.loadHiddenPosts(await getPostsByIds(this.props.userDisplayInfo.hiddenPostIds));
+        this.setState({personalPostList: await getPostsByUserId(this.props.userDisplayInfo._id, this.props.userInfo)});
+        this.props.loadSavedPosts(await getPostsByIds(this.props.userDisplayInfo.savedPostIds, this.props.userInfo));
+        this.props.loadHiddenPosts(await getPostsByIds(this.props.userDisplayInfo.hiddenPostIds, this.props.userInfo));
     }
 
     viewPersonalPosts = async () => {
         if(this.state.viewOption !== 'personal') {
             this.setState({
                 viewOption: 'personal',
-                personalPostList: await getPostsByUserId(this.props.userDisplayInfo._id)
+                personalPostList: await getPostsByUserId(this.props.userDisplayInfo._id, this.props.userInfo)
             });
         }
     };

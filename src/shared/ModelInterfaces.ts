@@ -33,7 +33,7 @@ export interface IPost {
 }
 
 export interface IUploadedFile {
-    type: string,
+    fileType: string,
     path: string
 }
 

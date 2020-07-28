@@ -71,10 +71,10 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
                 );
                 break;
             case IComponentsType.personal:
-                listComponents = <PersonalPage userDisplayInfo={this.props.userInfo}/>;
+                listComponents = <PersonalPage userDisplayInfo={this.props.userInfo} userInfo={this.props.userInfo}/>;
                 break;
             case IComponentsType.others:
-                listComponents = <PersonalPage userDisplayInfo={this.state.viewPageUser}/>;
+                listComponents = <PersonalPage userDisplayInfo={this.state.viewPageUser} userInfo={this.props.userInfo}/>;
         }
         return (
             <div id="all-components">

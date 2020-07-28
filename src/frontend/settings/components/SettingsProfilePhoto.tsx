@@ -49,7 +49,7 @@ class SettingsProfilePhoto extends React.Component<ISettingsProfilePhotoProps, I
             avatarPath: responsePostData,
         };
         let responsePatchData = await updateUserInfo(this.props.userInfo.username, updatedInfo);
-        await fetch('http://localhost:3000/api/v1/users/deleteAvatar', {
+        await fetch('/api/v1/users/deleteAvatar', {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',

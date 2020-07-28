@@ -64,7 +64,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
         }
         let responseData = await updateUserInfo(this.props.userInfo.username, update);
         this.props.loadUserInfo(responseData);
-        this.props.loadSavedPosts(await getPostsByIds(responseData.savedPostIds))
+        this.props.loadSavedPosts(await getPostsByIds(responseData.savedPostIds, this.props.userInfo))
     };
 
     hidePost = async () => {
@@ -78,7 +78,7 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
         }
         let responseData = await updateUserInfo(this.props.userInfo.username, update);
         this.props.loadUserInfo(responseData);
-        this.props.loadHiddenPosts(await getPostsByIds(responseData.hiddenPostIds));
+        this.props.loadHiddenPosts(await getPostsByIds(responseData.hiddenPostIds, this.props.userInfo));
     };
 
     displayComment = () => {
@@ -132,7 +132,9 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
                         {this.props.post.detail}
                     </div>
                     <div className="images">
-                        {this.props.post.image ? <img className="inserted-image" src={this.props.post.image} alt={''}/>: ''}
+                        {this.props.post.image ? this.props.post.image.map(((image: { path: string | undefined; }) =>
+                                <img className="inserted-image" src={image.path} alt={''}/>
+                            )) : ''}
                     </div>
                     <div className="interaction-buttons">
                         <button className="like-button" onClick={this.markLike}>
