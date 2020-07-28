@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.26.0 [2020-07-23]
+### Add Group chat backend
+- Add group chat backend
+
 ## 0.25.2 [2020-07-23]
 ### Add prod
 - Add prod in the scripts
