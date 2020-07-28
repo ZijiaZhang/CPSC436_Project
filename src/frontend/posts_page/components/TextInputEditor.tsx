@@ -29,7 +29,8 @@ interface ITextareaState {
     selectedTags: any[],
     emojiDropDown: boolean,
     uploadedFiles: any[],
-    filesPreview: any
+    filesPreview: any,
+    imageOption: boolean
 }
 
 class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
@@ -43,7 +44,8 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             selectedTags: [],
             emojiDropDown: false,
             uploadedFiles: [],
-            filesPreview: []
+            filesPreview: [],
+            imageOption: false
         };
     }
 
@@ -91,15 +93,14 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                 userId: responseData.userId,
                 detail: responseData.detail,
                 avatarPath: this.props.user.avatarPath,
-                image: '',
+                image: responseData.uploadedFiles,
                 likedUserIds: [],
                 comments: [],
                 type: responseData.type,
                 visibility: responseData.visibility,
                 tags: responseData.tags
             });
-            this.setState({message: ''});
-            this.setState({editing: !this.state.editing})
+            this.setState({message: '', editing: !this.state.editing, imageOption: false});
         }
     };
 
@@ -168,6 +169,10 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
         return fileList;
     };
 
+    showImageOptions = () => {
+        this.setState({imageOption: true});
+    };
+
     render() {
         const options = this.convertTagsToOptions();
         return (
@@ -190,12 +195,14 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                                 <EmojiBlock addEmoji={this.addEmoji}/>
                             </div>
                         </button>
-                        <label className="add-on-button">Image</label>
+                        <button className="add-on-button" onClick={this.showImageOptions}>Image</button>
+                    </div>
+                    <div className="browse-image-files" style={this.state.imageOption ? {display: 'block'} : {display: 'none'}}>
                         <input className='settings-avatar-item-input' type="file" name="avatar" accept=".jpg,.png,.jpeg" multiple onChange={this.uploadFileOnChange} />
                         <div className="profile-picture-previews">
                             {this.state.filesPreview.map((image: string | undefined) =>
-                                <img className={'settings-avatar-item-preview'} src={image}
-                                     width={'80px'} height={'80px'} alt={'not uploaded'} /> )}
+                                <img className={'post-editor-image-preview'} src={image}
+                                     width={'128px'} height={'128px'} alt={'not uploaded'} /> )}
                         </div>
                     </div>
                     <div id="Post-buttons">

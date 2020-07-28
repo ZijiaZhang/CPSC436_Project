@@ -121,8 +121,8 @@
     borderRadius: 4px;
     outline: none;
     padding: 20px;
-    width: 800px;
-    height: 400px;
+    width: 1000px;
+    height: 800px;
     margin: auto;
 }
 
@@ -457,4 +457,12 @@
 .post-finalize-button{
     border-radius: 1px;
     margin: 10px 2px;
+}
+.post-editor-image-preview{
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 10px
+}
+.profile-picture-previews{
+    width: 500px;
 }
