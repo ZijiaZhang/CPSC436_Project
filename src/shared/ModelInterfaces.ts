@@ -52,3 +52,10 @@ export interface IChat {
     content: string;
     time: Date;
 }
+
+export interface IStatus {
+    apiName: string,
+    statusCode: number,
+    method: string,
+    count: number
+}

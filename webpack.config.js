@@ -4,7 +4,8 @@ module.exports = {
     mode: "development",
     devtool: "source-map",
     entry: {
-        main: './src/index.tsx'
+        main: './src/index.tsx',
+        status: './src/status.tsx'
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"]

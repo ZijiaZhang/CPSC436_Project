@@ -10,6 +10,7 @@ import passport from 'passport';
 import {BasicStrategy} from "passport-http";
 import {User} from "./backend/models/UserModel";
 import {SocketStore} from "./backend/SocketStore";
+import {managementMiddleware} from "./backend/shared/Middlewares";
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require("connect-flash");
 
@@ -59,6 +60,9 @@ db.once('open', function() {
     console.log(`mongoose connected to ${mongoConnectionString} !`);
 });
 
+app.use(managementMiddleware);
+
+
 app.use('/api', apiRouter);
 
 
@@ -80,6 +84,10 @@ app.get(/^\/(settings|chatRoom|searchPage)?$/, (req,res) =>{
         {
             res.redirect('/login');
         }
+});
+
+app.get('/status', (req,res) =>{
+        res.sendFile(path.join(__dirname, '..', 'public', 'status.html'));
 });
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(function (req, res)  {

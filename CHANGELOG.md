@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.29.0 [2020-07-28]
+### Added
+- Added Management system
+
 ## 0.28.0 [2020-07-23]
 ### Added Features
 - Add Emoji when editing texts
