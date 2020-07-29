@@ -2,7 +2,7 @@
 
 All changes will be logged here
 
-## 0.29.0 [2020-07-23]
+## 0.29.0 [2020-07-28]
 ### Added
 - Added Management system
 
