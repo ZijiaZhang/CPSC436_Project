@@ -9,6 +9,7 @@ import SettingsProfilePhoto from "./SettingsProfilePhoto";
 import {getAllTags, getManyUsersInfo, getPostsByUserId, updateUserInfo} from "../../shared/globleFunctions";
 import {ITag, IUser} from "../../../shared/ModelInterfaces";
 import {Link} from "react-router-dom";
+import Dropdown from "react-bootstrap/Dropdown";
 
 interface IUserProfileProps {
     userInfo: IUser,
@@ -254,8 +255,11 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                                 <button className="profile-interaction-button" id="profile-interaction-button-with-drop-down" onClick={this.showDropDown}>
                                     More <span className={'fa fa-sort-down'} id="profile-button-more-icon"/>
                                     <div className="profile-interaction-drop-down-buttons" style={this.state.dropDown ? {display: 'block'} : {display: 'none'}}>
-                                        <a className="profile-drop-down-button" onClick={this.deleteFriend} >
-                                            <span className={'fa fa-user-times'} /> Delete Friend</a>
+                                        {this.props.userInfo.friendUsernames.includes(this.props.displayedUser.username) ?
+                                            <a className="profile-drop-down-button" onClick={this.deleteFriend}>
+                                                <span className={'fa fa-user-times'}/> Delete Friend</a>
+                                            :
+                                            ""}
                                         {this.props.userInfo.blackListUserIds.includes(this.props.displayedUser._id) ?
                                             <a className="profile-drop-down-button" onClick={this.updateBlacklist}>
                                                 <span className={'fa fa-unlock'}/> Remove From Blacklist</a>
