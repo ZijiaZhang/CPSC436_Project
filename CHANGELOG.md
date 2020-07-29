@@ -2,6 +2,14 @@
 
 All changes will be logged here
 
+## 0.28.0 [2020-07-23]
+### Added Features
+- Add Emoji when editing texts
+- Append image to a post
+### Updated
+- Fixed some bugs
+- CSS Update
+
 ## 0.27.0 [2020-07-23]
 ### Make full responsive
 - Change CSS only to make it responsive

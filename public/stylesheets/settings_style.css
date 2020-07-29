@@ -78,15 +78,15 @@ h1 {
 }
 
 div.ReactModal__Overlay .user-profile-page {
-    width: 70%;
+    width: 780px;
 }
 
 @media screen and (max-width: 1024px) {
     .user-profile-page{
-        width: 95%;
+        width: 780px;
     }
     div.ReactModal__Overlay .user-profile-page {
-        width: 60%;
+        width: 780px;
     }
 }
 
