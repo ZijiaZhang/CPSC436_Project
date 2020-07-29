@@ -1,7 +1,7 @@
 import * as React from "react";
 import Modal from "react-modal";
 import {connect} from "react-redux";
-import {loadUserInfo} from "../actions";
+import {loadDisplayedUser, loadUserInfo} from "../actions";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {requestAPIJson} from "../../shared/Networks";
 import {updateUserInfo} from "../../shared/globleFunctions";
@@ -13,6 +13,7 @@ interface ISettingsProfilePhotoProps {
     avatarPath: string,
     loadUserInfo: any,
     userInfo: IUser,
+    loadDisplayedUser: any
 }
 
 interface ISettingsProfilePhotoState {
@@ -58,6 +59,7 @@ class SettingsProfilePhoto extends React.Component<ISettingsProfilePhotoProps, I
             body: JSON.stringify({oldPath: this.props.userInfo.avatarPath})
         });
         this.props.loadUserInfo(responsePatchData);
+        this.props.loadDisplayedUser(responsePatchData);
         this.cancelEdit();
     };
 
@@ -97,4 +99,4 @@ const mapStateToProps = (state: { userInfo: any }) => {
     };
 };
 
-export default connect(mapStateToProps, {loadUserInfo})(SettingsProfilePhoto);
+export default connect(mapStateToProps, {loadUserInfo, loadDisplayedUser})(SettingsProfilePhoto);

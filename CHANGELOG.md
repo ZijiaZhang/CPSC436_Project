@@ -2,11 +2,19 @@
 
 All changes will be logged here
 
+## 0.29.1 [2020-07-28]
+### Fixed Bugs
+- Avatar at profile page not updated after changing
+- FriendsOnly filter error
+- Delete friend button displays on somewhere not supposed to
+- Upload avatar layout error
+- image in profile page posts not displayed
+
 ## 0.29.0 [2020-07-28]
 ### Added
 - Added Management system
 
-## 0.28.0 [2020-07-23]
+## 0.28.0 [2020-07-28]
 ### Added Features
 - Add Emoji when editing texts
 - Append image to a post

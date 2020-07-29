@@ -89,7 +89,7 @@ async function mapDataToPost(responseData: any[], loginUser: IUser) {
         let isLoginUsersPost = post.userId === loginUser._id;
         if(!(post.visibility === 'private' && !isLoginUsersPost)) {
             let user = await getUserById(post.userId);
-            if(!(post.visibility='friendsOnly' && !loginUser.friendUsernames.includes(user.username) && !isLoginUsersPost)) {
+            if(!(post.visibility === 'friendsOnly' && !loginUser.friendUsernames.includes(user.username) && !isLoginUsersPost)) {
                 let comments = await getCommentsByPost(post._id, isLoginUsersPost, loginUser._id);
                 const newPost = {
                     id: post._id,

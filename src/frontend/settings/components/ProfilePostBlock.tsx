@@ -19,7 +19,9 @@ class ProfilePostBlock extends React.Component<IProfilePostBlockProps, {}> {
                         {this.props.post.detail}
                     </div>
                     <div className="images">
-                        {this.props.post.image ? <img className="settings-inserted-image" src={this.props.post.image} alt={''}/>: ''}
+                        {this.props.post.image ? this.props.post.image.map(((image: { path: string | undefined; }) =>
+                                <img className="settings-inserted-image" src={image.path} alt={''}/>
+                        )) : ''}
                     </div>
                     <p className="settings-post-time">{this.props.post.time}</p>
                 </div>

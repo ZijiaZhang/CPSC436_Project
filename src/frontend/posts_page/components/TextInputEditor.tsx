@@ -199,7 +199,7 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                     </div>
                     <div className="browse-image-files" style={this.state.imageOption ? {display: 'block'} : {display: 'none'}}>
                         <input className='settings-avatar-item-input' type="file" name="avatar" accept=".jpg,.png,.jpeg" multiple onChange={this.uploadFileOnChange} />
-                        <div className="profile-picture-previews">
+                        <div className="post-picture-previews">
                             {this.state.filesPreview.map((image: string | undefined) =>
                                 <img className={'post-editor-image-preview'} src={image}
                                      width={'128px'} height={'128px'} alt={'not uploaded'} /> )}

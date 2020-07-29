@@ -166,8 +166,12 @@ class UserBlock extends React.Component<IUserBlockProps, {}> {
                                 <span className={'fa fa-id-card-o'} /> View Profile</Dropdown.Item>
                             <Dropdown.Item className="profile-drop-down-button" onClick={this.gotoUserPosts}>
                                 <span className={'fa fa-navicon'} />  View Posts</Dropdown.Item>
-                            <Dropdown.Item className="profile-drop-down-button" onClick={this.deleteFriend}>
-                                <span className={'fa fa-user-times'} /> Delete Friend</Dropdown.Item>
+                            {this.props.userInfo.friendUsernames.includes(this.props.displayedUser.username) ?
+                                <Dropdown.Item className="profile-drop-down-button" onClick={this.deleteFriend}>
+                                    <span className={'fa fa-user-times'}/> Delete Friend</Dropdown.Item>
+                                :
+                                ""
+                            }
                             {this.props.userInfo.blackListUserIds.includes(this.props.displayedUser._id) ?
                                 <Dropdown.Item className="profile-drop-down-button" onClick={this.updateBlacklist}>
                                     <span className={'fa fa-unlock'} /> Remove From Blacklist</Dropdown.Item>
