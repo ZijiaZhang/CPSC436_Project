@@ -33,7 +33,7 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
     }
 
     async componentDidMount() {
-        let postList: any[] = await getPosts();
+        let postList: any[] = await getPosts("", this.props.user);
         this.props.loadPosts(postList);
     }
 
@@ -57,7 +57,7 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
         if (!content) return;
 
         if (this.state.componentsType === IComponentsType.posts) {
-            let postList: any[] = await getPosts(`content=${content}`);
+            let postList: any[] = await getPosts(`content=${content}`, this.props.user);
             this.props.loadPosts(postList);
         } else if (this.state.componentsType === IComponentsType.users) {
             let userList = await getAllUsersInfo(this.props.user, `content=${content}`);

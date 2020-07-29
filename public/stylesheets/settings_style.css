@@ -73,20 +73,20 @@ h1 {
     margin: 10px auto;
     background: white;
     box-shadow: 5px 3px 5px 3px lightgray;
-    width: 60%;
+    width: 780px;
     padding: 6px 3px 6px 4px;
 }
 
 div.ReactModal__Overlay .user-profile-page {
-    width: 70%;
+    width: 780px;
 }
 
 @media screen and (max-width: 1024px) {
     .user-profile-page{
-        width: 95%;
+        width: 780px;
     }
     div.ReactModal__Overlay .user-profile-page {
-        width: 60%;
+        width: 780px;
     }
 }
 
@@ -94,15 +94,16 @@ div.ReactModal__Overlay .user-profile-page {
     display: inline-block;
     margin: 10px;
     vertical-align: top;
+    position: relative;
 }
 .user-avatar{
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
 }
 .profile-listed-detail-left-block{
     display: inline-block;
-    margin: 10px;
-    width: 300px;
+    margin: 5px 10px;
+    width: 240px;
     vertical-align: top;
 }
 .profile-detail-user-name{
@@ -111,11 +112,11 @@ div.ReactModal__Overlay .user-profile-page {
     font-weight: bold;
 }
 .profile-detail-user-department{
-    font-size: 12pt;
+    font-size: 11pt;
     color: dimgray;
 }
 .profile-detail-user-major{
-    font-size: 12pt;
+    font-size: 11pt;
     color: dimgray;
 }
 
@@ -124,9 +125,6 @@ div.ReactModal__Overlay .user-profile-page {
     margin: 10px;
     position: relative;
     left: 40px;
-}
-.profile-detail-user-interests{
-
 }
 .user-interests-block-title{
     background: skyblue;
@@ -141,7 +139,7 @@ div.ReactModal__Overlay .user-profile-page {
 }
 .profile-interaction-button-list{
     position: relative;
-    top: 30px;
+    top: 10px;
 }
 .profile-interaction-button{
     background: royalblue;
@@ -307,6 +305,7 @@ div.ReactModal__Overlay .user-profile-page {
     background: white;
     z-index: 1;
     box-shadow: 0 8px 16px 0 lightgray;
+    width: 200px;
 }
 .profile-drop-down-button{
     display: block;
@@ -328,15 +327,14 @@ div.ReactModal__Overlay .user-profile-page {
 .profile-change-profile-photo{
     display: none;
     position: absolute;
-    left: 320px;
-    top: 160px;
+    top: 60%;
     z-index: 1;
     background: black;
     border: none;
     font-size: 12pt;
     color: white;
     height: 60px;
-    width: 200px;
+    width: 150px;
     opacity: 0.65;
     border-radius: 3px;
 }
@@ -352,17 +350,11 @@ div.ReactModal__Overlay .user-profile-page {
     margin-top: 5px;
     top: 10px;
 }
-.settings-avatar-item{
-
-}
 .settings-avatar-item-label{
     font-size: 18pt;
 }
 .settings-avatar-item-label-description{
     font-size: 14pt;
-}
-.settings-avatar-item-input{
-
 }
 .profile-picture-previews{
     margin: 20px 0;

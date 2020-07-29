@@ -14,7 +14,7 @@ const postSchema: Schema = new Schema({
     userId: {type: ObjectId, required: true,},
     detail: {type: String, required: true,},
     uploadedFiles: [{
-        type: String,
+        fileType: String,
         path: String
     }],
     type: String,

@@ -3,12 +3,12 @@ import {connect} from "react-redux";
 import {addPost, saveInputDraft} from "../actions";
 import VisibilitySetting from "./VisibilitySetting";
 import CreatableSelect from 'react-select/creatable';
-import TextEditorSetting from "./TextEditorSetting";
 import Modal from "react-modal";
-import {ITag, IUser} from "../../../shared/ModelInterfaces";
+import {ITag, IUploadedFile, IUser} from "../../../shared/ModelInterfaces";
 import {addTag, loadTags} from "../../settings/actions";
-import {addNewTag, getAllTags} from "../../shared/globleFunctions";
+import {addNewTag, getAllTags, updateUserInfo} from "../../shared/globleFunctions";
 import {requestAPIJson} from "../../shared/Networks";
+import EmojiBlock from "./EmojiBlock";
 
 interface ITextareaProps {
     addPost: any,
@@ -26,7 +26,11 @@ interface ITextareaState {
     editing: boolean,
     message: string,
     visibility: string,
-    selectedTags: any[]
+    selectedTags: any[],
+    emojiDropDown: boolean,
+    uploadedFiles: any[],
+    filesPreview: any,
+    imageOption: boolean
 }
 
 class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
@@ -37,7 +41,11 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             editing: false,
             message: this.props.inputDraft,
             visibility: 'public',
-            selectedTags: []
+            selectedTags: [],
+            emojiDropDown: false,
+            uploadedFiles: [],
+            filesPreview: [],
+            imageOption: false
         };
     }
 
@@ -57,6 +65,7 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
             let time = d.getHours() + ':' + d.getMinutes();
             let date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
             let tagList = [];
+            const fileList = await this.uploadFileSubmit();
             if (this.state.selectedTags !== null) {
                 for (let nextTag of this.state.selectedTags) {
                     let matchTag = this.props.tagList.find(tag => tag.name === nextTag.value);
@@ -70,7 +79,7 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                 }
             }
             let newPost = {time: date + ' ' + time, userId: this.props.user._id, detail: this.state.message,
-                type: 'post', visibility: this.state.visibility, tags: tagList, uploadedFiles: [], likedUserIds: []};
+                type: 'post', visibility: this.state.visibility, tags: tagList, uploadedFiles: fileList, likedUserIds: []};
             let responseData = await requestAPIJson('/api/v1/posts',  'POST',
                 {
                     'Accept': 'application/json',
@@ -84,15 +93,14 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                 userId: responseData.userId,
                 detail: responseData.detail,
                 avatarPath: this.props.user.avatarPath,
-                image: '',
+                image: responseData.uploadedFiles,
                 likedUserIds: [],
                 comments: [],
                 type: responseData.type,
                 visibility: responseData.visibility,
                 tags: responseData.tags
             });
-            this.setState({message: ''});
-            this.setState({editing: !this.state.editing})
+            this.setState({message: '', editing: !this.state.editing, imageOption: false});
         }
     };
 
@@ -128,6 +136,43 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
         return options;
     };
 
+    addEmoji = (emoji: any) => {
+        this.setState({message: this.state.message + emoji})
+    };
+
+    showEmojiDropdown = () => {
+        this.setState({emojiDropDown: !this.state.emojiDropDown});
+    };
+
+    uploadFileOnChange = (event: any) => {
+        this.setState( {uploadedFiles: event.target.files});
+        let previewList = [];
+        for (let file of event.target.files) {
+            let preview =  URL.createObjectURL(file);
+            previewList.push(preview);
+        }
+        this.setState( {filesPreview: previewList});
+    };
+
+    uploadFileSubmit = async () => {
+        let fileList: IUploadedFile[] = [];
+        for (let image of this.state.uploadedFiles) {
+            let imageFileData = new FormData();
+            imageFileData.append('file', image);
+            let responsePost = await fetch('/api/v1/users/uploadAvatar',
+                {
+                    method: 'POST',
+                    body: imageFileData});
+            let responsePostData = await responsePost.text();
+            fileList.push({fileType: "image", path: responsePostData})
+        }
+        return fileList;
+    };
+
+    showImageOptions = () => {
+        this.setState({imageOption: true});
+    };
+
     render() {
         const options = this.convertTagsToOptions();
         return (
@@ -142,13 +187,28 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                     <CreatableSelect id="tag-list" options={options} isMulti={true}
                             onChange={this.tagSelectionHandleChange}/>
                 </div>
-                <TextEditorSetting />
                 <div id="text-input-block">
                     <textarea id="message-area" placeholder="Type your message here" value={this.state.message} onChange={this.inputOnChange} />
+                    <div id="post-add-on-buttons">
+                        <button className="add-on-button" onClick={this.showEmojiDropdown}>Emoji
+                            <div className="profile-interaction-drop-down-buttons" style={this.state.emojiDropDown ? {display: 'block'} : {display: 'none'}}>
+                                <EmojiBlock addEmoji={this.addEmoji}/>
+                            </div>
+                        </button>
+                        <button className="add-on-button" onClick={this.showImageOptions}>Image</button>
+                    </div>
+                    <div className="browse-image-files" style={this.state.imageOption ? {display: 'block'} : {display: 'none'}}>
+                        <input className='settings-avatar-item-input' type="file" name="avatar" accept=".jpg,.png,.jpeg" multiple onChange={this.uploadFileOnChange} />
+                        <div className="profile-picture-previews">
+                            {this.state.filesPreview.map((image: string | undefined) =>
+                                <img className={'post-editor-image-preview'} src={image}
+                                     width={'128px'} height={'128px'} alt={'not uploaded'} /> )}
+                        </div>
+                    </div>
                     <div id="Post-buttons">
-                        <button id="send-post" onClick={this.sendPost}>Post My Message!</button>
-                        <button id="save-draft" onClick={this.saveDraft}>Save Draft</button>
-                        <button id="cancel-edit" onClick={this.cancelEdit}>Cancel</button>
+                        <button id="send-post" className="post-finalize-button" onClick={this.sendPost}>Post My Message!</button>
+                        <button className="post-finalize-button" onClick={this.saveDraft}>Save Draft</button>
+                        <button className="post-finalize-button" onClick={this.cancelEdit}>Cancel</button>
                     </div>
                 </div>
             </Modal>
