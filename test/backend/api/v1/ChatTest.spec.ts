@@ -46,7 +46,7 @@ describe('Chats', () => {
             await Chat.create({senderUsername: 'testUser',
                 receiverUsername: 'testUser2',
                 content: 'This is a test message',
-                time: new Date()});
+                time: new Date(), read: false});
         });
 
         it('it should GET all the chats', async () => {
