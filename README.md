@@ -31,7 +31,7 @@ UBC students who want to find friends with the same classes, hobbies, etc
 - Add friends, view their profiles and posts, and block them
 - Search for posts by details, and friends by names
 - Edit personal profile
-- Chat with other users in chat rooms
+- Chat with other users
 
 ## What type of data will it store?
 - Username/ Password
