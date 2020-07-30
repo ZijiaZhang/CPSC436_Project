@@ -1,10 +1,10 @@
 import * as React from "react";
-import {ChatRoomBubbles, ISingleMessage, MessageStatus} from "./ChatRoomBubbles";
+import {ChatRoomBubbles, ISingleMessage} from "./ChatRoomBubbles";
 import {ChatRoomState} from "../reducer";
 import {connect} from "react-redux";
 import {getInitialMessages, receiveNewMessage} from "../Actions";
 import * as io from "socket.io-client";
-import {SocketEvents} from "../../../shared/SocketEvents";
+import {MessageStatus, SocketEvents} from "../../../shared/SocketEvents";
 import {convert_to_ISingeleMessage} from "../../shared/globleFunctions";
 import {IUser} from "../../../shared/ModelInterfaces";
 

@@ -1,6 +1,6 @@
-import {MessageStatus} from "../chat_room/components/ChatRoomBubbles";
 import {IChat, IUser} from "../../shared/ModelInterfaces";
 import {requestAPIJson} from "./Networks";
+import {MessageStatus} from "../../shared/SocketEvents";
 
 export let user: IUser;
 

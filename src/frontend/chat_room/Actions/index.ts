@@ -1,8 +1,9 @@
 import {Action, Dispatch} from "redux";
 import {getCurrentUser, getUserInfo, user} from "../../shared/globleFunctions";
-import {ISingleMessage, MessageStatus} from "../components/ChatRoomBubbles";
+import {ISingleMessage} from "../components/ChatRoomBubbles";
 import { IChat } from "../../../shared/ModelInterfaces";
 import {requestAPIJson} from "../../shared/Networks";
+import {MessageStatus} from "../../../shared/SocketEvents";
 
 export enum ChatRoomActions{
     RECEIVE_MESSAGE,
@@ -69,31 +70,18 @@ export const getInitialMessages = (receiver: string| null) => {
         let user_id = user.username;
         let receive_user = await getUserInfo(receiver);
         let sent_messages = await getMessages(user_id, receiver);
-        sent_messages = sent_messages.map((m: IChat) => {
+        sent_messages = sent_messages.map((m: any) => {
             return {
                 message: m.content,
-                status:MessageStatus.SENT,
-                sender: user,
+                status:m.status,
+                sender: m.sender==user_id?user: receive_user,
                 time: m.time
             }
         });
-
-        let receive_messages = await getMessages(receiver, user_id);
-        receive_messages = receive_messages.map((m: IChat) => {
-            return {
-                message: m.content,
-                status: MessageStatus.RECEIVED,
-                sender: receive_user,
-                time: m.time
-            }
-        });
-
-        receive_messages.push(...sent_messages);
-        console.log(receive_messages);
-        receive_messages.sort((a: any,b: any) => new Date(a.time).getTime() - new Date(b.time).getTime());
+        sent_messages.sort((a: any,b: any) => new Date(a.time).getTime() - new Date(b.time).getTime());
         dispatch({
             type: ChatRoomActions.RECEIVE_INITIAL_MESSAGE,
-            message: receive_messages
+            message: sent_messages
         })
     }
 };

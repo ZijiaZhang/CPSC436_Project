@@ -1,7 +1,8 @@
-import {MessageStatus, ISingleMessage} from "../components/ChatRoomBubbles";
+import {ISingleMessage} from "../components/ChatRoomBubbles";
 import {combineReducers} from "redux";
 import update from 'immutability-helper';
 import {ChatRoomActions} from "../Actions";
+import {MessageStatus} from "../../../shared/SocketEvents";
 
 export interface ChatRoomState {
     messages: Array<ISingleMessage>;
