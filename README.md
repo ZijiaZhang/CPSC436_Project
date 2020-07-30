@@ -106,3 +106,5 @@ All class names should be in `PascalCase`.
 ### Functions
 All function names should be in `camelCase`.
 
+## Please squash your commit when you merge your PR.
+
