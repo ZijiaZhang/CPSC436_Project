@@ -27,7 +27,7 @@ chatsRouter.get('/',  async function(req, res) {
         let sentMessages = tempMessage1.map((message) => {return Object.assign({}, message.toObject(), {status: MessageStatus.SENT})});
         let receiveMessages = tempMessage2.map((message) => {return Object.assign({}, message.toObject(), {status: MessageStatus.RECEIVED})});
         console.log(tempMessage1);
-        await Chat.update({senderUsername: receiver_id, receiverUsername: sender_id}, {read: true}).exec();
+        await Chat.update({senderUsername: receiver_id, receiverUsername: sender_id, read: false}, {read: true}).exec();
         return res.json({allMessages: [... sentMessages, ... receiveMessages]});
     } else{
         res.status(401).json({message: 'Not Authorized'});
@@ -40,7 +40,8 @@ chatsRouter.post('/', function (req, res) {
             senderUsername: req.body.sender_username,
             receiverUsername: req.body.receiver_username,
             content: req.body.content,
-            time: new Date()
+            time: new Date(),
+            read: false
         }).then((chat: IChat) => {
 
             if (req.body.receiver_username in SocketStore.allSockets){
@@ -57,11 +58,8 @@ chatsRouter.post('/', function (req, res) {
 });
 
 
-chatsRouter.get('/unreads/:id',  async function(req, res) {
-   if(req.user && (req.user as IUser).username === req.params.id) {
-        const sendMessages = await Chat.find({receiverUsername: req.params.id, read: false}).exec();
-        return res.json({allMessages: [... sendMessages]});
-    } else{
-        res.status(401).json({message: 'Not Authorized'});
-    }
+chatsRouter.get('/unreads',  async function(req, res) {
+   const sendMessages = await Chat.find({receiverUsername: (req.user! as IUser).username, read: false}).exec();
+   let userids = new Set(sendMessages.map((message) => message.senderUsername));
+   return res.json({unread_users: [... userids]});
 });

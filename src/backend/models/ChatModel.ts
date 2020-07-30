@@ -11,7 +11,8 @@ const chatSchema: Schema = new Schema({
     senderUsername: {type: String, required: true,},
     receiverUsername: {type: String, required: true,},
     content: String,
-    time: Date
+    time: Date,
+    read: Boolean,
 });
 
 export const Chat = model<IChatSchema, IChatModel>('chat', chatSchema);

@@ -1,5 +1,5 @@
 import {Action, Dispatch} from "redux";
-import {getCurrentUser, getUserInfo, user} from "../../shared/globleFunctions";
+import {getCurrentUser, getUserInfo, setUnread, user} from "../../shared/globleFunctions";
 import {ISingleMessage} from "../components/ChatRoomBubbles";
 import { IChat } from "../../../shared/ModelInterfaces";
 import {requestAPIJson} from "../../shared/Networks";
@@ -56,6 +56,7 @@ export const sendMessage = (text: string, receiver: string|null) => {
 
 async function getMessages(user_id: any, recever: any) {
     let data = await requestAPIJson(`/api/v1/chats?sender_id=${user_id}&receiver_id=${recever ? recever : user_id}`);
+    setUnread(true);
     return data.allMessages;
 }
 
