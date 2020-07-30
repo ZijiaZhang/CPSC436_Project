@@ -9,7 +9,7 @@ UBC TANTAN is a full-stack social networking web application, which allows new s
 
 # Script Usage
 
-## Build Frontend & Backend Code
+## Compile Frontend & Backend
 ```shell script 
 npm install
 npx webpack or npm run build-webpack
