@@ -70,3 +70,39 @@ UBC students who want to find friends with the same classes, hobbies, etc
 # Designs
 ![](Docs/images/Project_layouts-1.png)
 ![](Docs/images/Project_layouts-2.png)
+
+# Development Guide
+
+## Files
+
+Front-end files are stored in `src/frontend` directory. Each page will have an individual directory which stores their specific components and actions. If one component/action is used in more than one page, move to them to shared directory.
+
+Overview of the structure:
+
+
+```
+.
+├── _src  #root directory of all the frontend and backend code
+│   └──_frontend 
+│      ├──_shared
+│      │  ├── actions
+|      |  ├── reducers
+|      |  └── components
+│      ├──_settings
+│      │  ├── actions
+|      |  └── components
+│      ├──_homepage
+│      │  ├── actions
+|      |  └── components
+...
+```
+
+## Code Style
+Project will be using typescript with webpack.
+
+### Classes
+All class names should be in `PascalCase`.
+
+### Functions
+All function names should be in `camelCase`.
+
