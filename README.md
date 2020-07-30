@@ -75,9 +75,9 @@ UBC students who want to find friends with the same classes, hobbies, etc
 
 ## Project Architecture
 
-Front-end files are stored in `src/frontend` directory. Each page will have an individual directory which stores their specific components and actions. If one component/action is used in more than one page, move to them to shared directory.
+Frontend files are stored in `src/frontend` directory. Each page will have an individual directory that stores their specific components and actions. If one component/action is used in more than one page, move them to the shared directory.
 
-Back-end files are stores in `src/backend` directory. It includes an api directory with code for API endpoints, a model directory for MongoDB schemas and connections, and a shared directory for implementations of helper functions.
+Backend files are stores in `src/backend` directory. It includes an API directory with code for API endpoints, a model directory for MongoDB schemas and connections, and a shared directory for implementations of helper functions.
 
 Overview of the structure:
 
@@ -104,13 +104,13 @@ Overview of the structure:
 ```
 
 ## Code Style
-Project will be using typescript with webpack.
+The project will be using typescript with webpack.
 
 ### Classes
-All class names should be in `PascalCase`.
+All class names should be in `PascalCase.`
 
 ### Functions
-All function names should be in `camelCase`.
+All function names should be in `camelCase.`
 
 ## Please squash your commit when you merge your PR!
 
