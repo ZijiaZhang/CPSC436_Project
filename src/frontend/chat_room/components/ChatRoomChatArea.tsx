@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {getInitialMessages, receiveNewMessage} from "../Actions";
 import * as io from "socket.io-client";
 import {MessageStatus, SocketEvents} from "../../../shared/SocketEvents";
-import {convert_to_ISingeleMessage} from "../../shared/globleFunctions";
+import {convert_to_ISingeleMessage, setUnread} from "../../shared/globleFunctions";
 import {IChat, IUser} from "../../../shared/ModelInterfaces";
 import {requestAPIJson} from "../../shared/Networks";
 
@@ -27,6 +27,7 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
         this.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
             let mesage: IChat = data.message;
             if (mesage.senderUsername!== this.props.user.username) {
+                setUnread(true);
                 return;
             }
             this.props.receiveNewMessage(await convert_to_ISingeleMessage(mesage, MessageStatus.RECEIVED));
