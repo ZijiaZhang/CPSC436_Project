@@ -26,8 +26,7 @@ chatsRouter.get('/',  async function(req, res) {
         let tempMessage2 = await Chat.find({senderUsername: receiver_id, receiverUsername: sender_id}).exec();
         let sentMessages = tempMessage1.map((message) => {return Object.assign({}, message.toObject(), {status: MessageStatus.SENT})});
         let receiveMessages = tempMessage2.map((message) => {return Object.assign({}, message.toObject(), {status: MessageStatus.RECEIVED})});
-        console.log(tempMessage1);
-        await Chat.update({senderUsername: receiver_id, receiverUsername: sender_id, read: false}, {read: true}).exec();
+        await Chat.updateMany({senderUsername: receiver_id, receiverUsername: sender_id, read: false}, {read: true}).exec();
         return res.json({allMessages: [... sentMessages, ... receiveMessages]});
     } else{
         res.status(401).json({message: 'Not Authorized'});
@@ -62,4 +61,12 @@ chatsRouter.get('/unreads',  async function(req, res) {
    const sendMessages = await Chat.find({receiverUsername: (req.user! as IUser).username, read: false}).exec();
    let userids = new Set(sendMessages.map((message) => message.senderUsername));
    return res.json({unread_users: [... userids]});
+});
+
+
+chatsRouter.post('/read',  async function(req, res) {
+    const other_user = req.body.user;
+    await Chat.updateMany({senderUsername: other_user, receiverUsername: (req.user! as IUser).username, read: false}, {read: true}).exec();
+    console.log(req.body);
+    res.json({message: "succeeded"});
 });

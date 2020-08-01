@@ -6,6 +6,7 @@ export let user: IUser;
 export let refresh_unread: boolean = true;
 
 export function setUnread(unread: boolean) {
+    console.log('unread_set');
     refresh_unread = unread
 }
 

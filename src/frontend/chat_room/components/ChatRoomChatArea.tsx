@@ -6,7 +6,8 @@ import {getInitialMessages, receiveNewMessage} from "../Actions";
 import * as io from "socket.io-client";
 import {MessageStatus, SocketEvents} from "../../../shared/SocketEvents";
 import {convert_to_ISingeleMessage} from "../../shared/globleFunctions";
-import {IUser} from "../../../shared/ModelInterfaces";
+import {IChat, IUser} from "../../../shared/ModelInterfaces";
+import {requestAPIJson} from "../../shared/Networks";
 
 
 
@@ -24,8 +25,11 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
         let socketProtocol = (window.location.protocol === 'https') ? 'wss' : 'ws';
         this.socket = io.connect(`${socketProtocol}://${window.location.host}`, {reconnection: false});
         this.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
-            let chat = data.message;
-            this.props.receiveNewMessage(await convert_to_ISingeleMessage(chat, MessageStatus.RECEIVED));
+            let mesage: IChat = data.message;
+            if (mesage.senderUsername!== this.props.user.username) {
+                return;
+            }
+            this.props.receiveNewMessage(await convert_to_ISingeleMessage(mesage, MessageStatus.RECEIVED));
         });
     }
 

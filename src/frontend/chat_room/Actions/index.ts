@@ -27,7 +27,8 @@ function sendMessageAPICall(user_id: string, receiver: string | null, text: stri
 }
 
 export const sendMessage = (text: string, receiver: string|null) => {
-    return function (dispatch: Dispatch<Action>) {
+    return async function (dispatch: Dispatch<Action>) {
+        await getCurrentUser();
         dispatch({
             type: ChatRoomActions.SEND_MESSAGE_PENDING,
             message: text,
@@ -75,7 +76,7 @@ export const getInitialMessages = (receiver: string| null) => {
             return {
                 message: m.content,
                 status:m.status,
-                sender: m.sender==user_id?user: receive_user,
+                sender: m.senderUsername==user_id?user: receive_user,
                 time: m.time
             }
         });
@@ -88,8 +89,16 @@ export const getInitialMessages = (receiver: string| null) => {
 };
 
 export const receiveNewMessage = (message: ISingleMessage) => {
+    console.log("message received");
+    read_message(message.sender.username);
     return {
         type: ChatRoomActions.RECEIVE_MESSAGE,
         message: message
     }
 };
+
+async function read_message(username: string) {
+    console.log({user: username});
+    await requestAPIJson('/api/v1/chats/read', 'POST', undefined, {user: username});
+    setUnread(true);
+}
