@@ -24,6 +24,7 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
         super(props);
         let socketProtocol = (window.location.protocol === 'https') ? 'wss' : 'ws';
         this.socket = io.connect(`${socketProtocol}://${window.location.host}`, {reconnection: false});
+        this.socket.off(SocketEvents.ReceiveMessage);
         this.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
             let mesage: IChat = data.message;
             if (mesage.senderUsername!== this.props.user.username) {
@@ -43,6 +44,14 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
 
     componentDidMount(): void {
         this.props.getInitialMessages(this.props.user.username ? this.props.user.username: null);
+    }
+
+    componentWillUnmount(): void {
+        console.log("unmount");
+        this.socket.off(SocketEvents.ReceiveMessage);
+        this.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
+                setUnread(true);
+        })
     }
 }
 
