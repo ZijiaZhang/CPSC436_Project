@@ -14,9 +14,23 @@ import Register from "./frontend/login_register/components/Register"
 import {Provider} from "react-redux";
 import {createStore} from "redux";
 import userReducers from "./frontend/settings/reducers";
+import * as io from "socket.io-client";
+import {SocketEvents} from "./shared/SocketEvents";
+import {setUnread} from "./frontend/shared/globleFunctions";
 
 
 class AppRouter extends Component {
+    static socket: SocketIOClient.Socket;
+    constructor(props:{}) {
+        super(props);
+        let socketProtocol = (window.location.protocol === 'https') ? 'wss' : 'ws';
+        AppRouter.socket = io.connect(`${socketProtocol}://${window.location.host}`, {reconnection: false});
+        AppRouter.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
+            setUnread(true);
+        });
+    }
+
+
     render() {
         return (
             <Switch>
