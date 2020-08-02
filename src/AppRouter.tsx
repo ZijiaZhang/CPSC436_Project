@@ -52,7 +52,7 @@ export class Home extends React.Component<{}, {}> {
         return (
             <Provider store={createStore(userReducers)}>
                 <Router history={history}>
-                    <div className={'row'}>
+                    <div className={'my-row'}>
                         <NavigationBar/>
                         <div className="central-panel">
                             <Switch>
