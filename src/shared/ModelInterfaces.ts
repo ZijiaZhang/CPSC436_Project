@@ -17,7 +17,8 @@ export interface IUser {
     savedPostIds: string[],
     hiddenPostIds: string[],
     groups: string[],
-    blackListUserIds: string[]
+    blackListUserIds: string[],
+    courses: ICourse[]
 }
 
 export interface IPost {
@@ -58,4 +59,12 @@ export interface IStatus {
     statusCode: number,
     method: string,
     count: number
+}
+
+export interface ICourse {
+    name: string,
+    activity: string,
+    section: string,
+    term: string,
+    lastUpdated: string
 }

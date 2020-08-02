@@ -21,7 +21,8 @@ export async function getCurrentUser() {
         savedPostIds: temp_user.savedPostIds,
         hiddenPostIds: temp_user.hiddenPostIds,
         blackListUserIds: temp_user.blackListUserIds,
-        groups: temp_user.groups
+        groups: temp_user.groups,
+        courses: temp_user.courses
     };
     return user
 }
@@ -68,11 +69,56 @@ export async function getPosts(query: string = '', loginUser: IUser) {
     return await mapDataToPost(responseData, loginUser);
 }
 
+export async function getSavedPosts(targetUser: IUser, loginUser: IUser, ) {
+    let resList = [];
+    let idList = [];
+    for (let id of targetUser.savedPostIds) {
+        let res = await fetch('/api/v1/posts/'  + id, {method: 'GET'});
+        if (res.status !== 400) {
+            resList.push(res);
+            idList.push(id);
+        }
+    }
+    if(idList !== targetUser.savedPostIds) {
+        await requestAPIJson('/api/v1/users/' + targetUser.username, 'PATCH',
+            {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            },
+            {
+                savedPostIds: idList
+            });
+    }
+    return await getPostsByIds(resList, loginUser);
+}
 
-export async function getPostsByIds(postIds: string[], loginUser: IUser) {
+export async function getHiddenPosts(targetUser: IUser, loginUser: IUser, ) {
+    let resList = [];
+    let idList = [];
+    for (let id of targetUser.hiddenPostIds) {
+        let res = await fetch('/api/v1/posts/'  + id, {method: 'GET'});
+        if (res.status !== 400) {
+            resList.push(res);
+            idList.push(id);
+        }
+    }
+    if(idList !== targetUser.hiddenPostIds) {
+        await requestAPIJson('/api/v1/users/' + targetUser.username, 'PATCH',
+            {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            {
+                hiddenPostIds: idList
+            });
+    }
+    return await getPostsByIds(resList, loginUser);
+}
+
+export async function getPostsByIds(resList: Response[], loginUser: IUser) {
     let dataList = [];
-    for (let id of postIds) {
-        let responseData = await requestAPIJson('/api/v1/posts/' + id, );
+    for (let res of resList) {
+        let responseData = await res.json();
         dataList.push(responseData);
     }
     return await mapDataToPost(dataList, loginUser);

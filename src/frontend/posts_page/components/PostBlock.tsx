@@ -7,7 +7,7 @@ import CommentsContainer from "./CommentsContainer";
 import CommentInputBar from "./CommentInputBar";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {loadUserInfo} from "../../settings/actions";
-import {getPostsByIds, updateUserInfo} from "../../shared/globleFunctions";
+import {getHiddenPosts, getPostsByIds, getSavedPosts, updateUserInfo} from "../../shared/globleFunctions";
 
 export interface IPostBlockProps {
     post: any,
@@ -63,8 +63,8 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
             update.savedPostIds.push(this.props.post.id);
         }
         let responseData = await updateUserInfo(this.props.userInfo.username, update);
+        this.props.loadSavedPosts(await getSavedPosts(responseData, this.props.userInfo));
         this.props.loadUserInfo(responseData);
-        this.props.loadSavedPosts(await getPostsByIds(responseData.savedPostIds, this.props.userInfo))
     };
 
     hidePost = async () => {
@@ -77,8 +77,8 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
             update.hiddenPostIds.push(this.props.post.id);
         }
         let responseData = await updateUserInfo(this.props.userInfo.username, update);
+        this.props.loadHiddenPosts(await getHiddenPosts(responseData, this.props.userInfo));
         this.props.loadUserInfo(responseData);
-        this.props.loadHiddenPosts(await getPostsByIds(responseData.hiddenPostIds, this.props.userInfo));
     };
 
     displayComment = () => {

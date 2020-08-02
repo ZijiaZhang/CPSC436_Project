@@ -7,9 +7,9 @@ import {connect} from "react-redux";
 import {loadDisplayedFriends, loadDisplayedUser, loadTags, loadUserFriends, loadUserInfo} from "../actions";
 import SettingsProfilePhoto from "./SettingsProfilePhoto";
 import {getAllTags, getManyUsersInfo, getPostsByUserId, updateUserInfo} from "../../shared/globleFunctions";
-import {ITag, IUser} from "../../../shared/ModelInterfaces";
+import {IUser} from "../../../shared/ModelInterfaces";
 import {Link} from "react-router-dom";
-import Dropdown from "react-bootstrap/Dropdown";
+import UserTimeTable from "./UserTimeTable";
 
 interface IUserProfileProps {
     userInfo: IUser,
@@ -250,8 +250,7 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                                         <span className={'fa fa-check"'}/> Friend</button>
                                     :
                                     <button className="profile-interaction-button" onClick={this.addFriend}>
-                                        <span className={'fa fa-user-plus'}/> Add Friend</button>
-                                }
+                                        <span className={'fa fa-user-plus'}/> Add Friend</button>}
                                 <button className="profile-interaction-button" id="profile-interaction-button-with-drop-down" onClick={this.showDropDown}>
                                     More <span className={'fa fa-sort-down'} id="profile-button-more-icon"/>
                                     <div className="profile-interaction-drop-down-buttons" style={this.state.dropDown ? {display: 'block'} : {display: 'none'}}>
@@ -265,15 +264,13 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                                                 <span className={'fa fa-unlock'}/> Remove From Blacklist</a>
                                             :
                                             <a className="profile-drop-down-button" onClick={this.updateBlacklist}>
-                                                <span className={'fa fa-lock'}/> Add To Blacklist</a>
-                                        }
+                                                <span className={'fa fa-lock'}/> Add To Blacklist</a>}
                                         <Link className="profile-drop-down-button" to={{pathname: "/chatRoom", search: "?user=" +this.props.displayedUser.username}}>
                                             <span className={'fa fa-comments-o'}/> Send Message
                                         </Link>
                                     </div>
                                 </button>
-                            </div>
-                        }
+                            </div>}
                     </div>
                 </div>
                 <div className="profile-listed-detail-right-block">
@@ -283,6 +280,9 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
                             <TagContainer tags={this.props.displayedUser.tags} />
                         </div>
                     </div>
+                </div>
+                <div>
+                    <UserTimeTable />
                 </div>
                 <div className="profile-detail-user-recent-posts">
                     <div className="settings-post-block">

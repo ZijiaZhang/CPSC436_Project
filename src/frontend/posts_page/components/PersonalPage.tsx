@@ -2,7 +2,7 @@ import React, {CSSProperties} from "react";
 import PostBlock from "./PostBlock";
 import {IUser} from "../../../shared/ModelInterfaces";
 import Dropdown from "react-bootstrap/Dropdown";
-import {getPostsByIds, getPostsByUserId} from "../../shared/globleFunctions";
+import {getHiddenPosts, getPostsByIds, getPostsByUserId, getSavedPosts} from "../../shared/globleFunctions";
 import {connect} from "react-redux";
 import {loadHiddenPosts, loadSavedPosts} from "../actions";
 
@@ -32,8 +32,8 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
 
     async componentDidMount() {
         this.setState({personalPostList: await getPostsByUserId(this.props.userDisplayInfo._id, this.props.userInfo)});
-        this.props.loadSavedPosts(await getPostsByIds(this.props.userDisplayInfo.savedPostIds, this.props.userInfo));
-        this.props.loadHiddenPosts(await getPostsByIds(this.props.userDisplayInfo.hiddenPostIds, this.props.userInfo));
+        this.props.loadSavedPosts(await getSavedPosts(this.props.userDisplayInfo, this.props.userInfo));
+        this.props.loadHiddenPosts(await getHiddenPosts(this.props.userDisplayInfo, this.props.userInfo));
     }
 
     viewPersonalPosts = async () => {

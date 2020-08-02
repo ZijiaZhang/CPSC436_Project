@@ -45,7 +45,14 @@ const userSchema = new Schema({
     savedPostIds: [ObjectId],
     hiddenPostIds: [ObjectId],
     blackListUserIds: [ObjectId],
-    groups: [String]
+    groups: [String],
+    courses: [{
+        name: String,
+        activity: String,
+        section: String,
+        term: String,
+        lastUpdated: String
+    }]
 });
 
 userSchema.plugin(passportLocalMongoose);

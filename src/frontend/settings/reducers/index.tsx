@@ -21,6 +21,7 @@ let displayedUser: IUser = {
     hiddenPostIds: [],
     blackListUserIds: [],
     groups: [],
+    courses: []
 };
 
 let loginUser: IUser = {
@@ -37,7 +38,8 @@ let loginUser: IUser = {
     savedPostIds: [],
     hiddenPostIds: [],
     blackListUserIds: [],
-    groups: []
+    groups: [],
+    courses: []
 };
 let displayedFriendList: IUser[] = [];
 let userFriendList: IUser[] = [];
@@ -58,12 +60,6 @@ export const userFriendsReducer = (friendList: IUser[] = userFriendList.slice(),
     return friendList;
 };
 
-const inputDraftReducer = (draft = "", action: { type: string; saveInputDraft: string; }) => {
-    if (action.type === 'SAVE_DRAFT') {
-        return action.saveInputDraft;
-    }
-    return draft;
-};
 const postListReducer = (posts = postList.slice(), action: any) => {
     switch(action.type) {
         case 'LOAD_POST':
@@ -93,16 +89,25 @@ const savedPostsReducer = (savedPosts = savedPostList.slice(), action: any) => {
     if (action.type === "LOAD_SAVED_POSTS") {
         savedPostList = action.loadSavedPosts;
         return action.loadSavedPosts;
+    } else if (action.type === "DELETE_POST") {
+        let deletePost = savedPosts.findIndex(post => post.id === action.deletePost);
+        savedPosts.splice(deletePost, 1);
+        return savedPosts.slice();
     }
     return savedPosts;
 };
 const hiddenPostsReducer = (hiddenPosts = hiddenPostList.slice(), action: any) => {
     if (action.type === "LOAD_HIDDEN_POSTS") {
-        hiddenPosts = action.loadHiddenPosts;
+        hiddenPostList = action.loadHiddenPosts;
         return action.loadHiddenPosts;
+    } else if (action.type === "DELETE_POST") {
+        let deletePost = hiddenPosts.findIndex(post => post.id === action.deletePost);
+        hiddenPosts.splice(deletePost, 1);
+        return hiddenPosts.slice();
     }
     return hiddenPosts;
 };
+
 const recommendedUsersReducer = (userList = recommendedUsers.slice(), action: any) => {
     if (action.type === "LOAD_REC_USERS") {
         recommendedUsers = action.loadRecommendedUsers;
@@ -144,7 +149,6 @@ const tagListReducer = (tags = tagList, action: any) => {
 
 export default combineReducers({
     postList: postListReducer,
-    inputDraft: inputDraftReducer,
     userInfo: userInfoReducer,
     userFriends: userFriendsReducer,
     savedPosts: savedPostsReducer,

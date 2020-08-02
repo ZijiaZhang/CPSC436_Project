@@ -132,7 +132,8 @@ usersRouter.patch('/:username', (req, res, next) => {
                 res.json(user);
             }
         })
-        .catch(() => {
+        .catch((err) => {
+            console.log(err);
             res.status(500).json({message: `Failed to update user with username ${username}`});
         })
 });
