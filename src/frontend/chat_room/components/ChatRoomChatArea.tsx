@@ -52,6 +52,10 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
                 setUnread(true);
         })
     }
+
+    componentDidUpdate(prevProps: Readonly<IChatRoomChatAreaProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        document.querySelector('.central-panel')!.scrollTo(0, document.querySelector('.central-panel')!.scrollHeight)
+    }
 }
 
 const mapStateToProps = (state: ChatRoomState) => {

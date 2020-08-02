@@ -12,7 +12,6 @@ function handle_message(messages: ISingleMessage[] = [],
                         action: any): ISingleMessage[]{
     switch (action.type){
         case ChatRoomActions.RECEIVE_INITIAL_MESSAGE:
-            console.log(action.message);
             return action.message;
         case ChatRoomActions.SEND_MESSAGE:
             return update(messages,

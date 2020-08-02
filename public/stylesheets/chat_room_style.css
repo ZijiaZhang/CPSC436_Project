@@ -11,6 +11,7 @@
   background: #8CA8D8;
   color: white;
   display: inline-block;
+  border-radius: 10px;
 }
 
 /*https://codepen.io/grayghostvisuals/pen/GqzRox*/
@@ -44,6 +45,16 @@
 .sent{
   text-align: right;
   float: right;
+}
+
+.conversation-bubble.sent{
+  background-color: #4CAF50;
+}
+
+.conversation-bubble.sent:before{
+  color: black;
+  border-top: 12.5px solid #4CAF50;
+  border-top-width: 25px;
 }
 
 .conversation-bubble.unsent{
@@ -85,6 +96,7 @@ img.conversation-avatar-sent {
   position: sticky;
   bottom: 10px;
   width: 100%;
+
 }
 
 .chat-room-text-input-wrap{
@@ -94,10 +106,24 @@ img.conversation-avatar-sent {
 .chat-room-text-input{
   font-size: 2em;
   width: 100%;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  border-right: none;
+  border-color: transparent;
+  background-color: lightgray;
 }
 
 .chat-room-title{
   text-align: center;
   position: sticky;
   top: 0;
+}
+
+.button-enabled{
+  border-bottom-right-radius: 30px;
+  border-top-right-radius: 30px;
+  border-left: none;
+  background-color: #4CAF50;
+  color: white;
+  border-color: transparent;
 }
