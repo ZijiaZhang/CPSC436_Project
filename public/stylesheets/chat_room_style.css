@@ -82,6 +82,9 @@ img.conversation-avatar-sent {
 .chat-room-input-area{
   display: flex;
   justify-content: center;
+  position: sticky;
+  bottom: 10px;
+  width: 100%;
 }
 
 .chat-room-text-input-wrap{
@@ -95,4 +98,6 @@ img.conversation-avatar-sent {
 
 .chat-room-title{
   text-align: center;
+  position: sticky;
+  top: 0;
 }
