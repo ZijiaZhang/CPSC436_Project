@@ -30,12 +30,28 @@ class FriendsPanel extends React.Component<IFriendsPanelProps, IFriendPanelState
     toggleFriendList = () => {
         const node = this.rightCollapse.current;
         if (node) {
-            this.width = this.width || node.clientWidth;
-            node.style.width = node.style.width =='0px' ? this.width.toString() :'0px';
+            node.style.width =='0px' ? this.expand(): this.retract();
         }
     };
 
+    retract(){
+        let element = this.rightCollapse.current;
+        if (element) {
+            element.style.width = "0px";
+        }
+    }
+
+    expand() {
+        let element = this.rightCollapse.current;
+        if (element) {
+            element.style.width = '';
+        }
+    }
+
     async componentDidMount() {
+        if (window.innerWidth < 1100){
+            this.retract();
+        }
         const curUser = await getCurrentUser();
         this.props.loadUserInfo(curUser);
         const userFriendList = await getManyUsersInfo(this.props.userInfo.friendUsernames);
@@ -51,9 +67,9 @@ class FriendsPanel extends React.Component<IFriendsPanelProps, IFriendPanelState
 
     render() {
         return (
-            <div>
+            <div  className="right_collapse" ref={this.rightCollapse}>
                 <a className="glyphicon glyphicon-search right-open-button" onClick={() => this.toggleFriendList()}/>
-                <div ref={this.rightCollapse} className="right_collapse">
+                <div>
                 <ul className="myFriend">
                     <p> Friends</p>
                     {this.props.userFriends.map((friend) =>
@@ -63,6 +79,12 @@ class FriendsPanel extends React.Component<IFriendsPanelProps, IFriendPanelState
             </div>
             
         );
+    }
+
+    componentDidUpdate(prevProps: Readonly<IFriendsPanelProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if (window.innerWidth < 1100){
+            this.retract();
+        }
     }
 
 }

@@ -11,7 +11,6 @@ interface INavigationBarProps {
 
 class NavigationBar extends React.Component<INavigationBarProps, {}> {
     sideBar = React.createRef<HTMLDivElement>();
-    width: number = 0;
 
     constructor(props:INavigationBarProps){
         super(props);
@@ -20,16 +19,29 @@ class NavigationBar extends React.Component<INavigationBarProps, {}> {
     toggleButton = () => {
         let element = this.sideBar.current;
         if (element) {
-            this.width = this.width || element.clientWidth;
-            element.style.width = element.style.width==="0px" ? this.width.toString(): "0px";
+            element.style.width==="0px" ? this.expand(): this.retract();
         }
     };
 
+    retract(){
+        let element = this.sideBar.current;
+        if (element) {
+            element.style.width = "0px";
+        }
+    }
+
+    expand() {
+        let element = this.sideBar.current;
+        if (element) {
+            element.style.width = '';
+        }
+    }
+
     render() {
         return (
-            <div className={'sidebar-container'}>
+            <div className={'sidebar-container'} ref={this.sideBar}>
                 <button className="openbtn" onClick={() => this.toggleButton()}>&#9776;</button>
-                <div ref={this.sideBar} className="sidebar">
+                <div className="sidebar">
                 <NavigationItems />
                 </div>
             </div>
@@ -37,11 +49,20 @@ class NavigationBar extends React.Component<INavigationBarProps, {}> {
     }
 
     async componentDidMount() {
+        if (window.innerWidth < 1100){
+            this.retract();
+        }
 		try {
 			let data = await requestAPIJson('/api/v1/users');
             this.props.loadUserInfo(data);
 		} catch(e) {
             console.log(e.message);
+        }
+    }
+
+    componentDidUpdate(prevProps: Readonly<INavigationBarProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if (window.innerWidth < 1100){
+            this.retract();
         }
     }
 }
