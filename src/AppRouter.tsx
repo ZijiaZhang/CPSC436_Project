@@ -23,11 +23,7 @@ class AppRouter extends Component {
     static socket: SocketIOClient.Socket;
     constructor(props:{}) {
         super(props);
-        let socketProtocol = (window.location.protocol === 'https') ? 'wss' : 'ws';
-        AppRouter.socket = io.connect(`${socketProtocol}://${window.location.host}`, {reconnection: false});
-        AppRouter.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
-            setUnread(true);
-        });
+
     }
 
 
@@ -44,8 +40,9 @@ class AppRouter extends Component {
     }
 }
 
-const Home = () => {
-    return (
+class Home extends React.Component<{}, {}> {
+    render(){
+        return (
         <Provider store={createStore(userReducers)}>
             <div className={'row'}>
                 <NavigationBar/>
@@ -60,6 +57,16 @@ const Home = () => {
             </div>
         </Provider>
     );
-};
+    }
+
+    componentDidMount(): void {
+        let socketProtocol = (window.location.protocol === 'https') ? 'wss' : 'ws';
+        AppRouter.socket = io.connect(`${socketProtocol}://${window.location.host}`, {reconnection: false});
+        AppRouter.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
+            setUnread(true);
+        });
+    }
+}
+
 
 export default AppRouter;
