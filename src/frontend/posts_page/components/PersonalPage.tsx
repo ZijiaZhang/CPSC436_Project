@@ -18,7 +18,6 @@ interface IPersonalPageProps {
 interface IPersonalPageState {
     viewOption: string,
     personalPostList: any[],
-
 }
 
 class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageState> {

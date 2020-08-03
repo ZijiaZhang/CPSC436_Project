@@ -272,6 +272,7 @@
 .comment-profile-photo{
     height: 40px;
     border-radius: 50px;
+    width: 40px;
 }
 .hidden-post{
     height: 28px;
