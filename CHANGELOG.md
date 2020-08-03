@@ -2,6 +2,13 @@
 
 All changes will be logged here
 
+## 0.30.1 [2020-08-02]
+### Fixed Bugs
+- input block not refreshed after submitting
+- allowed to send post at personal page
+- avatar size not correct at some places
+- delete unused buttons
+
 ## 0.30.0 [2020-08-02]
 ### Added
 - Notification when there is new message

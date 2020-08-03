@@ -141,8 +141,6 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
                             <span className={'fa fa-thumbs-o-up'} /> Like {this.props.post.likedUserIds.length}</button>
                         <button className="comment-button" onClick={this.displayComment}>
                             <span className={'fa fa-commenting-o'} /> Comment {this.props.post.comments.length}</button>
-                        <button className="share-button">
-                            <span className={'fa fa-share-square-o'} /> Share</button>
                     </div>
                     <div style={this.state.showComments ? {display: 'block'} : {display: 'none'}}>
                         <CommentsContainer comments={this.props.post.comments}/>

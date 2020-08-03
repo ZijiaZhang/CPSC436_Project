@@ -100,7 +100,16 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                 visibility: responseData.visibility,
                 tags: responseData.tags
             });
-            this.setState({message: '', editing: !this.state.editing, imageOption: false});
+            this.setState({
+                message: '',
+                editing: !this.state.editing,
+                visibility: 'public',
+                selectedTags: [],
+                emojiDropDown: false,
+                uploadedFiles: [],
+                filesPreview: [],
+                imageOption: false
+            });
         }
     };
 

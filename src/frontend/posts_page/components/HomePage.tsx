@@ -71,7 +71,7 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
                 <SearchBlock user={this.props.user} getPosts={this.getPosts} getUsers={this.getUsers}
                              getPersonal={this.getPersonal} searchContent={this.searchContent}/>
                 <div className="home-page-body">
-                    {this.state.componentsType === IComponentsType.personal || this.state.componentsType === IComponentsType.posts ?
+                    {this.state.componentsType === IComponentsType.posts ?
                         <InputBlock user={this.props.user}/>
                         :
                         ""
