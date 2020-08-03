@@ -2,7 +2,7 @@ import React from "react";
 import InputBlock from "./InputBlock";
 import ComponentsContainer from "./ComponentsContainer";
 import SearchBlock from "./SearchBlock";
-import {getAllUsersInfo, getPosts, getPostsByIds} from "../../shared/globleFunctions";
+import {getAllUsersInfo, getPosts} from "../../shared/globleFunctions";
 import {connect} from "react-redux";
 import {loadPosts, loadRecommendedUsers} from "../actions";
 import {IUser} from "../../../shared/ModelInterfaces";

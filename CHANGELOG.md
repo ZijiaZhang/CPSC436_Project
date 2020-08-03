@@ -2,6 +2,13 @@
 
 All changes will be logged here
 
+## 0.29.2 [2020-08-02]
+### Fixed Bugs
+- Some Styling
+- Error when doing hide post -> delete post
+### Added
+- User info - courses
+
 ## 0.29.1 [2020-07-28]
 ### Fixed Bugs
 - Avatar at profile page not updated after changing

@@ -371,3 +371,74 @@ div.ReactModal__Overlay .user-profile-page {
 .settings-avatar-button{
     margin: 5px;
 }
+#user-timetable td input{
+    width: 120px;
+}
+.user-profile-timetable-block caption{
+    background: royalblue;
+    border-radius: 5px;
+    width: 100%;
+    display: block;
+}
+.user-profile-timetable-block caption span{
+    color: white;
+    font-weight: bold;
+    position: relative;
+    left: 40%;
+    font-size: 12pt;
+}
+.user-profile-timetable-block caption button{
+    color: skyblue;
+    background: none;
+    border: none;
+    margin-left: 10px;
+    font-size: 10pt;
+    float: right;
+}
+.user-profile-timetable-block caption button:hover{
+    text-decoration: underline;
+}
+#user-timetable th{
+    border: 1px solid black;
+    padding: 5px;
+    color: #1031ff !important;
+    background-color: skyblue;
+}
+#user-timetable td{
+    border: 1px solid black;
+    padding: 5px;
+}
+#user-timetable tr:nth-child(even) {
+    background-color: #eee;
+}
+#user-timetable tr:nth-child(odd) {
+    background-color: #fff;
+}
+#user-timetable tr td button{
+    border: none;
+    background: none;
+}
+.user-profile-timetable-block{
+    width: 90%;
+    margin-left: 2%;
+}
+.user-timetable-add-new-button{
+    float: right;
+    color: limegreen;
+}
+.edit-course-submit-button{
+    color: limegreen;
+    margin: 2px;
+}
+.edit-course-cancel-button{
+    color: red;
+    margin: 2px;
+}
+.user-timetable-page-stuffs{
+    border: none;
+    background: none;
+    float: right;
+}
+.edit-course-delete-button{
+    float: right;
+}

@@ -4,12 +4,6 @@ export const addPost = (newPost: any) => {
         addPost: newPost
     }
 };
-export const saveInputDraft = (curInput: string) => {
-    return {
-        type: 'SAVE_DRAFT',
-        saveInputDraft: curInput
-    }
-};
 export const updateLike = (likes: number, id: string) => {
     return {
         type: 'UPDATE_LIKE',

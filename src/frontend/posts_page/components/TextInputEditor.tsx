@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {addPost, saveInputDraft} from "../actions";
+import {addPost} from "../actions";
 import VisibilitySetting from "./VisibilitySetting";
 import CreatableSelect from 'react-select/creatable';
 import Modal from "react-modal";
@@ -12,8 +12,6 @@ import EmojiBlock from "./EmojiBlock";
 
 interface ITextareaProps {
     addPost: any,
-    saveInputDraft: any,
-    inputDraft: string,
     opened: boolean,
     postList: any[],
     user: IUser,
@@ -39,7 +37,7 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
         super(props);
         this.state = {
             editing: false,
-            message: this.props.inputDraft,
+            message: "",
             visibility: 'public',
             selectedTags: [],
             emojiDropDown: false,
@@ -60,12 +58,14 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
 
     sendPost = async (event: any) => {
         event.preventDefault();
-        if (this.state.message.trim() !== '') {
+        if (this.state.message.trim() === ''){
+            alert("Can't send an empty post!");
+        } else {
+            const fileList = await this.uploadFileSubmit();
             let d = new Date();
             let time = d.getHours() + ':' + d.getMinutes();
             let date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
             let tagList = [];
-            const fileList = await this.uploadFileSubmit();
             if (this.state.selectedTags !== null) {
                 for (let nextTag of this.state.selectedTags) {
                     let matchTag = this.props.tagList.find(tag => tag.name === nextTag.value);
@@ -114,10 +114,6 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
 
     setPrivate = () => {
         this.setState({visibility: 'private'});
-    };
-
-    saveDraft = () => {
-        this.props.saveInputDraft(this.state.message);
     };
 
     cancelEdit = () => {
@@ -207,7 +203,6 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                     </div>
                     <div id="Post-buttons">
                         <button id="send-post" className="post-finalize-button" onClick={this.sendPost}>Post My Message!</button>
-                        <button className="post-finalize-button" onClick={this.saveDraft}>Save Draft</button>
                         <button className="post-finalize-button" onClick={this.cancelEdit}>Cancel</button>
                     </div>
                 </div>
@@ -216,12 +211,11 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
     }
 }
 
-const mapStateToProps = (state: { postList: any; inputDraft: any; tagList: any}) => {
+const mapStateToProps = (state: { postList: any; tagList: any}) => {
     return {
         postList: state.postList,
-        inputDraft: state.inputDraft,
         tagList: state.tagList
     };
 };
 
-export default connect(mapStateToProps, {addPost, saveInputDraft, loadTags, addTag})(TextInputEditor);
+export default connect(mapStateToProps, {addPost, loadTags, addTag})(TextInputEditor);
