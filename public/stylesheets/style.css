@@ -38,3 +38,7 @@ a {
   flex: 1;
   overflow: auto;
 }
+
+.unread{
+  background-color: red;
+}

@@ -1,11 +1,6 @@
 import * as React from "react";
-import {IUserProps} from "../../shared/interfaces/IUserProps";
 import {IUser} from "../../../shared/ModelInterfaces";
-export enum MessageStatus{
-    RECEIVED,
-    SENT,
-    NOT_SENT
-}
+import {MessageStatus} from "../../../shared/SocketEvents";
 
 export interface ISingleMessage {
     message: string;

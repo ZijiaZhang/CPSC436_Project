@@ -4,7 +4,10 @@ export class APICallException extends Error{
 
 export async function requestAPIJson(endPoint: string,
                                      method: 'GET'|'POST'|'PUT'|'PATCH'|'DELETE' = 'GET',
-                                     headers: Record<string,string> = {},
+                                     headers: Record<string,string> = {
+                                         'Accept': 'application/json',
+                                         'Content-Type': 'application/json',
+                                     },
                                      body: object|string|undefined = undefined,
                                      errorCallback=alert) {
     try {

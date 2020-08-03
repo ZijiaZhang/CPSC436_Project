@@ -14,9 +14,19 @@ import Register from "./frontend/login_register/components/Register"
 import {Provider} from "react-redux";
 import {createStore} from "redux";
 import userReducers from "./frontend/settings/reducers";
+import * as io from "socket.io-client";
+import {SocketEvents} from "./shared/SocketEvents";
+import {setUnread} from "./frontend/shared/globleFunctions";
 
 
 class AppRouter extends Component {
+
+    constructor(props:{}) {
+        super(props);
+
+    }
+
+
     render() {
         return (
             <Switch>
@@ -30,8 +40,11 @@ class AppRouter extends Component {
     }
 }
 
-const Home = () => {
-    return (
+export class Home extends React.Component<{}, {}> {
+    static socket: SocketIOClient.Socket;
+
+    render(){
+        return (
         <Provider store={createStore(userReducers)}>
             <div className={'row'}>
                 <NavigationBar/>
@@ -46,6 +59,16 @@ const Home = () => {
             </div>
         </Provider>
     );
-};
+    }
+
+    componentDidMount(): void {
+        let socketProtocol = (window.location.protocol === 'https') ? 'wss' : 'ws';
+        Home.socket = io.connect(`${socketProtocol}://${window.location.host}`, {reconnection: false});
+        Home.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
+            setUnread(true);
+        });
+    }
+}
+
 
 export default AppRouter;

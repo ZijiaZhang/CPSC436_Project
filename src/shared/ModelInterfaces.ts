@@ -52,6 +52,7 @@ export interface IChat {
     receiverUsername: string;
     content: string;
     time: Date;
+    read: boolean;
 }
 
 export interface IStatus {

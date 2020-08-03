@@ -1,8 +1,9 @@
 import {Action, Dispatch} from "redux";
-import {getCurrentUser, getUserInfo, user} from "../../shared/globleFunctions";
-import {ISingleMessage, MessageStatus} from "../components/ChatRoomBubbles";
+import {getCurrentUser, getUserInfo, setUnread, user} from "../../shared/globleFunctions";
+import {ISingleMessage} from "../components/ChatRoomBubbles";
 import { IChat } from "../../../shared/ModelInterfaces";
 import {requestAPIJson} from "../../shared/Networks";
+import {MessageStatus} from "../../../shared/SocketEvents";
 
 export enum ChatRoomActions{
     RECEIVE_MESSAGE,
@@ -26,7 +27,8 @@ function sendMessageAPICall(user_id: string, receiver: string | null, text: stri
 }
 
 export const sendMessage = (text: string, receiver: string|null) => {
-    return function (dispatch: Dispatch<Action>) {
+    return async function (dispatch: Dispatch<Action>) {
+        await getCurrentUser();
         dispatch({
             type: ChatRoomActions.SEND_MESSAGE_PENDING,
             message: text,
@@ -55,6 +57,7 @@ export const sendMessage = (text: string, receiver: string|null) => {
 
 async function getMessages(user_id: any, recever: any) {
     let data = await requestAPIJson(`/api/v1/chats?sender_id=${user_id}&receiver_id=${recever ? recever : user_id}`);
+    setUnread(true);
     return data.allMessages;
 }
 
@@ -69,38 +72,33 @@ export const getInitialMessages = (receiver: string| null) => {
         let user_id = user.username;
         let receive_user = await getUserInfo(receiver);
         let sent_messages = await getMessages(user_id, receiver);
-        sent_messages = sent_messages.map((m: IChat) => {
+        sent_messages = sent_messages.map((m: any) => {
             return {
                 message: m.content,
-                status:MessageStatus.SENT,
-                sender: user,
+                status:m.status,
+                sender: m.senderUsername==user_id?user: receive_user,
                 time: m.time
             }
         });
-
-        let receive_messages = await getMessages(receiver, user_id);
-        receive_messages = receive_messages.map((m: IChat) => {
-            return {
-                message: m.content,
-                status: MessageStatus.RECEIVED,
-                sender: receive_user,
-                time: m.time
-            }
-        });
-
-        receive_messages.push(...sent_messages);
-        console.log(receive_messages);
-        receive_messages.sort((a: any,b: any) => new Date(a.time).getTime() - new Date(b.time).getTime());
+        sent_messages.sort((a: any,b: any) => new Date(a.time).getTime() - new Date(b.time).getTime());
         dispatch({
             type: ChatRoomActions.RECEIVE_INITIAL_MESSAGE,
-            message: receive_messages
+            message: sent_messages
         })
     }
 };
 
 export const receiveNewMessage = (message: ISingleMessage) => {
+    console.log("message received");
+    read_message(message.sender.username);
     return {
         type: ChatRoomActions.RECEIVE_MESSAGE,
         message: message
     }
 };
+
+async function read_message(username: string) {
+    console.log({user: username});
+    await requestAPIJson('/api/v1/chats/read', 'POST', undefined, {user: username});
+    setUnread(true);
+}

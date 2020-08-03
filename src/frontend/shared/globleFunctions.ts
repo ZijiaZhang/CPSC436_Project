@@ -1,8 +1,14 @@
-import {MessageStatus} from "../chat_room/components/ChatRoomBubbles";
 import {IChat, IUser} from "../../shared/ModelInterfaces";
 import {requestAPIJson} from "./Networks";
+import {MessageStatus} from "../../shared/SocketEvents";
 
 export let user: IUser;
+export let refresh_unread: boolean = true;
+
+export function setUnread(unread: boolean) {
+    console.log('unread_set');
+    refresh_unread = unread
+}
 
 export async function getCurrentUser() {
     let temp_user = await requestAPIJson('/api/v1/users');
