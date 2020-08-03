@@ -5,13 +5,14 @@ import {connect} from "react-redux";
 import {sendMessage} from "../Actions";
 import {ButtonState} from "../../shared/enums/ButtonState";
 import {IButtonState} from "../../shared/interfaces/IButtonState";
-import {IUser} from "../../../shared/ModelInterfaces";
+import {ChatType} from "../../shared/enums/ChatType";
 
 
 interface IChatRoomSendButtonProps {
     inputBox: RefObject<ChatRoomInputBox>;
-    sendMessage: (text: string, receiver: string|null) => any;
-    user: IUser;
+    sendMessage: (text: string, receiver: string|null, chatType: ChatType) => any;
+    entityId: string;
+    chatType: ChatType;
 }
 
 export class ChatRoomSendButton extends React.Component<IChatRoomSendButtonProps, IButtonState> {
@@ -27,7 +28,7 @@ export class ChatRoomSendButton extends React.Component<IChatRoomSendButtonProps
                            if (inputBox) {
                                 const inputElement = inputBox.inputElement.current;
                                 if (inputElement)
-                                this.props.sendMessage(inputElement.value, this.props.user.username)
+                                this.props.sendMessage(inputElement.value, this.props.entityId, this.props.chatType)
                            }
                        }}>
             SEND

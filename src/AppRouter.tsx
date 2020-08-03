@@ -17,6 +17,7 @@ import userReducers from "./frontend/settings/reducers";
 import * as io from "socket.io-client";
 import {SocketEvents} from "./shared/SocketEvents";
 import {setUnread} from "./frontend/shared/globleFunctions";
+import ChatsPage from "./frontend/chats_page/components/App";
 
 
 class AppRouter extends Component {
@@ -35,6 +36,7 @@ class AppRouter extends Component {
                 <Route exact path="/" component={Home}/>
                 <Route path="/settings" component={Home}/>
                 <Route path="/chatRoom" component={Home}/>
+                <Route path="/chats" component={Home}/>
             </Switch>
         );
     }
@@ -53,6 +55,7 @@ export class Home extends React.Component<{}, {}> {
                         <Route exact path="/" component={PostPage}/>
                         <Route path="/settings" component={Settings} />
                         <Route path="/chatRoom" component={ChatRoom} />
+                        <Route path="/chats" component={ChatsPage}/>
                     </Switch>
                 </div>
                 <FriendsPanel />

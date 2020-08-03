@@ -1,16 +1,10 @@
 import {Document, Model, model, Schema} from "mongoose";
+import { IGroupChat } from "../../shared/ModelInterfaces";
 
-interface IGroupChatSchema extends Document {
-    senderUsername: string;
-    groupChatID: string;
-    content: string;
-    time: Date;
+interface IGroupChatSchema extends Document, IGroupChat {
 }
 
-export interface IGroupChat extends IGroupChatSchema {
-}
-
-interface IGroupChatModel extends Model<IGroupChat> {
+interface IGroupChatModel extends Model<IGroupChatSchema> {
 }
 
 const groupChatSchema: Schema = new Schema({
@@ -20,4 +14,4 @@ const groupChatSchema: Schema = new Schema({
     time: Date
 });
 
-export const GroupChat = model<IGroupChat, IGroupChatModel>('group_chat', groupChatSchema);
+export const GroupChat = model<IGroupChatSchema, IGroupChatModel>('group_chat', groupChatSchema);

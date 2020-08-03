@@ -69,3 +69,17 @@ export interface ICourse {
     term: string,
     lastUpdated: string
 }
+
+export interface IGroup {
+    _id: string,
+    users: string[],
+    name: string
+}
+
+export interface IGroupChat {
+    senderUsername: string;
+    groupChatID: string;
+    content: string;
+    time: Date;
+}
+

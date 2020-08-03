@@ -45,7 +45,7 @@ const userSchema = new Schema({
     savedPostIds: [ObjectId],
     hiddenPostIds: [ObjectId],
     blackListUserIds: [ObjectId],
-    groups: [String],
+    groups: [ObjectId],
     courses: [{
         name: String,
         activity: String,

@@ -2,9 +2,9 @@ import express from 'express';
 import passport from "passport";
 import {SocketStore} from "../../SocketStore";
 import {SocketEvents} from "../../../shared/SocketEvents";
-import {IUser} from "../../../shared/ModelInterfaces";
-import {GroupChat, IGroupChat} from "../../models/GroupChatModel";
-import {Group, IGroup} from "../../models/GroupModel";
+import {IUser, IGroup, IGroupChat} from "../../../shared/ModelInterfaces";
+import {GroupChat} from "../../models/GroupChatModel";
+import {Group} from "../../models/GroupModel";
 export const groupChatsRouter = express.Router();
 
 groupChatsRouter.use((req, res, next)=> {

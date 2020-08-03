@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.31.0 [2020-08-03]
+### Added
+- Add group chat and chat list page
+
 ## 0.30.1 [2020-08-02]
 ### Fixed Bugs
 - input block not refreshed after submitting

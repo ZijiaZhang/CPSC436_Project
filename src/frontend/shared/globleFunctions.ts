@@ -1,4 +1,4 @@
-import {IChat, IUser} from "../../shared/ModelInterfaces";
+import {IChat, IGroup, IUser} from "../../shared/ModelInterfaces";
 import {requestAPIJson} from "./Networks";
 import {MessageStatus} from "../../shared/SocketEvents";
 
@@ -191,6 +191,7 @@ export async function getCommentsByPost(postId: string, isLoginUsersPost: boolea
 export async function getAllTags() {
     return await requestAPIJson('/api/v1/tags');
 }
+
 export async function addNewTag(tagName: string) {
     return await requestAPIJson('/api/v1/tags',
         'POST',
@@ -198,4 +199,13 @@ export async function addNewTag(tagName: string) {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }, {name: tagName});
+}
+
+export async function getAllGroups(group_ids: string[]): Promise<IGroup[]> {
+    const promiseList = group_ids.map(groupId => requestAPIJson(`api/v1/groups/${groupId}`));
+    return await Promise.all(promiseList);
+}
+
+export async function getGroupByGroupId(groupId: string): Promise<IGroup> {
+    return await requestAPIJson(`api/v1/groups/${groupId}`);
 }
