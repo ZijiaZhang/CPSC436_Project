@@ -63,7 +63,7 @@ groupsRouter.post('/', async function (req, res, next) {
             if (!data){
                 return res.status(404).json({message: 'Group ID not found'})
             }
-            User.findOneAndUpdate({username: user.username}, {$push: {groups: groupID}}).then(
+            User.findOneAndUpdate({username}, {$push: {groups: groupID}}).then(
                 () => res.json(data)
             ).catch(
                 () => res.status(500).json({message: 'error when adding group to user'})

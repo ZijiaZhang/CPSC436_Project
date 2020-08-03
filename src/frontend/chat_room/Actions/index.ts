@@ -1,7 +1,7 @@
 import {Action, Dispatch} from "redux";
 import {getCurrentUser, getUserInfo, setUnread, user} from "../../shared/globleFunctions";
 import {ISingleMessage} from "../components/ChatRoomBubbles";
-import { IChat, IGroupChat } from "../../../shared/ModelInterfaces";
+import {IChat, IGroup, IGroupChat, IUser} from "../../../shared/ModelInterfaces";
 import {requestAPIJson} from "../../shared/Networks";
 import {MessageStatus} from "../../../shared/SocketEvents";
 import {ChatType} from "../../shared/enums/ChatType";
@@ -81,6 +81,10 @@ async function getGroupChatMessages(groupId: string) {
     return data.allMessages;
 }
 
+async function getGroupInfo(groupId: string): Promise<IGroup> {
+    return requestAPIJson(`/api/v1/groups/${groupId}`);
+}
+
 export const getInitialMessages = (receiver_id: string | null, chatType: ChatType) => {
     return async function (dispatch: Dispatch<Action>) {
         if (!user) {
@@ -117,8 +121,12 @@ export const getInitialMessages = (receiver_id: string | null, chatType: ChatTyp
             initialMessages.push(...sent_messages, ...receive_messages);
         } else {
             const groupChats = await getGroupChatMessages(receiver_id);
-            const messages: ISingleMessage[] = groupChats.map(async (chat: IGroupChat) => {
-                const sender = await getUserInfo(chat.senderUsername);
+            const group = await getGroupInfo(receiver_id);
+            const groupUsersPromises = group.users.map((username: string) => getUserInfo(username));
+            const groupUsers: IUser[] = await Promise.all(groupUsersPromises);
+
+            const messages: ISingleMessage[] = groupChats.map((chat: IGroupChat) => {
+                const sender = groupUsers.find(user => user.username === chat.senderUsername);
                 const messageStatus = chat.senderUsername === user.username ? MessageStatus.SENT : MessageStatus.RECEIVED;
                 return {
                     message: chat.content,
@@ -127,6 +135,7 @@ export const getInitialMessages = (receiver_id: string | null, chatType: ChatTyp
                     time: chat.time
                 }
             });
+
             initialMessages.push(...messages);
         }
 

@@ -4,17 +4,39 @@ import reducer from "../reducer"
 import thunk from "redux-thunk";
 import {Provider} from "react-redux";
 import ChatList from "./ChatList";
+import CreateGroupForm from "./CreateGroupForm";
 
 export const chatsPageStore = createStore(reducer, applyMiddleware(thunk));
 
-class ChatsPage extends React.Component<{}, {}> {
+interface IChatPageState {
+    isCreateGroupOpened: boolean
+}
+
+class ChatsPage extends React.Component<{}, IChatPageState> {
+    constructor(props: {}) {
+        super(props);
+        this.state = {isCreateGroupOpened: false}
+    }
+
     render() {
         return <Provider store={chatsPageStore}>
-            <div>
-                <button>+</button>
-                <ChatList/>
-            </div>
+            {this.state.isCreateGroupOpened ?
+                <CreateGroupForm closeForm={this.closeCreateGroupForm}/>
+                :
+                <div>
+                    <button onClick={this.openCreateGroupForm}>+</button>
+                    <ChatList/>
+                </div>
+            }
         </Provider>
+    }
+
+    openCreateGroupForm = () => {
+        this.setState({isCreateGroupOpened: true});
+    };
+
+    closeCreateGroupForm = () => {
+        this.setState({isCreateGroupOpened: false});
     }
 }
 

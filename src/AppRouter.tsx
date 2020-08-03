@@ -1,8 +1,10 @@
 import React, {Component} from "react";
 import {
     Route,
+    Router,
     Switch
 } from "react-router-dom";
+import {createBrowserHistory} from 'history';
 
 import PostPage from "./frontend/posts_page/components/App";
 import ChatRoom from "./frontend/chat_room/components/App";
@@ -19,10 +21,11 @@ import {SocketEvents} from "./shared/SocketEvents";
 import {setUnread} from "./frontend/shared/globleFunctions";
 import ChatsPage from "./frontend/chats_page/components/App";
 
+export const history = createBrowserHistory();
 
 class AppRouter extends Component {
 
-    constructor(props:{}) {
+    constructor(props: {}) {
         super(props);
 
     }
@@ -45,23 +48,25 @@ class AppRouter extends Component {
 export class Home extends React.Component<{}, {}> {
     static socket: SocketIOClient.Socket;
 
-    render(){
+    render() {
         return (
-        <Provider store={createStore(userReducers)}>
-            <div className={'row'}>
-                <NavigationBar/>
-                <div className="central-panel">
-                    <Switch>
-                        <Route exact path="/" component={PostPage}/>
-                        <Route path="/settings" component={Settings} />
-                        <Route path="/chatRoom" component={ChatRoom} />
-                        <Route path="/chats" component={ChatsPage}/>
-                    </Switch>
-                </div>
-                <FriendsPanel />
-            </div>
-        </Provider>
-    );
+            <Provider store={createStore(userReducers)}>
+                <Router history={history}>
+                    <div className={'row'}>
+                        <NavigationBar/>
+                        <div className="central-panel">
+                            <Switch>
+                                <Route exact path="/" component={PostPage}/>
+                                <Route path="/settings" component={Settings}/>
+                                <Route path="/chatRoom" component={ChatRoom}/>
+                                <Route path="/chats" component={ChatsPage}/>
+                            </Switch>
+                        </div>
+                        <FriendsPanel/>
+                    </div>
+                </Router>
+            </Provider>
+        );
     }
 
     componentDidMount(): void {
