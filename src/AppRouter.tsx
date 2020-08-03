@@ -20,7 +20,7 @@ import {setUnread} from "./frontend/shared/globleFunctions";
 
 
 class AppRouter extends Component {
-    static socket: SocketIOClient.Socket;
+
     constructor(props:{}) {
         super(props);
 
@@ -40,7 +40,9 @@ class AppRouter extends Component {
     }
 }
 
-class Home extends React.Component<{}, {}> {
+export class Home extends React.Component<{}, {}> {
+    static socket: SocketIOClient.Socket;
+
     render(){
         return (
         <Provider store={createStore(userReducers)}>
@@ -61,8 +63,8 @@ class Home extends React.Component<{}, {}> {
 
     componentDidMount(): void {
         let socketProtocol = (window.location.protocol === 'https') ? 'wss' : 'ws';
-        AppRouter.socket = io.connect(`${socketProtocol}://${window.location.host}`, {reconnection: false});
-        AppRouter.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
+        Home.socket = io.connect(`${socketProtocol}://${window.location.host}`, {reconnection: false});
+        Home.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
             setUnread(true);
         });
     }

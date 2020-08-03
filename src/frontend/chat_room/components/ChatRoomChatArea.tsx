@@ -8,7 +8,7 @@ import {MessageStatus, SocketEvents} from "../../../shared/SocketEvents";
 import {convert_to_ISingeleMessage, setUnread} from "../../shared/globleFunctions";
 import {IChat, IUser} from "../../../shared/ModelInterfaces";
 import {requestAPIJson} from "../../shared/Networks";
-import AppRouter from "../../../AppRouter";
+import {Home} from "../../../AppRouter";
 
 
 
@@ -23,8 +23,8 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
 
     constructor(props: IChatRoomChatAreaProps) {
         super(props);
-        AppRouter.socket.off(SocketEvents.ReceiveMessage);
-        AppRouter.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
+        Home.socket.off(SocketEvents.ReceiveMessage);
+        Home.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
             let mesage: IChat = data.message;
             if (mesage.senderUsername!== this.props.user.username) {
                 setUnread(true);
@@ -47,8 +47,8 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
 
     componentWillUnmount(): void {
         console.log("unmount");
-        AppRouter.socket.off(SocketEvents.ReceiveMessage);
-        AppRouter.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
+        Home.socket.off(SocketEvents.ReceiveMessage);
+        Home.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
                 setUnread(true);
         })
     }
