@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import CSS from 'csstype';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
+import {Header} from "./Header";
 
 type LocationState = {
     from: Location;
@@ -34,7 +35,10 @@ class Register extends Component<RouteComponentProps<{}, StaticContext, Location
             paddingTop: "50px"
          };
         return (
+            <div>
+                <Header/>
             <div className="col-md-6 col-md-offset-3" style={register_style}>
+
             <h2>Register</h2>
             <form name="form" action="/api/v1/users/register" method="post">
                 <div className='form-group'>
@@ -59,7 +63,7 @@ class Register extends Component<RouteComponentProps<{}, StaticContext, Location
                 </div>
                 {<div className="help-block">{new URLSearchParams(this.props.location.search).get("err")}</div>}
             </form>
-        </div>
+        </div></div>
         );
     }
 }

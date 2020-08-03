@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import CSS from 'csstype';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
+import {Header} from "./Header";
 
 type LocationState = {
     from: Location;
@@ -28,7 +29,10 @@ class Login extends Component<RouteComponentProps<{}, StaticContext, LocationSta
            paddingTop: "50px"
         };
         return (
+            <div>
+            <Header/>
             <div className="col-md-6 col-md-offset-3" style={login_style}>
+
             <h2>Login</h2>
             <form name="form" action="/api/v1/users/login" method="post" >
                 <div className='form-group'>
@@ -45,7 +49,7 @@ class Login extends Component<RouteComponentProps<{}, StaticContext, LocationSta
                 </div>
                 {<div className="help-block">{new URLSearchParams(this.props.location.search).get("err")}</div>}
             </form>
-        </div>
+        </div></div>
         );
     }
 }
