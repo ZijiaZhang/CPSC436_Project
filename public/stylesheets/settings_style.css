@@ -378,6 +378,7 @@ div.ReactModal__Overlay .user-profile-page {
     background: royalblue;
     border-radius: 5px;
     width: 100%;
+    display: block;
 }
 .user-profile-timetable-block caption span{
     color: white;
@@ -416,9 +417,6 @@ div.ReactModal__Overlay .user-profile-page {
 #user-timetable tr td button{
     border: none;
     background: none;
-}
-#user-timetable tr td input{
-
 }
 .user-profile-timetable-block{
     width: 90%;
