@@ -11,7 +11,7 @@
   width: 200px;
   box-shadow: 5px 3px 5px 3px lightgrey;
   transition: 0.3s ease-in-out;
-  overflow: hidden;
+  overflow: visible;
   z-index: 1;
   padding-top: 64px;
 }
@@ -189,4 +189,3 @@
     margin-left: calc(50% - 50px);
   }
 }
-

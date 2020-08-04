@@ -439,3 +439,7 @@ div.ReactModal__Overlay .user-profile-page {
 .edit-course-delete-button{
     float: right;
 }
+
+div.ReactModal__Overlay {
+    z-index: 5;
+} 
