@@ -1,8 +1,7 @@
 
 header {
   text-align: center;
-  background-color: #0e2473;
-  color: #e9e1e1;
+
   padding: 20px;
   font: Arial;
   background-image: url('../images/background.jpg') ;
@@ -29,7 +28,7 @@ a {
 .my-row{
   display: flex;
   height: 100%;
-  background: #f1f1f1;
+
   margin-right: 0 !important;
   width: 100vw;
 }
@@ -38,6 +37,12 @@ a {
   flex: 1;
   overflow-y: auto;
   height: 100%;
+  background-color: #eee;
+  scrollbar-width: none;
+}
+
+.central-panel::-webkit-scrollbar {
+  display: none;
 }
 
 #root{

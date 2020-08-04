@@ -22,12 +22,14 @@ class NavigationItems extends React.Component<INavigationItemsProps, {}> {
     render() {
         return (
         <div>
-            <a><img src={this.props.userInfo.avatarPath ? this.props.userInfo.avatarPath : './images/photoP.png'} alt='img not found'
-                    width="100" height="100"/><p className="username-display">{this.props.userInfo.fullname}</p></a>
-            <Link to="/" className="glyphicon glyphicon-home">Home</Link>
-            <Link to="/chats" className="glyphicon glyphicon-envelope">Chats</Link>
-            <Link to="/settings" className="glyphicon glyphicon-cog" onClick={this.loadUserProfile}>Profile</Link>
-            <a href="/api/v1/users/logout" className="glyphicon glyphicon-log-out">Logout</a>
+            <ul>
+            <div className="sidebar-avatar-container"><img src={this.props.userInfo.avatarPath ? this.props.userInfo.avatarPath : './images/photoP.png'} alt='img not found'
+                    width="100" height="100"/><p className="username-display">{this.props.userInfo.fullname}</p></div>
+            <Link to="/" ><li className="glyphicon glyphicon-home">Home</li></Link>
+                <Link to="/chats" ><li className="glyphicon glyphicon-envelope">Chats</li></Link>
+                <Link to="/settings" onClick={this.loadUserProfile}><li className="glyphicon glyphicon-cog">Profile</li></Link>
+                <a href="/api/v1/users/logout"><li className="glyphicon glyphicon-log-out">Logout</li></a>
+            </ul>
         </div>
         );
     }

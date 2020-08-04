@@ -9,21 +9,44 @@
 
 .sidebar-container{
   width: 200px;
-  background-color: #0e2473;
+  box-shadow: 5px 3px 5px 3px lightgrey;
   transition: 0.3s ease-in-out;
   overflow: hidden;
+  z-index: 0;
+}
+
+.sidebar ul{
+  padding-left: 0;
+}
+
+.sidebar li{
+  padding: 10px 20px 10px 10px;
+  text-decoration: none;
+  font-size: 20px;
+
+  display: flex;
+  flex-flow: row nowrap;
+  border-radius: 5px;
+}
+
+.sidebar-avatar-container{
+  margin: 50px;
+  font-size: 25px;
 }
 
 .sidebar a {
-  margin: 0 30px 60px 50px;
+  padding: 20px;
+  margin: 0 30px 30px 30px;
   text-decoration: none;
   font-size: 25px;
-  color: #e9e1e1;
+  color: black;
   display: block;
+  border-radius: 5px;
 }
 
 .sidebar a:hover {
-  color: #f1f1f1;
+  background: royalblue;
+  color: white;
 }
 
 .sidebar .openbtn {
@@ -39,8 +62,7 @@
   position: fixed;
   font-size: 20px;
   cursor: pointer;
-  background-color: #0e2473;
-  color: white;
+
   height: 40px;
   width: 40px;
   border: none;
@@ -64,10 +86,10 @@
   height: 100%;
   top: 108px;
   right: 0;
-  background-color: #0e2473;
+
   overflow-x: hidden;
   padding-top: 64px;
-  color: #e9e1e1;
+
   display: block;
   transition: 0.4s;
 }
@@ -82,12 +104,17 @@
   padding: 10px 20px 10px 10px;
   text-decoration: none;
   font-size: 20px;
-  color: #e9e1e1;
+  color: black;
   display: flex;
   flex-flow: row nowrap;
   border-radius: 5px;
   margin: 15px 10px 15px 10px;
 }
+
+.myFriend li a{
+  color: black;
+}
+
 .myFriend li:hover {
   background: royalblue;
   color: white;

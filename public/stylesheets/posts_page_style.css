@@ -1,5 +1,5 @@
 #post-blog-page{
-    background: #f1f1f1;
+
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
@@ -289,7 +289,7 @@
 }
 .search-block{
     display: flex;
-    background:#0e2473;
+
     font-size: 16px;
     font-weight: bold;
     font-family: Arial, sans-serif;
@@ -297,6 +297,8 @@
     position: sticky;
     top: 0;
     z-index: 1;
+    background-color: #fff;
+    box-shadow: 5px 3px 5px 3px lightgrey;
 }
 .search-block-search-bar{
     display: inline-block;
@@ -314,6 +316,7 @@
     width: calc(100% - 100px);
     height: 46px;
     font-size: 16px;
+    background-color: lightgray;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     border: 1px solid transparent;
@@ -324,8 +327,9 @@
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     border: 1px solid transparent;
-    color: #6c757d;
-    ;
+    color: #fff;
+    background-color: #0e2473;
+
 }
 .search-block-nav-buttons{
     display: inline-block;
@@ -334,8 +338,7 @@
 }
 .nav-button-to-some-page{
     display: inline-block;
-    background:#0e2473;
-    color: white;
+
     border: none;
     margin: 0 10px;
     border-radius: 8px;
