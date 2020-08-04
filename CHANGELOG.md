@@ -2,6 +2,9 @@
 
 All changes will be logged here
 
+## 0.32.2 [2020-08-03]
+- Fix Bug causing open button to disappear in safari, black text in the header, and so on
+
 ## 0.32.1 [2020-08-03]
 - Fix Bug causing all chat are 'SENT'
 

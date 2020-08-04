@@ -312,6 +312,11 @@
 
     }
 }
+@media screen and (max-width: 350px) {
+    .search-block{
+        padding-left: 5%;
+    }
+}
 .search-input-block{
     width: calc(100% - 100px);
     height: 46px;
