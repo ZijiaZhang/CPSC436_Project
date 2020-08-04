@@ -502,3 +502,10 @@
     left: 60px;
     z-index: 100;
 }
+
+@media screen and (max-width: 1024px) {
+    .search-bar-logo{
+        display: none;
+    }
+}
+

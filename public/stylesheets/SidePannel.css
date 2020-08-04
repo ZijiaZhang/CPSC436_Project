@@ -7,12 +7,13 @@
 }
 
 .sidebar-container{
+  background-color: #fff;
   width: 200px;
   box-shadow: 5px 3px 5px 3px lightgrey;
   transition: 0.3s ease-in-out;
   overflow: hidden;
   z-index: 1;
-  margin-top: 64px;
+  padding-top: 64px;
 }
 
 .sidebar ul{
@@ -86,7 +87,7 @@
   height: 100%;
   top: 108px;
   right: 0;
-
+  background-color: #fff;
   overflow-x: hidden;
   padding-top: 64px;
 
@@ -172,18 +173,20 @@
     height: 100%;
   }
 
-  .sidebar a{
-    width: 100%;
-    text-align: center;
-  }
-
   .username-display{
-    width: 100%;
     text-align: center;
   }
 
   .myFriend li{
     justify-content: center;
+  }
+
+  .sidebar li {
+    margin-left: calc(50% - 50px);
+  }
+
+  .sidebar-avatar-container {
+    margin-left: calc(50% - 50px);
   }
 }
 
