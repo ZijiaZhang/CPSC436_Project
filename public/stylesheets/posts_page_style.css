@@ -288,7 +288,7 @@
     margin-right: 10px;
 }
 .search-block{
-    display: flex;
+    display: block;
 
     font-size: 16px;
     font-weight: bold;
@@ -304,8 +304,7 @@
     display: inline-block;
     position: relative;
     padding: 8px;
-
-    width: 40%;
+    width: fit-content;
 }
 @media screen and (max-width: 1024px) {
     .search-block-search-bar{
@@ -502,10 +501,3 @@
     left: 60px;
     z-index: 100;
 }
-
-@media screen and (max-width: 1024px) {
-    .search-bar-logo{
-        display: none;
-    }
-}
-

@@ -63,7 +63,7 @@
   position: fixed;
   font-size: 20px;
   cursor: pointer;
-  background: #fff;
+  background: transparent;
   height: 40px;
   width: 40px;
   border: none;
