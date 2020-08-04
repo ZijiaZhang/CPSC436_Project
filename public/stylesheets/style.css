@@ -41,8 +41,9 @@ a {
   scrollbar-width: none;
 }
 
-.central-panel::-webkit-scrollbar {
+::-webkit-scrollbar {
   display: none;
+  background: transparent;
 }
 
 #root{

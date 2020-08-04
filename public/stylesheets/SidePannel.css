@@ -4,7 +4,6 @@
   top: 0;
   left: 0;
   overflow-x: hidden;
-  padding-top: 64px;
 }
 
 .sidebar-container{
@@ -12,7 +11,8 @@
   box-shadow: 5px 3px 5px 3px lightgrey;
   transition: 0.3s ease-in-out;
   overflow: hidden;
-  z-index: 0;
+  z-index: 1;
+  margin-top: 64px;
 }
 
 .sidebar ul{
@@ -62,7 +62,7 @@
   position: fixed;
   font-size: 20px;
   cursor: pointer;
-
+  background: #fff;
   height: 40px;
   width: 40px;
   border: none;
@@ -89,6 +89,8 @@
 
   overflow-x: hidden;
   padding-top: 64px;
+
+  padding-left: 0;
 
   display: block;
   transition: 0.4s;
@@ -142,6 +144,7 @@
 .right_collapse {
   transition: 0.3s ease-in-out;
   width: 200px;
+  box-shadow: -5px 3px 5px 3px lightgrey;
 }
 
 .username-display {
