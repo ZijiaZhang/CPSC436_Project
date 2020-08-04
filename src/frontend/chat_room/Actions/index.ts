@@ -99,26 +99,17 @@ export const getInitialMessages = (receiver_id: string | null, chatType: ChatTyp
         if (chatType === ChatType.IndividualChat) {
             let user_id = user.username;
             let receive_user = await getUserInfo(receiver_id);
-            let sent_messages = await getMessages(user_id, receiver_id);
-            sent_messages = sent_messages.map((m: IChat) => {
+            let messages = await getMessages(user_id, receiver_id);
+            messages = messages.map((m: IChat) => {
                 return {
                     message: m.content,
                     status: MessageStatus.SENT,
-                    sender: user,
+                    sender: m.senderUsername === user_id ? user : receive_user,
                     time: m.time
                 }
             });
 
-            let receive_messages = await getMessages(receiver_id, user_id);
-            receive_messages = receive_messages.map((m: IChat) => {
-                return {
-                    message: m.content,
-                    status: MessageStatus.RECEIVED,
-                    sender: receive_user,
-                    time: m.time
-                }
-            });
-            initialMessages.push(...sent_messages, ...receive_messages);
+            initialMessages.push(...messages);
         } else {
             const groupChats = await getGroupChatMessages(receiver_id);
             const group = await getGroupInfo(receiver_id);

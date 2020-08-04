@@ -36,6 +36,14 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
 
     render() {
         console.log('render');
+        let curr_user_id = new URLSearchParams(this.props.location.search).get("user");
+        let curr_group_id = new URLSearchParams(this.props.location.search).get("group");
+
+        if (curr_user_id && curr_user_id !== (this.state.entity as IUser)?.username || curr_group_id && curr_group_id !== (this.state.entity as IGroup)?._id) {
+            this.update_entity();
+            return (<h1>Loading</h1>);
+        }
+
         switch (this.state.chatType) {
             case ChatType.IndividualChat:
                 if (this.state.entity) {
@@ -43,11 +51,12 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
                     return (
                         <Provider store={chatRoomStore}>
                             <div>
-                                <ChatRoomTitle name={user!.username}/>
+                                <ChatRoomTitle name={user!.fullname}/>
                                 <ChatRoomChatAreaConnected chatType={ChatType.IndividualChat} entity={user}/>
                                 <div className={'chat-room-input-area'}>
                                     <ChatRoomInputBox ref={this.ref}/>
-                                    <ChatRoomSendButtonConnected inputBox={this.ref} entityId={user.username} chatType={ChatType.IndividualChat}/>
+                                    <ChatRoomSendButtonConnected inputBox={this.ref} entityId={user.username}
+                                                                 chatType={ChatType.IndividualChat}/>
                                 </div>
                             </div>
                         </Provider>);
@@ -65,7 +74,8 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
                                 <ChatRoomChatAreaConnected chatType={ChatType.GroupChat} entity={group}/>
                                 <div className={'chat-room-input-area'}>
                                     <ChatRoomInputBox ref={this.ref}/>
-                                    <ChatRoomSendButtonConnected inputBox={this.ref} entityId={group._id} chatType={ChatType.GroupChat}/>
+                                    <ChatRoomSendButtonConnected inputBox={this.ref} entityId={group._id}
+                                                                 chatType={ChatType.GroupChat}/>
                                 </div>
                             </div>
                         </Provider>);
@@ -96,7 +106,7 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
                 return;
             }
         } else {
-           if (!user_id) {
+            if (!user_id) {
                 try {
                     let user = await getCurrentUser();
                     this.setState({entity: user, chatType: ChatType.IndividualChat});
