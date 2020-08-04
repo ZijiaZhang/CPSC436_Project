@@ -50,7 +50,7 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
                     const user = this.state.entity as IUser;
                     return (
                         <Provider store={chatRoomStore}>
-                            <div>
+                            <div className="chat-room-container">
                                 <ChatRoomTitle name={user!.fullname}/>
                                 <ChatRoomChatAreaConnected chatType={ChatType.IndividualChat} entity={user}/>
                                 <div className={'chat-room-input-area'}>
