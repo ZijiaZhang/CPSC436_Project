@@ -108,8 +108,9 @@ img.conversation-avatar-sent {
   width: 100%;
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
+  border: 1px solid transparent;
+  border-left: none;
   border-right: none;
-  border-color: transparent;
   background-color: lightgray;
 }
 
@@ -122,8 +123,14 @@ img.conversation-avatar-sent {
 .button-enabled{
   border-bottom-right-radius: 30px;
   border-top-right-radius: 30px;
-  border-left: none;
+
   background-color: #4CAF50;
   color: white;
-  border-color: transparent;
+  border: 1px solid transparent;
+  border-left: none;
+}
+
+.chat-room-container{
+  padding-left: 60px;
+  padding-right: 60px;
 }

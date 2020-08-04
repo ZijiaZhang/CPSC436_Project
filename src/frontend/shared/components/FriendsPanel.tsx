@@ -68,7 +68,8 @@ class FriendsPanel extends React.Component<IFriendsPanelProps, IFriendPanelState
     render() {
         return (
             <div  className="right_collapse" ref={this.rightCollapse}>
-                <a className="glyphicon glyphicon-search right-open-button" onClick={() => this.toggleFriendList()}/>
+                <button className = "glyphicon glyphicon-search openbtn onright" onClick={() => this.toggleFriendList()}>
+                </button>
                 <div>
                 <ul className="myFriend">
                     <p> Friends</p>

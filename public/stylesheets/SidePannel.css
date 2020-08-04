@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   overflow-x: hidden;
-  padding-top: 60px;
+  padding-top: 64px;
 }
 
 .sidebar-container{
@@ -35,16 +35,25 @@
 }
 
 .openbtn {
-  z-index: 0;
+  z-index: 100;
   position: fixed;
-  top: 30px;
-  left: 20px;
   font-size: 20px;
   cursor: pointer;
   background-color: #0e2473;
   color: white;
-  padding: 10px 15px;
+  height: 40px;
+  width: 40px;
   border: none;
+}
+
+.onleft{
+  top: 10px;
+  left: 20px;
+}
+
+.onright{
+  top: 10px;
+  right: 20px;
 }
 
 .openbtn:hover {
@@ -57,7 +66,7 @@
   right: 0;
   background-color: #0e2473;
   overflow-x: hidden;
-  padding: 0;
+  padding-top: 64px;
   color: #e9e1e1;
   display: block;
   transition: 0.4s;

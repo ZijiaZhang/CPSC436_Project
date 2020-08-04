@@ -40,7 +40,7 @@ class NavigationBar extends React.Component<INavigationBarProps, {}> {
     render() {
         return (
             <div className={'sidebar-container'} ref={this.sideBar}>
-                <button className="openbtn" onClick={() => this.toggleButton()}>&#9776;</button>
+                <button className="openbtn onleft" onClick={() => this.toggleButton()}>&#9776;</button>
                 <div className="sidebar">
                 <NavigationItems />
                 </div>
