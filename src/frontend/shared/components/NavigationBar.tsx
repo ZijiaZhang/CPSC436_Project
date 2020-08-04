@@ -40,7 +40,7 @@ class NavigationBar extends React.Component<INavigationBarProps, {}> {
     render() {
         return (
             <div className={'sidebar-container'} ref={this.sideBar}>
-                <button className="openbtn onleft" onClick={() => this.toggleButton()}>&#9776;</button>
+                <button className="glyphicon glyphicon-th-list openbtn onleft" onClick={() => this.toggleButton()}></button>
                 <img className="search-bar-logo" src='./icon/ubctantan-Blue.png'/>
                 <div className="sidebar">
                 <NavigationItems />
