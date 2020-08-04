@@ -2,6 +2,9 @@
 
 All changes will be logged here
 
+## 0.32.0 [2020-08-03]
+- Refresh CSS
+
 ## 0.31.0 [2020-08-03]
 ### Added
 - Add group chat and chat list page
