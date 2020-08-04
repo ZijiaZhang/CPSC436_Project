@@ -100,11 +100,11 @@ export const getInitialMessages = (receiver_id: string | null, chatType: ChatTyp
             let user_id = user.username;
             let receive_user = await getUserInfo(receiver_id);
             let messages = await getMessages(user_id, receiver_id);
-            messages = messages.map((m: IChat) => {
+            messages = messages.map((m: IChat & {status: MessageStatus}) => {
                 return {
                     message: m.content,
-                    status: MessageStatus.SENT,
-                    sender: m.senderUsername === user_id ? user : receive_user,
+                    status: m.status,
+                    sender: m.senderUsername==user_id?user: receive_user,
                     time: m.time
                 }
             });
