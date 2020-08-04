@@ -1,7 +1,7 @@
 import express from "express";
-import {Group, IGroup} from "../../models/GroupModel";
+import {Group} from "../../models/GroupModel";
 import {User} from "../../models/UserModel";
-import {IUser} from "../../../shared/ModelInterfaces";
+import {IUser, IGroup} from "../../../shared/ModelInterfaces";
 import passport from "passport";
 
 export const groupsRouter = express.Router();
@@ -14,6 +14,7 @@ groupsRouter.use((req, res, next)=> {
     }
 }, );
 
+// Get a group by group id
 groupsRouter.get('/:groupID', function (req, res, next) {
     Group.findById(req.params.groupID).then(
         (data: IGroup| null) => {
@@ -27,10 +28,10 @@ groupsRouter.get('/:groupID', function (req, res, next) {
     )
 });
 
-
+// Create a new group with "name" and add current user into the group
 groupsRouter.put('/:name', function (req, res, next) {
     const user = req.user as IUser;
-    Group.create({name: req.params.name, users:[user.username]}).then(
+    Group.create({name: req.params.name, users:[user.username]} as IGroup).then(
         (data: IGroup) => {
             User.findOneAndUpdate({username: user.username}, {$push: {groups: data._id}}).then(
                 () => res.json(data)
@@ -43,7 +44,7 @@ groupsRouter.put('/:name', function (req, res, next) {
     )
 });
 
-
+// Add a user into an existing group that the current user is in
 groupsRouter.post('/', async function (req, res, next) {
     const user = req.user as IUser;
     const groupID = req.body.groupID;
@@ -62,7 +63,7 @@ groupsRouter.post('/', async function (req, res, next) {
             if (!data){
                 return res.status(404).json({message: 'Group ID not found'})
             }
-            User.findOneAndUpdate({username: user.username}, {$push: {groups: groupID}}).then(
+            User.findOneAndUpdate({username}, {$push: {groups: groupID}}).then(
                 () => res.json(data)
             ).catch(
                 () => res.status(500).json({message: 'error when adding group to user'})

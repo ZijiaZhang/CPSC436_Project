@@ -25,7 +25,7 @@ class NavigationItems extends React.Component<INavigationItemsProps, {}> {
             <a><img src={this.props.userInfo.avatarPath ? this.props.userInfo.avatarPath : './images/photoP.png'} alt='img not found'
                     width="100" height="100"/><p className="username-display">{"   " + this.props.userInfo.fullname}</p></a>
             <Link to="/" className="glyphicon glyphicon-home">Home</Link>
-            <Link to="/chatRoom" className="glyphicon glyphicon-envelope">Chats</Link>
+            <Link to="/chats" className="glyphicon glyphicon-envelope">Chats</Link>
             <Link to="/settings" className="glyphicon glyphicon-cog" onClick={this.loadUserProfile}>Profile</Link>
             <a href="/api/v1/users/logout" className="glyphicon glyphicon-log-out">Logout</a>
         </div>

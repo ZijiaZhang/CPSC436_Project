@@ -3,20 +3,19 @@ import {ChatRoomBubbles, ISingleMessage} from "./ChatRoomBubbles";
 import {ChatRoomState} from "../reducer";
 import {connect} from "react-redux";
 import {getInitialMessages, receiveNewMessage} from "../Actions";
-import * as io from "socket.io-client";
 import {MessageStatus, SocketEvents} from "../../../shared/SocketEvents";
 import {convert_to_ISingeleMessage, setUnread} from "../../shared/globleFunctions";
-import {IChat, IUser} from "../../../shared/ModelInterfaces";
-import {requestAPIJson} from "../../shared/Networks";
+import {IGroup, IUser} from "../../../shared/ModelInterfaces";
 import {Home} from "../../../AppRouter";
-
+import {ChatType} from "../../shared/enums/ChatType";
 
 
 interface IChatRoomChatAreaProps{
     messages: ISingleMessage[];
-    getInitialMessages: (x: any) => any;
+    getInitialMessages: (x: any, y: ChatType) => any;
     receiveNewMessage: (x: ISingleMessage) => any;
-    user: IUser;
+    entity: IUser | IGroup;
+    chatType: ChatType;
 }
 
 export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}> {
@@ -25,12 +24,12 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
         super(props);
         Home.socket.off(SocketEvents.ReceiveMessage);
         Home.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
-            let mesage: IChat = data.message;
-            if (mesage.senderUsername!== this.props.user.username) {
+            let message = data.message;
+            if (this.props.chatType === ChatType.IndividualChat && message.senderUsername!== (this.props.entity as IUser).username) {
                 setUnread(true);
                 return;
             }
-            this.props.receiveNewMessage(await convert_to_ISingeleMessage(mesage, MessageStatus.RECEIVED));
+            this.props.receiveNewMessage(await convert_to_ISingeleMessage(message, MessageStatus.RECEIVED));
         });
     }
 
@@ -42,7 +41,8 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
     }
 
     componentDidMount(): void {
-        this.props.getInitialMessages(this.props.user.username ? this.props.user.username: null);
+        const entityId = this.props.chatType === ChatType.IndividualChat ? (this.props.entity as IUser).username : (this.props.entity as IGroup)._id;
+        this.props.getInitialMessages(entityId ? entityId: null, this.props.chatType);
     }
 
     componentWillUnmount(): void {
