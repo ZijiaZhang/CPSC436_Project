@@ -2,6 +2,9 @@
 
 All changes will be logged here
 
+## 0.32.3 [2020-08-04]
+- Fix Bug Search block to disappear in safari, and header to be not responsive after collapsing
+
 ## 0.32.2 [2020-08-03]
 - Fix Bug causing open button to disappear in safari, black text in the header, and so on
 
