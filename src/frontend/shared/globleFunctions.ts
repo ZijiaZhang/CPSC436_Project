@@ -62,6 +62,27 @@ export async function updateUserInfo(username: string, updatedInfo: any) {
         updatedInfo);
 }
 
+export async function userAddFriends(updatedInfo: any) {
+    return await requestAPIJson('/api/v1/users/user/addFriends',
+        'PATCH',
+        {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        updatedInfo);
+}
+
+export async function userDeleteFriends(updatedInfo: any) {
+    return await requestAPIJson('/api/v1/users/user/deleteFriends',
+        'PATCH',
+        {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        updatedInfo);
+}
+
+
 export async function convert_to_ISingeleMessage(chat: IChat, status: MessageStatus) {
     let user = await(getUserInfo(chat.senderUsername));
     return {message: chat.content,

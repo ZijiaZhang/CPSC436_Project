@@ -202,6 +202,101 @@ describe('User', () => {
                 })
         });
 
+        it('update user friendList - add friend', async () => {
+            return chai.request(app)
+                .patch('/api/v1/users/user/addFriends').send({
+                    user: {
+                        username: 'test',
+                        newFriend: 'testUser2'
+                    },
+                    friend: {
+                        username: 'testUser2',
+                        newFriend: 'test'
+                    }
+                })
+                .then((res) => {
+                    console.log(res.body);
+                    expect(res).have.status(200);
+                    expect(JSON.stringify(res.body[0].friendUsernames)).to.equal(JSON.stringify(['testUser2']));
+                    expect(JSON.stringify(res.body[1].friendUsernames)).to.equal(JSON.stringify(['test']));
+                    return chai.request(app)
+                        .patch('/api/v1/users/user/addFriends').send({
+                            user: {
+                                username: 'test',
+                                newFriend: 'testUser'
+                            },
+                            friend: {
+                                username: 'testUser',
+                                newFriend: 'test'
+                            }
+                        })
+                })
+                .then((res) => {
+                    expect(res).have.status(200);
+                    expect(JSON.stringify(res.body[0].friendUsernames)).to.equal(JSON.stringify(['testUser2', 'testUser']));
+                    expect(JSON.stringify(res.body[1].friendUsernames)).to.equal(JSON.stringify(['test']));
+                })
+                .catch((err) => {
+                    expect.fail('add should not fail: \n ' + err);
+                })
+        });
+
+        it('update user friendList - delete friend', async () => {
+            return chai.request(app)
+                .patch('/api/v1/users/user/deleteFriends').send({
+                    user: {
+                        username: 'test',
+                        oldFriend: 'testUser2'
+                    },
+                    friend: {
+                        username: 'testUser2',
+                        oldFriend: 'test'
+                    }
+                })
+                .then((res) => {
+                    console.log(res.body);
+                    expect(res).have.status(200);
+                    expect(JSON.stringify(res.body[0].friendUsernames)).to.equal(JSON.stringify(['testUser']));
+                    expect(JSON.stringify(res.body[1].friendUsernames)).to.equal(JSON.stringify([]));
+                }).catch((err) => {
+                    expect.fail('delete should not fail: \n' + err);
+                })
+        });
+
+        it('update user friendList - should not add friend with wrong usernames', async () => {
+            return chai.request(app)
+                .patch('/api/v1/users/user/addFriends').send({
+                    user: {
+                        username: 'notAUser',
+                        newFriend: 'notAUser2'
+                    },
+                    friend: {
+                        username: 'notAUser2',
+                        newFriend: 'notAUser'
+                    }
+                })
+                .then((res) => {
+                    expect(res).have.status(400);
+                })
+        });
+
+        it('update user friendList - should not delete friend with wrong usernames', async () => {
+            return chai.request(app)
+                .patch('/api/v1/users/user/addFriends').send({
+                    user: {
+                        username: 'notAUser',
+                        oldFriend: 'notAUser2'
+                    },
+                    friend: {
+                        username: 'notAUser2',
+                        oldFriend: 'notAUser'
+                    }
+                })
+                .then((res) => {
+                    expect(res).have.status(400);
+                })
+        });
+
         it('update user with wrong username', async () => {
             return chai.request(app)
                 .patch('/api/v1/users/randomUsername').send({fullname: 'newFullname'})
