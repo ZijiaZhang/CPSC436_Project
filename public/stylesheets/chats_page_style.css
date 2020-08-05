@@ -22,16 +22,15 @@
     font-size: 16pt;
     color: white;
 }
-.chat-room-user-block{
-    margin: 10px;
-}
 .chat-room-user-avatar{
     width: 80px;
     height: 80px;
     border-radius: 40px;
+    margin: 10px;
 }
 .chat-room-user-username{
-
+    font-size: 14pt;
+    margin: 10px;
 }
 .create-group-chat-room-button{
     background: none;
@@ -47,7 +46,7 @@
     margin: 10px;
 }
 .create-group-chat-name-input{
-
+    border-radius: 5px;
 }
 .select-group-members-user-block{
     margin: 10px;
@@ -64,5 +63,6 @@
 }
 .select-group-members-user-username{
     font-size: 20px;
+    color: royalblue;
 }
 

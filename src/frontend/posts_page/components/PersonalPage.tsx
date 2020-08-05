@@ -2,7 +2,7 @@ import React, {CSSProperties} from "react";
 import PostBlock from "./PostBlock";
 import {IUser} from "../../../shared/ModelInterfaces";
 import Dropdown from "react-bootstrap/Dropdown";
-import {getHiddenPosts, getPostsByIds, getPostsByUserId, getSavedPosts} from "../../shared/globleFunctions";
+import {getHiddenPosts, getSavedPosts} from "../../shared/globleFunctions";
 import {connect} from "react-redux";
 import {loadHiddenPosts, loadSavedPosts} from "../actions";
 
@@ -12,12 +12,12 @@ interface IPersonalPageProps {
     hiddenPosts: any[],
     savedPosts: any[],
     userDisplayInfo: IUser,
-    userInfo: any
+    userInfo: any,
+    postList: any[]
 }
 
 interface IPersonalPageState {
     viewOption: string,
-    personalPostList: any[],
 }
 
 class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageState> {
@@ -25,12 +25,10 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
         super(props);
         this.state = {
             viewOption: 'personal',
-            personalPostList: []
         }
     }
 
     async componentDidMount() {
-        this.setState({personalPostList: await getPostsByUserId(this.props.userDisplayInfo._id, this.props.userInfo)});
         this.props.loadSavedPosts(await getSavedPosts(this.props.userDisplayInfo, this.props.userInfo));
         this.props.loadHiddenPosts(await getHiddenPosts(this.props.userDisplayInfo, this.props.userInfo));
     }
@@ -39,7 +37,6 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
         if(this.state.viewOption !== 'personal') {
             this.setState({
                 viewOption: 'personal',
-                personalPostList: await getPostsByUserId(this.props.userDisplayInfo._id, this.props.userInfo)
             });
         }
     };
@@ -60,7 +57,12 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
         let postList = [];
         switch (this.state.viewOption) {
             case 'personal':
-                postList = this.state.personalPostList.slice().reverse();
+                for (let post of this.props.postList) {
+                    if (post.userId === this.props.userDisplayInfo._id) {
+                        postList.push(post);
+                    }
+                }
+                postList = postList.reverse();
                 break;
             case 'saved':
                 postList = this.props.savedPosts.slice().reverse();
@@ -74,20 +76,9 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
         );
     };
 
-    getNumOfPosts = () => {
-        switch (this.state.viewOption) {
-            case 'personal':
-                return this.state.personalPostList.length.toString();
-            case 'saved':
-                return this.props.savedPosts.length.toString();
-            case 'hidden':
-                return this.props.hiddenPosts.length.toString();
-        }
-    };
-
     render() {
         const savedPosts = this.getDisplayedPosts();
-        const numPosts = this.getNumOfPosts();
+        const numPosts = savedPosts.length.toString();
         let dropDownStyle: CSSProperties = {
             marginRight: '12px',
             float: 'right',
@@ -136,10 +127,11 @@ class PersonalPage extends React.Component<IPersonalPageProps, IPersonalPageStat
     }
 }
 
-const mapStateToProps = (state: {hiddenPosts: any[], savedPosts: any[] }) => {
+const mapStateToProps = (state: {hiddenPosts: any[], savedPosts: any[], postList: any }) => {
     return {
         hiddenPosts: state.hiddenPosts,
-        savedPosts: state.savedPosts
+        savedPosts: state.savedPosts,
+        postList: state.postList
     };
 };
 

@@ -70,7 +70,6 @@ const postListReducer = (posts = postList.slice(), action: any) => {
             return postList.slice();
         case 'UPDATE_LIKE':
             let updateLike = posts.findIndex(post => post.id === action.updateId);
-            console.log(updateLike);
             posts[updateLike].likedUserIds = action.updateLike;
             return posts.slice();
         case 'ADD_COMMENT':
@@ -88,7 +87,7 @@ const postListReducer = (posts = postList.slice(), action: any) => {
 const savedPostsReducer = (savedPosts = savedPostList.slice(), action: any) => {
     if (action.type === "LOAD_SAVED_POSTS") {
         savedPostList = action.loadSavedPosts;
-        return action.loadSavedPosts;
+        return savedPostList.slice();
     } else if (action.type === "DELETE_POST") {
         let deletePost = savedPosts.findIndex(post => post.id === action.deletePost);
         savedPosts.splice(deletePost, 1);
@@ -99,7 +98,7 @@ const savedPostsReducer = (savedPosts = savedPostList.slice(), action: any) => {
 const hiddenPostsReducer = (hiddenPosts = hiddenPostList.slice(), action: any) => {
     if (action.type === "LOAD_HIDDEN_POSTS") {
         hiddenPostList = action.loadHiddenPosts;
-        return action.loadHiddenPosts;
+        return hiddenPostList.slice();
     } else if (action.type === "DELETE_POST") {
         let deletePost = hiddenPosts.findIndex(post => post.id === action.deletePost);
         hiddenPosts.splice(deletePost, 1);

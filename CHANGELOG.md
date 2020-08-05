@@ -2,6 +2,15 @@
 
 All changes will be logged here
 
+## 0.31.0 [2020-08-03]
+### Added
+- Group Chat Styling
+### Updated
+- Add Friend endpoints and frontend functions
+- Fix Bug that deleted saved/hidden post still appears before refreshing
+- Delete related images when a post is deleted.
+- Little Red Bubble appears when having unread messages
+
 ## 0.32.4 [2020-08-04]
 - Fix Bug causing socket failed to connect
 

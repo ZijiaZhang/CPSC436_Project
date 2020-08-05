@@ -148,18 +148,12 @@ usersRouter.patch('/user/addFriends', (req, res, next) => {
             } else {
                 let userUpdate = user.friendUsernames.slice();
                 let friendUpdate = friend.friendUsernames.slice();
-                console.log(userUpdate);
-                console.log(friendUpdate);
                 if (!userUpdate.includes(newProperties.user.newFriend)) {
-                    console.log('added user');
                     userUpdate.push(newProperties.user.newFriend);
                 }
                 if (!friendUpdate.includes(newProperties.friend.newFriend)) {
-                    console.log('added friend');
                     friendUpdate.push(newProperties.friend.newFriend);
                 }
-                console.log(userUpdate);
-                console.log(friendUpdate);
                 const userQuery = User.findOneAndUpdate({username: newProperties.user.username}, {friendUsernames: userUpdate}, {new: true});
                 const friendQuery = User.findOneAndUpdate({username: newProperties.friend.username}, {friendUsernames: friendUpdate}, {new: true});
                 Promise.all([userQuery.exec(), friendQuery.exec()])
