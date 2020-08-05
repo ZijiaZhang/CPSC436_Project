@@ -20,7 +20,7 @@ UBC TANTAN is a full-stack social networking web application, which allows new s
 - [x] Able to set blog post to public/private/to friends
 - [x] Announcement system and notifications
 - [x] Comment, Like to a post
-- [x] Hide Post, and Avoid Similar Posts
+- [x] Hide Post and Save Post
 - [x] BlockList
 - [x] Recommend by tags (people you may be interested in)
 - [x] Backend monitoring system
@@ -51,11 +51,12 @@ UBC TANTAN is a full-stack social networking web application, which allows new s
 - Add more features that target UBC students: Currently, there are not many features unique from regular social networking apps. We want to add some more differential points in the future. For example, users can find friends with a similar timetable.
 - Implement a better notification system: Our chat functionality can have a better notification system, to remind the current user about the number of (unread) messages and interactions between users’ posts and comments.
 - Enhance network security: Now, our app has some vulnerabilities that can be attacked by hackers. For instance, hackers may use Postman to patch users to change their personal information maliciously. We should add Auth to every endpoint to improve security.
-- Add more types of posts: Now, our jobs do not support files other than images. In the future, we will extend the types of jobs that will help most types of data, long articles/blogs, and links to other sources.
-
+- Add more types of posts: Now, our posts do not support files other than images. In the future, we will extend the types of jobs that will help most types of data, long articles/blogs, and links to other sources.
+- Add Friend-Request System: Currently, when one person adds another one to his friend, they immediately become friends to each other. We will add a 'Friend-Request' system so the other person may choose to approve or not.
+- Rich Text Editor: Currently, our text input editor of posts and chats are only plain text editors. We plan to import a rich text editor so users are free to edit the outlook and structure of their texts.
 
 ## List of contributions
-- Yu Zhao (y0w1b) developed all of the frontends for the posting page, add friend page, profile editing page, and the search bar. He also implemented most of the CSS styling and React & Redux code in this app, including actions, components, and reducers. 
+- Yu Zhao (y0w1b) developed all of the React & Redux frontends of profile page and home page including posts and users. He also implemented most of the CSS styling in this app. Besides. he fixed a lot of detected bugs in both frontend functionality and backend APIs.
 - Ningyuan Xu (m0t1b) developed login/register features and the front end for sidebars and headers. He also implemented the recommendation algorithm to find friends. Finally, he helped write documentation, project coordination (schedule group meetings), and manual testing.
 - Zija Zhang (f4r1b) implemented all the chat functionality (including WebSocket), and designed backend API endpoints and implemented endpoints for Chats. He also helped build the project architecture, set up automated testing using Travis CI, and auto-deployed the web app.
 - Denise Xu (t2l1b) wrote all the MongoDB schema and the rest of the backend API endpoints. She also implemented the search algorithm to find posts or users and connected group chats with backends. Finally, she was the one who drafted the initial UI design for this app. 
