@@ -26,7 +26,7 @@ UBC TANTAN is a full-stack social networking web application, which allows new s
 - [x] Backend monitoring system
 
 ### 2-3 stretch requirements (plan to complete 1!)
-- [ ] Group chat
+- [x] Group chat
 - [ ] Apps and games to help users interact
 - [x] Smart Algorithm for recommended posts and friends as well as avoided posts and users
 
