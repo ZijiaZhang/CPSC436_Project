@@ -4,15 +4,16 @@ import passport from "passport";
 import {SocketStore} from "../../SocketStore";
 import {MessageStatus, SocketEvents} from "../../../shared/SocketEvents";
 import {IChat, IUser} from '../../../shared/ModelInterfaces';
+
 export const chatsRouter = express.Router();
 
-chatsRouter.use((req, res, next)=> {
-    if(!req.isAuthenticated()){
-        passport.authenticate('basic', { session: false })(req, res, next)
+chatsRouter.use((req, res, next) => {
+    if (!req.isAuthenticated()) {
+        passport.authenticate('basic', {session: false})(req, res, next)
     } else {
         next();
     }
-}, );
+},);
 
 
 chatsRouter.get('/',  async function(req, res) {
@@ -33,6 +34,30 @@ chatsRouter.get('/',  async function(req, res) {
     }
 });
 
+chatsRouter.get('/latestChats', function (req, res, next) {
+    const user = req.user as IUser;
+    if (user) {
+        Chat.find({$or: [{senderUsername: user.username}, {receiverUsername: user.username}]}).exec()
+            .then((chats: IChat[]) => {
+                const filteredChats = chats.reduce((acc, chat) => {
+                    const friendUsername = chat.senderUsername === user.username ? chat.receiverUsername : chat.senderUsername;
+                    const latestChatWithFriendSoFar = acc.findIndex(c => c.senderUsername === friendUsername || c.receiverUsername === friendUsername);
+                    if (latestChatWithFriendSoFar === -1) {
+                        acc.push(chat);
+                    }
+                    // Group does not have time so maybe don't need the latest time stamp for the chat?
+                    // else if (acc[latestChatWithFriendSoFar].time < chat.time) {
+                    //     acc.splice(latestChatWithFriendSoFar, 1, chat);
+                    // }
+                    return acc;
+                }, [] as IChat[]);
+                return res.json(filteredChats);})
+            .catch(() => res.status(500).json({message: 'error when try to get latest chat'}));
+    } else {
+        res.status(401).json({message: 'Not Authorized'})
+    }
+});
+
 chatsRouter.post('/', function (req, res) {
     if (req.user && (req.user as IUser).username === req.body.sender_username){
         return Chat.create({
@@ -43,12 +68,12 @@ chatsRouter.post('/', function (req, res) {
             read: false
         }).then((chat: IChat) => {
 
-            if (req.body.receiver_username in SocketStore.allSockets){
+            if (req.body.receiver_username in SocketStore.allSockets) {
                 console.log('sent');
                 SocketStore.allSockets[req.body.receiver_username].emit(SocketEvents.ReceiveMessage, {message: chat})
             }
             return res.json(chat);
-        }).catch(()=>
+        }).catch(() =>
             res.status(500).json({message: 'error when try to add entry'})
         );
     } else {

@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 import chaiHttp = require('chai-http');
 import {User} from "../../../../src/backend/models/UserModel";
 import {Group} from "../../../../src/backend/models/GroupModel";
-import {GroupChat, IGroupChat} from "../../../../src/backend/models/GroupChatModel";
+import {GroupChat} from "../../../../src/backend/models/GroupChatModel";
+import {IGroupChat} from "../../../../src/shared/ModelInterfaces";
 
 chai.use(chaiHttp);
 

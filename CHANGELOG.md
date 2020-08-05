@@ -2,6 +2,22 @@
 
 All changes will be logged here
 
+## 0.32.3 [2020-08-04]
+- Fix Bug Search block to disappear in safari, and header to be not responsive after collapsing
+
+## 0.32.2 [2020-08-03]
+- Fix Bug causing open button to disappear in safari, black text in the header, and so on
+
+## 0.32.1 [2020-08-03]
+- Fix Bug causing all chat are 'SENT'
+
+## 0.32.0 [2020-08-03]
+- Refresh CSS
+
+## 0.31.0 [2020-08-03]
+### Added
+- Add group chat and chat list page
+
 ## 0.30.1 [2020-08-02]
 ### Fixed Bugs
 - input block not refreshed after submitting

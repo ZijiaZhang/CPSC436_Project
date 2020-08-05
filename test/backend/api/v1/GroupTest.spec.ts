@@ -2,7 +2,8 @@ import chai, {expect} from 'chai';
 const mongoose = require("mongoose");
 import chaiHttp = require('chai-http');
 import {User} from "../../../../src/backend/models/UserModel";
-import {Group, IGroup} from "../../../../src/backend/models/GroupModel";
+import {Group} from "../../../../src/backend/models/GroupModel";
+import {IGroup} from "../../../../src/shared/ModelInterfaces";
 
 chai.use(chaiHttp);
 

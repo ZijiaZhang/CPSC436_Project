@@ -1,6 +1,3 @@
-body{
-    height: 100%;
-}
 
 h1 {
     text-align: center;
@@ -442,3 +439,7 @@ div.ReactModal__Overlay .user-profile-page {
 .edit-course-delete-button{
     float: right;
 }
+
+div.ReactModal__Overlay {
+    z-index: 5;
+} 

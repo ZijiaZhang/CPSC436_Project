@@ -4,25 +4,50 @@
   top: 0;
   left: 0;
   overflow-x: hidden;
-  padding-top: 60px;
-  padding-left: 20px;
-  transition: 0.3s ease-in-out;
 }
 
 .sidebar-container{
-  background-color: #0e2473;
+  background-color: #fff;
+  width: 200px;
+  box-shadow: 5px 3px 5px 3px lightgrey;
+  transition: 0.3s ease-in-out;
+  overflow: visible;
+  z-index: 1;
+  padding-top: 64px;
+}
+
+.sidebar ul{
+  padding-left: 0;
+}
+
+.sidebar li{
+  padding: 10px 20px 10px 10px;
+  text-decoration: none;
+  font-size: 25px;
+
+  display: flex;
+  flex-flow: row nowrap;
+  border-radius: 5px;
+}
+
+.sidebar-avatar-container{
+  margin: 50px;
+  font-size: 25px;
 }
 
 .sidebar a {
-  margin: 0 30px 60px 30px;
+  padding: 20px;
+  margin: 0 30px 30px 30px;
   text-decoration: none;
   font-size: 25px;
-  color: #e9e1e1;
+  color: black;
   display: block;
+  border-radius: 5px;
 }
 
 .sidebar a:hover {
-  color: #f1f1f1;
+  background: royalblue;
+  color: white;
 }
 
 .sidebar .openbtn {
@@ -34,16 +59,24 @@
 }
 
 .openbtn {
-  z-index: 0;
-  position: absolute;
-  top: 30px;
-  left: 20px;
+  z-index: 100;
+  position: fixed;
   font-size: 20px;
   cursor: pointer;
-  background-color: #0e2473;
-  color: white;
-  padding: 10px 15px;
+  background: transparent;
+  height: 40px;
+  width: 40px;
   border: none;
+}
+
+.onleft{
+  top: 10px;
+  left: 20px;
+}
+
+.onright{
+  top: 10px;
+  right: 20px;
 }
 
 .openbtn:hover {
@@ -54,10 +87,12 @@
   height: 100%;
   top: 108px;
   right: 0;
-  background-color: #0e2473;
+  background-color: #fff;
   overflow-x: hidden;
-  padding: 0;
-  color: #e9e1e1;
+  padding-top: 64px;
+
+  padding-left: 0;
+
   display: block;
   transition: 0.4s;
 }
@@ -72,12 +107,17 @@
   padding: 10px 20px 10px 10px;
   text-decoration: none;
   font-size: 20px;
-  color: #e9e1e1;
+  color: black;
   display: flex;
   flex-flow: row nowrap;
   border-radius: 5px;
   margin: 15px 10px 15px 10px;
 }
+
+.myFriend li a{
+  color: black;
+}
+
 .myFriend li:hover {
   background: royalblue;
   color: white;
@@ -89,18 +129,12 @@
 
 .right-open-button {
   z-index: 0;
-  position: absolute;
+  position: fixed;
   top: 44px;
   right: 20px;
   font-size: 30px;
   color:#f1f1f1;
   text-decoration: none;
-}
-
-@media screen and (max-width: 1100px) {
-  .right-open-button {
-    right: -100px;
-  }
 }
 
 .right-open-button:hover {
@@ -111,8 +145,47 @@
 .right_collapse {
   transition: 0.3s ease-in-out;
   width: 200px;
+  box-shadow: -5px 3px 5px 3px lightgrey;
 }
 
 .username-display {
   text-align: center;
+  width: 100px;
+}
+@media screen and (max-width: 1100px) {
+  .right-open-button {
+    right: 100px;
+  }
+  .sidebar-container{
+    position: fixed;
+    left: 0;
+    width: 100%;
+    top: 0;
+    height: 100%;
+    z-index: 100;
+  }
+
+  .right_collapse{
+    position: fixed;
+    right: 0;
+    width: 100%;
+    top: 0;
+    height: 100%;
+  }
+
+  .username-display{
+    text-align: center;
+  }
+
+  .myFriend li{
+    justify-content: center;
+  }
+
+  .sidebar li {
+    margin-left: calc(50% - 50px);
+  }
+
+  .sidebar-avatar-container {
+    margin-left: calc(50% - 50px);
+  }
 }

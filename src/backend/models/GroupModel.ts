@@ -1,14 +1,11 @@
 import {Document, Model, model, Schema} from "mongoose";
+import { IGroup } from "../../shared/ModelInterfaces";
 
-interface IGroupSchema extends Document {
-    users: string[];
-    name: string;
+interface IGroupSchema extends Document, IGroup {
+    _id: string
 }
 
-export interface IGroup extends IGroupSchema {
-}
-
-interface IGroupModel extends Model<IGroup> {
+interface IGroupModel extends Model<IGroupSchema> {
 }
 
 const groupSchema: Schema = new Schema({
@@ -16,4 +13,4 @@ const groupSchema: Schema = new Schema({
     name: String,
 });
 
-export const Group = model<IGroup, IGroupModel>('group', groupSchema);
+export const Group = model<IGroupSchema, IGroupModel>('group', groupSchema);
