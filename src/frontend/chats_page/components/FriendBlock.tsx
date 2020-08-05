@@ -25,10 +25,12 @@ class FriendBlock extends React.Component<IFriendBlockProps, IFriendBlockState> 
     }
 
     render() {
-        return <div onClick={this.changeBlockStatus}>
-            <span className={this.state.blockStatus === BlockStatus.selected ? 'selected' : 'deselected'}/>
-            <img src={this.props.friend.avatarPath ? this.props.friend.avatarPath : './images/photoP.png'} alt={'Image Not Found'}/>
-            <span>{this.props.friend.fullname}</span>
+        return <div className="select-group-members-user-block" onClick={this.changeBlockStatus}>
+            <div className={this.state.blockStatus === BlockStatus.selected ? 'selected' : 'deselected'}>
+                <span id="create-group-check-box" className="fa fa-check"/>
+            </div>
+            <img className="select-group-members-user-avatar" src={this.props.friend.avatarPath ? this.props.friend.avatarPath : './images/photoP.png'} alt={'Image Not Found'}/>
+            <span className="select-group-members-user-username">{this.props.friend.fullname}</span>
         </div>
     }
 
