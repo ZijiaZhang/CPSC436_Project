@@ -6,7 +6,7 @@ import SettingsForm from "./SettingsForm";
 import {connect} from "react-redux";
 import {loadDisplayedFriends, loadDisplayedUser, loadTags, loadUserFriends, loadUserInfo} from "../actions";
 import SettingsProfilePhoto from "./SettingsProfilePhoto";
-import {getAllTags, getManyUsersInfo, getPostsByUserId, updateUserInfo} from "../../shared/globleFunctions";
+import {getAllTags, getManyUsersInfo, getPostsByUserId, updateUserInfo, userAddFriends, userDeleteFriends} from "../../shared/globleFunctions";
 import {IUser} from "../../../shared/ModelInterfaces";
 import {Link} from "react-router-dom";
 import UserTimeTable from "./UserTimeTable";
@@ -158,40 +158,44 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
             && !this.props.displayedUser.friendUsernames.includes(this.props.userInfo.username)
             && !this.props.userInfo.blackListUserIds.includes(this.props.displayedUser._id)
             && !this.props.displayedUser.blackListUserIds.includes(this.props.userInfo._id)) {
-            let userFriends = this.props.userInfo.friendUsernames.slice();
-            let friendFriends = this.props.displayedUser.friendUsernames.slice();
-            userFriends.push(this.props.displayedUser.username);
-            friendFriends.push(this.props.userInfo.username);
-            await this.updateUserInfo(userFriends, friendFriends);
+            let updatedInfo = {
+                user: {
+                    username: this.props.userInfo.username,
+                    newFriend: this.props.displayedUser.username
+                },
+                friend: {
+                    username: this.props.displayedUser.username,
+                    newFriend: this.props.userInfo.username
+                }
+            };
+            let responseData = await userAddFriends(updatedInfo);
+            await this.updateUserInfo(responseData);
         }
     };
 
-    updateUserInfo = async (userFriends: string[], friendFriends: string[]) => {
-        let updatedUser = {
-            friendUsernames: userFriends
-        };
-        let updatedFriend = {
-            friendUsernames: friendFriends
-        };
-        let responseUserData = await updateUserInfo(this.props.userInfo.username, updatedUser);
-        let responseFriendData = await updateUserInfo(this.props.displayedUser.username, updatedFriend);
-        let friendsInfo = await getManyUsersInfo(responseUserData.friendUsernames);
-        this.props.loadUserInfo(responseUserData);
+    updateUserInfo = async (responseData: any) => {
+        let friendsInfo = await getManyUsersInfo(responseData[0].friendUsernames);
+        this.props.loadUserInfo(responseData[0]);
         this.props.loadUserFriends(friendsInfo);
-        this.props.loadDisplayedUser(responseFriendData);
+        this.props.loadDisplayedUser(responseData[1]);
         this.setState({dropDown: false});
     };
 
     deleteFriend = async () => {
         if (this.props.userInfo.friendUsernames.includes(this.props.displayedUser.username)
             && this.props.displayedUser.friendUsernames.includes(this.props.userInfo.username)) {
-            let userIndex = this.props.userInfo.friendUsernames.indexOf(this.props.displayedUser.username);
-            let friendIndex = this.props.displayedUser.friendUsernames.indexOf(this.props.userInfo.username);
-            let userFriends = this.props.userInfo.friendUsernames.slice();
-            let friendFriends = this.props.displayedUser.friendUsernames.slice();
-            userFriends.splice(userIndex, 1);
-            friendFriends.splice(friendIndex, 1);
-            await this.updateUserInfo(userFriends, friendFriends);
+            let updatedInfo = {
+                user: {
+                    username: this.props.userInfo.username,
+                    oldFriend: this.props.displayedUser.username
+                },
+                friend: {
+                    username: this.props.displayedUser.username,
+                    oldFriend: this.props.userInfo.username
+                }
+            };
+            let responseData = await userDeleteFriends(updatedInfo);
+            await this.updateUserInfo(responseData);
         }
     };
 

@@ -23,11 +23,16 @@ class CreateGroupForm extends React.Component<ICreateGroupFormProps, ICreateGrou
     }
 
     render() {
-        return <div>
-            <label>Group Name</label>
-            <input type="text" onChange={this.changeGroupName}/>
-            <button onClick={this.handleCreate}>Done</button>
-            <span className="close" onClick={this.props.closeForm}>&times;</span>
+        return <div className="post-block">
+            <label className="create-group-chat-label">Please Enter A Group Name: </label>
+            <input className="create-group-chat-name-input" type="text" onChange={this.changeGroupName}/>
+            <button className="create-group-chat-submit-button" onClick={this.handleCreate}>
+                <span className="fa fa-check" /> Confirm
+            </button>
+            <button className="create-group-chat-submit-button" onClick={this.props.closeForm}>
+                <span className="fa fa-times" /> Cancel
+            </button>
+            <label className="create-group-chat-label">Please Add At Least Two More Group Members:</label>
             {this.props.userFriends.map(friend => {
                 return <FriendBlock friend={friend}/>
             })}

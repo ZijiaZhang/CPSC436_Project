@@ -62,5 +62,9 @@ a {
 }
 
 .unread{
+  display: inline-block;
+  width: 12px;
+  height: 12px;
   background-color: red;
+  border-radius: 6px;
 }

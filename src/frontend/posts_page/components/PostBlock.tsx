@@ -87,6 +87,16 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
 
     deletePost = async () => {
         try{
+            for (let image of this.props.post.image) {
+                await fetch('/api/v1/users/deleteAvatar', {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({oldPath: image.path})
+                });
+            }
             await fetch('/api/v1/posts/' + this.props.post.id, {method: 'DELETE'});
             this.props.deletePost(this.props.post.id);
         } catch (e) {
@@ -114,14 +124,16 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
                                 v
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                <Dropdown.Item className="profile-drop-down-button" onClick={this.savePost}>
-                                    <span className={'fa fa-plus-square'} />
-                                    {this.props.userInfo.savedPostIds.includes(this.props.post.id) ? " Un-Save Post" : " Save Post"}
-                                </Dropdown.Item>
-                                <Dropdown.Item className="profile-drop-down-button" onClick={this.hidePost}>
-                                    <span className={'fa fa-minus-square'} />
-                                    {this.props.userInfo.hiddenPostIds.includes(this.props.post.id) ? " Un-Hide Post" : " Hide Post"}
-                                </Dropdown.Item>
+                                {this.props.post.userId === this.props.userInfo._id ? "" :
+                                    <Dropdown.Item className="profile-drop-down-button" onClick={this.savePost}>
+                                        <span className={'fa fa-plus-square'} />
+                                        {this.props.userInfo.savedPostIds.includes(this.props.post.id) ? " Un-Save Post" : " Save Post"}
+                                    </Dropdown.Item>}
+                                {this.props.post.userId === this.props.userInfo._id ? "" :
+                                    <Dropdown.Item className="profile-drop-down-button" onClick={this.hidePost}>
+                                        <span className={'fa fa-minus-square'} />
+                                        {this.props.userInfo.hiddenPostIds.includes(this.props.post.id) ? " Un-Hide Post" : " Hide Post"}
+                                    </Dropdown.Item>}
                                 {this.props.post.userId === this.props.userInfo._id ?
                                     <Dropdown.Item className="profile-drop-down-button" onClick={this.deletePost}>
                                         <span className={'fa fa-trash'} /> Delete Post</Dropdown.Item> : ""}

@@ -24,7 +24,11 @@ class ChatsPage extends React.Component<{}, IChatPageState> {
                 <CreateGroupForm closeForm={this.closeCreateGroupForm}/>
                 :
                 <div>
-                    <button onClick={this.openCreateGroupForm}>+</button>
+                    <div className="post-block">
+                        <button className="create-group-chat-room-button" onClick={this.openCreateGroupForm}>
+                            <span className={"fa fa-plus"}/> Create A Group
+                        </button>
+                    </div>
                     <ChatList/>
                 </div>
             }

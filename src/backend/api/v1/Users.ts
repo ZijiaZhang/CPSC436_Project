@@ -137,6 +137,66 @@ usersRouter.patch('/:username', (req, res, next) => {
         })
 });
 
+usersRouter.patch('/user/addFriends', (req, res, next) => {
+    const newProperties = req.body;
+    const userQuery = User.findOne({username: newProperties.user.username});
+    const friendQuery = User.findOne({username: newProperties.friend.username});
+    Promise.all([userQuery.exec(), friendQuery.exec()])
+        .then(([user, friend]) => {
+            if (user === null || friend === null) {
+                res.status(400).json({message: `Cannot find users`});
+            } else {
+                let userUpdate = user.friendUsernames.slice();
+                let friendUpdate = friend.friendUsernames.slice();
+                if (!userUpdate.includes(newProperties.user.newFriend)) {
+                    userUpdate.push(newProperties.user.newFriend);
+                }
+                if (!friendUpdate.includes(newProperties.friend.newFriend)) {
+                    friendUpdate.push(newProperties.friend.newFriend);
+                }
+                const userQuery = User.findOneAndUpdate({username: newProperties.user.username}, {friendUsernames: userUpdate}, {new: true});
+                const friendQuery = User.findOneAndUpdate({username: newProperties.friend.username}, {friendUsernames: friendUpdate}, {new: true});
+                Promise.all([userQuery.exec(), friendQuery.exec()])
+                    .then(([user, friend]) => {
+                        res.json([user, friend])
+                    });
+            }
+        })
+        .catch(() => {
+            res.status(500).json({message: `Failed to update user's friends`});
+        })
+});
+
+usersRouter.patch('/user/deleteFriends', (req, res, next) => {
+    const newProperties = req.body;
+    const userQuery = User.findOne({username: newProperties.user.username});
+    const friendQuery = User.findOne({username: newProperties.friend.username});
+    Promise.all([userQuery.exec(), friendQuery.exec()])
+        .then(([user, friend]) => {
+            if (user === null || friend === null) {
+                res.status(400).json({message: `Cannot find users`});
+            } else {
+                let userUpdate = user.friendUsernames.slice();
+                let friendUpdate = friend.friendUsernames.slice();
+                if (userUpdate.includes(newProperties.user.oldFriend)) {
+                    userUpdate.splice(userUpdate.findIndex(username => username === newProperties.user.oldFriend), 1);
+                }
+                if (friendUpdate.includes(newProperties.friend.oldFriend)) {
+                    friendUpdate.splice(friendUpdate.findIndex(username => username === newProperties.friend.oldFriend), 1);
+                }
+                const userQuery = User.findOneAndUpdate({username: newProperties.user.username}, {friendUsernames: userUpdate}, {new: true});
+                const friendQuery = User.findOneAndUpdate({username: newProperties.friend.username}, {friendUsernames: friendUpdate}, {new: true});
+                Promise.all([userQuery.exec(), friendQuery.exec()])
+                    .then(([user, friend]) => {
+                        res.json([user, friend])
+                    })
+            }
+        })
+        .catch(() => {
+            res.status(500).json({message: `Failed to update user's friends`});
+        })
+});
+
 const storage = multer.diskStorage({
     destination: './public/images',
     filename(req: any, file: any, cb: any) {

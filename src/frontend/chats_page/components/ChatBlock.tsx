@@ -10,10 +10,10 @@ interface IChatBlockProps {
 export class ChatBlock extends React.Component<IChatBlockProps, {}> {
     render() {
         const partialUri = this.props.chatItem.chatType === ChatType.GroupChat ? 'group' : 'user';
-        return <div>
+        return <div className="post-block">
             <Link to={{pathname: "/chatRoom", search: `?${partialUri}=` + this.props.chatItem.chatId}}>
-                <img src={this.props.chatItem.avatarPath} alt="img not found"/>
-                <span>{this.props.chatItem.chatName}</span>
+                <img src={this.props.chatItem.avatarPath} alt="img not found" className="chat-room-user-avatar"/>
+                <span className="chat-room-user-username">{this.props.chatItem.chatName}</span>
             </Link>
         </div>;
     }
