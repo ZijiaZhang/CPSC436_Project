@@ -2,6 +2,9 @@
 
 All changes will be logged here
 
+## 0.32.4 [2020-08-04]
+- Fix Bug causing socket failed to connect
+
 ## 0.32.3 [2020-08-04]
 - Fix Bug Search block to disappear in safari, and header to be not responsive after collapsing
 

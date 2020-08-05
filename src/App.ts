@@ -11,6 +11,7 @@ import {BasicStrategy} from "passport-http";
 import {User} from "./backend/models/UserModel";
 import {SocketStore} from "./backend/SocketStore";
 import {managementMiddleware} from "./backend/shared/Middlewares";
+import {Socket} from "socket.io";
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require("connect-flash");
 
@@ -106,11 +107,16 @@ io.use(function(socket:any, next:any){
     sessionMiddleWare(socket.request, {}, next);
 });
 
-io.on("connection", function(socket:any){
-    var userId = socket.request.session.passport.user;
-    SocketStore.allSockets[userId] = socket;
+io.on("connection", function(socket:Socket){
     console.log(socket.id + ' connected');
-        socket.on('disconnect', function (reason: any) {
+    try {
+        var userId = socket.request.session.passport.user;
+    } catch (e) {
+        socket.disconnect(true);
+        return
+    }
+    SocketStore.allSockets[userId] = socket;
+    socket.on('disconnect', function (reason: any) {
         console.log(socket.id + ' disconnected ' + reason);
     })
 });
