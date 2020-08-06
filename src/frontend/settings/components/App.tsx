@@ -28,7 +28,6 @@ class Settings extends React.Component<RouteComponentProps<{}, StaticContext, Lo
         }
         try {
             let user = await getUserInfo(user_id);
-            console.log(user);
             this.setState({user: user});
         } catch (e) {
             let user = null;

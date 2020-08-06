@@ -58,7 +58,6 @@ export const sendMessage = (text: string, receiver: string | null, chatType: Cha
                 sender: user
             })
         }).catch((err) => {
-            console.error(err);
             dispatch({
                 type: ChatRoomActions.SEND_MESSAGE_ERROR,
                 message: text,
@@ -130,7 +129,6 @@ export const getInitialMessages = (receiver_id: string | null, chatType: ChatTyp
             initialMessages.push(...messages);
         }
 
-        console.log(initialMessages);
         initialMessages.sort((a: any, b: any) => new Date(a.time).getTime() - new Date(b.time).getTime());
         dispatch({
             type: ChatRoomActions.RECEIVE_INITIAL_MESSAGE,
@@ -140,7 +138,6 @@ export const getInitialMessages = (receiver_id: string | null, chatType: ChatTyp
 };
 
 export const receiveNewMessage = (message: ISingleMessage) => {
-    console.log("message received");
     read_message(message.sender.username);
     return {
         type: ChatRoomActions.RECEIVE_MESSAGE,
@@ -149,7 +146,6 @@ export const receiveNewMessage = (message: ISingleMessage) => {
 };
 
 async function read_message(username: string) {
-    console.log({user: username});
     await requestAPIJson('/api/v1/chats/read', 'POST', undefined, {user: username});
     setUnread(true);
 }

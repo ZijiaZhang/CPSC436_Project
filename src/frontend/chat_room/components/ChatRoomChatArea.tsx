@@ -46,7 +46,6 @@ export class ChatRoomChatArea extends React.Component<IChatRoomChatAreaProps, {}
     }
 
     componentWillUnmount(): void {
-        console.log("unmount");
         Home.socket.off(SocketEvents.ReceiveMessage);
         Home.socket.on(SocketEvents.ReceiveMessage, async (data: any) => {
                 setUnread(true);

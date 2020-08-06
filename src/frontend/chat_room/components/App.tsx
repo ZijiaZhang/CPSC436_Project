@@ -35,7 +35,6 @@ class ChatRoom extends React.Component<RouteComponentProps<{}, StaticContext, Lo
     ref = createRef<ChatRoomInputBox>();
 
     render() {
-        console.log('render');
         let curr_user_id = new URLSearchParams(this.props.location.search).get("user");
         let curr_group_id = new URLSearchParams(this.props.location.search).get("group");
 

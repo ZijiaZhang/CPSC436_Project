@@ -45,10 +45,6 @@ chatsRouter.get('/latestChats', function (req, res, next) {
                     if (latestChatWithFriendSoFar === -1) {
                         acc.push(chat);
                     }
-                    // Group does not have time so maybe don't need the latest time stamp for the chat?
-                    // else if (acc[latestChatWithFriendSoFar].time < chat.time) {
-                    //     acc.splice(latestChatWithFriendSoFar, 1, chat);
-                    // }
                     return acc;
                 }, [] as IChat[]);
                 return res.json(filteredChats);})
