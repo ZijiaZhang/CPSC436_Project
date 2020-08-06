@@ -9,7 +9,6 @@ export interface ITagContainerProps {
 export class TagContainer extends React.Component<ITagContainerProps, {}> {
 
     render() {
-        console.log(this.props.tags);
         return <div className={'tag-container settings-item-input'}>
             {this.props.tags.map(tag => {
                 return <Tag content={tag.name}/>

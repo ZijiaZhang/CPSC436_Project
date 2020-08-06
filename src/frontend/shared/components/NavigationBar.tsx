@@ -57,7 +57,6 @@ class NavigationBar extends React.Component<INavigationBarProps, {}> {
 			let data = await requestAPIJson('/api/v1/users');
             this.props.loadUserInfo(data);
 		} catch(e) {
-            console.log(e.message);
         }
     }
 

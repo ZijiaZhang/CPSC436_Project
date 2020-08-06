@@ -88,7 +88,6 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     };
 
     interestsOnChange = (newValue: any) => {
-        console.log(newValue);
         this.setState({tags: newValue});
     };
 

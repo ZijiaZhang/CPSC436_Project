@@ -6,13 +6,11 @@ export let user: IUser;
 export let refresh_unread: boolean = true;
 
 export function setUnread(unread: boolean) {
-    console.log('unread_set');
     refresh_unread = unread
 }
 
 export async function getCurrentUser() {
     let temp_user = await requestAPIJson('/api/v1/users');
-    console.log(temp_user);
     user = {
         _id: temp_user._id,
         fullname: temp_user.fullname,

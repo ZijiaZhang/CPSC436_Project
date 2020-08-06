@@ -2,7 +2,11 @@
 
 All changes will be logged here
 
-## 0.31.0 [2020-08-03]
+## 0.33.1 [2020-08-06]
+### Deleted
+- Delete unused code, todo comments, and frontend logs
+
+## 0.33.0 [2020-08-03]
 ### Added
 - Group Chat Styling
 ### Updated

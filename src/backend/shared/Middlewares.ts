@@ -1,9 +1,7 @@
 import {Types} from "mongoose";
-import {AppError} from "./IAppError";
 import Express from "express";
 const express = Express();
 const {response, request} = express;
-import * as fs from "fs";
 import {Status} from "../models/StatusModel";
 
 type Request = typeof request;
@@ -14,14 +12,6 @@ export function checkIsValidObjectId(req: any, res: any, next: any) {
     const areAllParamIdsValid: boolean = ids.every(id => Types.ObjectId.isValid(req.params[id]));
     areAllParamIdsValid ? next() : next(new Error('Unable to parse invalid object id'));
 }
-
-// TODO
-// export function errorHandler(err: AppError, req: Request, res: Response, next: any) {
-//     // uncomment this following line print stack trace for debugging purposes
-//     console.error(err.stack);
-//
-//     res.status(err.statusCode).json({message: err.message}); // Frontend users should not see backend trace
-// }
 
 export function managementMiddleware(req: Request, res: Response, next: any) {
     res.on('finish', async () => {

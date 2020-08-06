@@ -59,12 +59,10 @@ class SettingsForm extends React.Component<ISettingsFormProps, ISettingsFormStat
         if (this.props.tags !== null) {
             for (let nextTag of this.props.tags) {
                 let matchTag = this.props.tagList.find(tag => tag.name === nextTag.value);
-                console.log(matchTag);
                 if (matchTag === undefined) {
                     let newTag = await addNewTag(nextTag.value);
                     this.props.addTag(newTag);
                     tagList.push(newTag);
-                    console.log(newTag);
                 } else {
                     tagList.push(matchTag);
                 }

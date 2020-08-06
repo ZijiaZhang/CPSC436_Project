@@ -100,7 +100,6 @@ class PostBlock extends React.Component<IPostBlockProps, IPostBlockState> {
             await fetch('/api/v1/posts/' + this.props.post.id, {method: 'DELETE'});
             this.props.deletePost(this.props.post.id);
         } catch (e) {
-            console.log(e);
         }
     };
 
