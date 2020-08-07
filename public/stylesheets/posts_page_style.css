@@ -122,11 +122,14 @@
     borderRadius: 4px;
     outline: none;
     padding: 20px;
-    width: 1000px;
-    height: 800px;
+    margin: auto;
+    max-width: 1000px;
+}
+.main-text-editor-block{
+    width: 780px;
+    display: block;
     margin: auto;
 }
-
 #text-area{
     text-align: left;
     margin-left: 10px;

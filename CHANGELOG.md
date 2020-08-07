@@ -2,6 +2,10 @@
 
 All changes will be logged here
 
+## 0.33.2 [2020-08-06]
+- Fix Some Warnings and console log
+- Fix text input editor styling
+
 ## 0.33.1 [2020-08-06]
 ### Deleted
 - Delete unused code, todo comments, and frontend logs

@@ -18,7 +18,7 @@ interface IUserProfileProps {
     loadUserFriends: any,
     userFriends: any,
     displayedUser: IUser,
-    displayedFriends: any,
+    displayedFriends: IUser[],
     loadDisplayedUser: any,
     loadDisplayedFriends: any,
     postList: any[]
@@ -220,10 +220,10 @@ class UserProfile extends React.Component<IUserProfileProps, IUserProfileState>{
     render() {
         const postList = this.state.posts.slice();
         const posts = postList.reverse().slice(0,4).map(post =>
-            <ProfilePostBlock post={post} user={this.props.displayedUser}/>
+            <ProfilePostBlock key={post.id} post={post} user={this.props.displayedUser}/>
         );
         const friends = this.props.displayedFriends.map((friend: any) =>
-            <ProfileFriendBlock friend={friend} isSettingsPage={this.props.isSettingsPage} updatePostList={this.updatePostList}/>
+            <ProfileFriendBlock key={friend._id} friend={friend} isSettingsPage={this.props.isSettingsPage} updatePostList={this.updatePostList}/>
         );
         return (
             <div className="user-profile-page">

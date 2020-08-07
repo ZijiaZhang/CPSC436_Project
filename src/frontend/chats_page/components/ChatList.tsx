@@ -21,7 +21,7 @@ class ChatList extends React.Component<IChatListProps, {}> {
    render() {
         return <div>
             {this.props.chatItems.map(chatItem => {
-                return <ChatBlock chatItem={chatItem}/>
+                return <ChatBlock key={'chats-page-chat-item-' + chatItem.chatId} chatItem={chatItem}/>
             })}
         </div>;
     }
