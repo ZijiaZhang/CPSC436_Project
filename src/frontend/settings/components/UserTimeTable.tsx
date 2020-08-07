@@ -121,7 +121,7 @@ class UserTimeTable extends React.Component<IUserTimeTableProps, IUserTimeTableS
 
     render() {
         const courseTable = this.props.displayedUser.courses.slice(this.state.startNumber, this.state.startNumber + 10).map((course, index) =>
-            <tr>
+            <tr key={'courseNo' + index}>
                 <td>{course.name}</td>
                 <td>{course.activity}</td>
                 <td>{course.section}</td>
@@ -139,10 +139,10 @@ class UserTimeTable extends React.Component<IUserTimeTableProps, IUserTimeTableS
         );
         return (
             <div className="user-profile-timetable-block">
-                <caption>
+                <div>
                     <span>Registered Courses</span>
                     <button onClick={this.showOrHideCourses}>{this.state.showingCourses ? "[Hide Courses]" : "[Show Courses]"}</button>
-                </caption>
+                </div>
                 {this.state.showingCourses ?
                     <table style={{width: "100%"}} id="user-timetable" className="table table-striped table-bordered">
                         <tr>

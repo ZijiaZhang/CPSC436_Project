@@ -19,8 +19,8 @@ class CommentsContainer extends React.Component<ICommentsContainerProps, ICommen
 
     render() {
         const comments = this.props.comments;
-        const listComments = comments.map((comment) =>
-            <CommentBlock comment={comment} />
+        const listComments = comments.map((comment, index) =>
+            <CommentBlock comment={comment} key={'commentNo' + index} />
         );
         return (
             <div className="all-comments-of-the-post">

@@ -185,34 +185,35 @@ class TextInputEditor extends React.Component<ITextareaProps, ITextareaState> {
                 <button id="text-editor-close-on-x" onClick={this.cancelEdit}>
                     X
                 </button>
-                <VisibilitySetting visibility={this.state.visibility} setPublic={this.setPublic}
-                                   setPrivate={this.setPrivate} setFriendsOnly={this.setFriendsOnly}/>
-                <div id="select-tags">
-                    <span id="tag-selection-title" className="selector-title">Tags:</span>
-                    <CreatableSelect id="tag-list" options={options} isMulti={true}
-                            onChange={this.tagSelectionHandleChange}/>
-                </div>
-                <div id="text-input-block">
-                    <textarea id="message-area" placeholder="Type your message here" value={this.state.message} onChange={this.inputOnChange} />
-                    <div id="post-add-on-buttons">
-                        <button className="add-on-button" onClick={this.showEmojiDropdown}>Emoji
+                <div className="main-text-editor-block">
+                    <VisibilitySetting visibility={this.state.visibility} setPublic={this.setPublic}
+                                       setPrivate={this.setPrivate} setFriendsOnly={this.setFriendsOnly}/>
+                    <div id="select-tags">
+                        <span id="tag-selection-title" className="selector-title">Tags:</span>
+                        <CreatableSelect id="tag-list" options={options} isMulti={true}
+                                onChange={this.tagSelectionHandleChange}/>
+                    </div>
+                    <div id="text-input-block">
+                        <textarea id="message-area" placeholder="Type your message here" value={this.state.message} onChange={this.inputOnChange} />
+                        <div id="post-add-on-buttons">
+                            <button className="add-on-button" onClick={this.showEmojiDropdown}>😀</button>
                             <div className="profile-interaction-drop-down-buttons" style={this.state.emojiDropDown ? {display: 'block'} : {display: 'none'}}>
                                 <EmojiBlock addEmoji={this.addEmoji}/>
                             </div>
-                        </button>
-                        <button className="add-on-button" onClick={this.showImageOptions}>Image</button>
-                    </div>
-                    <div className="browse-image-files" style={this.state.imageOption ? {display: 'block'} : {display: 'none'}}>
-                        <input className='settings-avatar-item-input' type="file" name="avatar" accept=".jpg,.png,.jpeg" multiple onChange={this.uploadFileOnChange} />
-                        <div className="post-picture-previews">
-                            {this.state.filesPreview.map((image: string | undefined) =>
-                                <img className={'post-editor-image-preview'} src={image}
-                                     width={'128px'} height={'128px'} alt={'not uploaded'} /> )}
+                            <button className="add-on-button" onClick={this.showImageOptions}>Image</button>
                         </div>
-                    </div>
-                    <div id="Post-buttons">
-                        <button id="send-post" className="post-finalize-button" onClick={this.sendPost}>Post My Message!</button>
-                        <button className="post-finalize-button" onClick={this.cancelEdit}>Cancel</button>
+                        <div className="browse-image-files" style={this.state.imageOption ? {display: 'block'} : {display: 'none'}}>
+                            <input className='settings-avatar-item-input' type="file" name="avatar" accept=".jpg,.png,.jpeg" multiple onChange={this.uploadFileOnChange} />
+                            <div className="post-picture-previews">
+                                {this.state.filesPreview.map((image: string | undefined) =>
+                                    <img className={'post-editor-image-preview'} src={image}
+                                         width={'128px'} height={'128px'} alt={'not uploaded'} /> )}
+                            </div>
+                        </div>
+                        <div id="Post-buttons">
+                            <button id="send-post" className="post-finalize-button" onClick={this.sendPost}>Post My Message!</button>
+                            <button className="post-finalize-button" onClick={this.cancelEdit}>Cancel</button>
+                        </div>
                     </div>
                 </div>
             </Modal>

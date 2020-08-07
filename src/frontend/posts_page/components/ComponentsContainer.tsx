@@ -60,14 +60,14 @@ class ComponentsContainer extends React.Component<IComponentsContainerProps, ICo
                     }
                 }
                 listComponents = postList.reverse().map((post) =>
-                    <PostBlock post={post} />
+                    <PostBlock key={post.id} post={post} />
                 );
                 break;
             case IComponentsType.users:
                 const userList: IUser[] = this.props.recommendedUsers.slice();
                 listComponents = userList.map((user) =>
                     user.username === this.props.userInfo.username ? "" :
-                        <UserBlock displayedUser={user} viewProfile={this.viewProfile} setPersonalPageUser={this.setPersonalPageUser}/>
+                        <UserBlock key={user._id} displayedUser={user} viewProfile={this.viewProfile} setPersonalPageUser={this.setPersonalPageUser}/>
                 );
                 break;
             case IComponentsType.personal:
