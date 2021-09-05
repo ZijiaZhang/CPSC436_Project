@@ -15,12 +15,17 @@ import {Socket} from "socket.io";
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require("connect-flash");
 
+
+const port = process.env.PORT || 3000;
+const mongoUrl = process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/project';
+const mongoConnectionString = mongoUrl.startsWith("mongodb://")? mongoUrl : ("mongodb://" + mongoUrl);
+
 let sessionMiddleWare = expressSession({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false,
     store: new (require("connect-mongo")(expressSession))({
-        url: "mongodb://localhost:27017/project"
+        url: mongoConnectionString
     })
 });
 
@@ -49,8 +54,7 @@ passport.use(new BasicStrategy(
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const port = process.env.PORT || 3000;
-const mongoConnectionString = process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/project';
+
 
 
 // add these to prevent warnings
@@ -68,27 +72,27 @@ app.use('/api', apiRouter);
 
 
 app.get(/^\/(login|register)/, (req,res) =>{
-        let flash = req.flash();
-        if (Object.keys(flash).length !== 0){
-            return res.redirect(req.path + `?err=${flash.error}`)
-        }
-        res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+    let flash = req.flash();
+    if (Object.keys(flash).length !== 0){
+        return res.redirect(req.path + `?err=${flash.error}`)
+    }
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
 app.get(/^\/(settings|chatRoom|searchPage|chats)?$/, (req,res) =>{
-    
+
     if(req.user)
-        {
-            res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-        }
+    {
+        res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+    }
     else
-        {
-            res.redirect('/login');
-        }
+    {
+        res.redirect('/login');
+    }
 });
 
 app.get('/status', (req,res) =>{
-        res.sendFile(path.join(__dirname, '..', 'public', 'status.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'status.html'));
 });
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(function (req, res)  {
