@@ -1,0 +1,247 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: mongodb-standalone
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-standalone
+spec:
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: mongodb-standalone
+  local:
+    path: '/run/desktop/mnt/host/c/Users/gary/repos/CPSC436_Project/k8-training'
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - docker-desktop
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mongodb-standalone
+spec:
+  storageClassName: mongodb-standalone
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k8-training
+type: Opaque
+data:
+  MONGO_ROOT_USERNAME: YWRtaW4K
+  MONGO_ROOT_PASSWORD: cGFzc3dvcmQK
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-standalone
+data:
+  mongo.conf: |
+    storage:
+      dbPath: /data/db
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb-standalone
+  labels:
+    app: database
+spec:
+  serviceName: database
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+        selector: mongodb-standalone
+    spec:
+      containers:
+        - name: mongodb-standalone
+          image: mongo:5.0.2
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db
+      volumes:
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-standalone
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database
+  labels:
+    app: database
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+      nodePort: 30001
+  selector:
+    app: database
+
+#---
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: mongo-express
+#  labels:
+#    app: mongo-express
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: mongo-express
+#  template:
+#    metadata:
+#      labels:
+#        app: mongo-express
+#    spec:
+#      containers:
+#        - name: mongo-express
+#          image: mongo-express
+#          ports:
+#            - containerPort: 8081
+#          env:
+#            - name: ME_CONFIG_MONGODB_SERVER
+#              value: database
+#
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: mongo-express-service
+#spec:
+#  selector:
+#    app: mongo-express
+#  type: LoadBalancer
+#  ports:
+#    - protocol: TCP
+#      port: 8081
+#      targetPort: 8081
+#      nodePort: 30000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-configmap
+data:
+  database_url: database/project
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ubc-tantan-deployment
+  labels:
+    app: tantan
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tantan
+  template:
+    metadata:
+      labels:
+        app: tantan
+    spec:
+      containers:
+        - name: tantan
+          image: tantan:v1
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DB_CONNECTION_STRING
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_url
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "500Mi"
+            requests:
+              cpu: "100m"
+              memory: "500Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tantan-external-service
+spec:
+  selector:
+    app: tantan
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 3000
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ubc-tantan-scaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ubc-tantan-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 30
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 5
+        - type: Pods
+          value: 4
+          periodSeconds: 5
+      selectPolicy: Max
